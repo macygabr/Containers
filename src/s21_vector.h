@@ -15,6 +15,7 @@ template <typename T>
 class vector {
  public:
   class VectorIterator;
+  class VectorConstIterator;
 
   using value_type = T;
   using reference = T &;
@@ -23,16 +24,15 @@ class vector {
   using size_type = size_t;
   using iterator_pointer = T *;
   using const_iterator = vector<T>::VectorConstIterator;
+  using const_iterator_pointer = const T *;
 
   vector();
   vector(std::size_t n);
   vector(std::initializer_list<value_type> const &items);
   vector(const vector &v);
-  // moving
-  vector(vector &&v);
+  vector(vector &&v);  
   ~vector();
-  //eqv
-  vector &operator=(vector &&v);
+  vector &operator=(vector &&v);  ////////
 
   // reference at(size_type pos)
   reference operator[](size_type pos);
@@ -41,7 +41,9 @@ class vector {
   // T* data()
 
   iterator begin();
+  const_iterator cbegin() const;
   iterator end();
+  const_iterator cend() const;
 
   bool empty();
   size_type size();
@@ -50,12 +52,17 @@ class vector {
   size_type capacity();
   void shrink_to_fit();
 
-  void clear()
+  void clear();
   iterator insert(iterator pos, const_reference value);
-  // void erase(iterator pos)
-  // void push_back(const_reference value)
-  // void pop_back()
-  // void swap(vector& other)
+  void erase(iterator pos);
+  void push_back(const_reference value);
+  void pop_back();
+  void swap(vector &other);
+
+  template <typename... Args>
+  iterator insert_many(const_iterator pos, Args &&...args);
+  template <typename... Args>
+  void insert_many_back(Args &&...args);
 
   //  private:
  public:
@@ -63,49 +70,48 @@ class vector {
   size_type size_;
   size_type capacity_;
 };
-/*
-template <typename value_type>
-class vector<value_type>::VectorIterator {
+
+template <typename T>
+class vector<T>::VectorIterator {
  public:
-    VectorIterator() = default;
-  VectorIterator(pointer ptr);
+  VectorIterator() = default;
+  VectorIterator(iterator_pointer ptr);
 
   reference operator*();
-  VectorIterator& operator++();
-  VectorIterator& operator--();
-  VectorIterator operator++(int);
-  VectorIterator operator--(int);
-  bool operator==(const VectorIterator& other) const;
-  bool operator!=(const VectorIterator& other) const;
+  VectorIterator &operator++(int);
+  VectorIterator &operator--(int);
+  VectorIterator &operator++();
+  VectorIterator &operator--();
   VectorIterator operator+(int n) const;
   VectorIterator operator-(int n) const;
-  ptrdiff_t operator-(const VectorIterator& other) const;
+  ptrdiff_t operator-(const VectorIterator &other) const;
+  bool operator==(const VectorIterator &other) const;
+  bool operator!=(const VectorIterator &other) const;
 
  private:
-  pointer ptr_;
+  iterator_pointer ptr_;
 };
 
-template <typename value_type>
-class vector<value_type>::VectorConstIterator : public VectorIterator {
+template <typename T>
+class vector<T>::VectorConstIterator : public VectorIterator {
  public:
-    VectorConstIterator() = default;
-  VectorConstIterator(const_pointer ptr);
+  VectorConstIterator() = default;
+  VectorConstIterator(const_iterator_pointer ptr);
 
   const_reference operator*() const;
-  VectorConstIterator& operator++();
-  VectorConstIterator& operator--();
-  VectorConstIterator operator++(int);
-  VectorConstIterator operator--(int);
-  bool operator==(const VectorConstIterator& other) const;
-  bool operator!=(const VectorConstIterator& other) const;
+  VectorConstIterator &operator++(int);
+  VectorConstIterator &operator--(int);
+  VectorConstIterator &operator++();
+  VectorConstIterator &operator--();
   VectorConstIterator operator+(int n) const;
   VectorConstIterator operator-(int n) const;
-  ptrdiff_t operator-(const VectorConstIterator& other) const;
+  ptrdiff_t operator-(const VectorConstIterator &other) const;
+  bool operator==(const VectorConstIterator &other) const;
+  bool operator!=(const VectorConstIterator &other) const;
 
  private:
-  const_pointer ptr_;
+  const_iterator_pointer ptr_;
 };
-*/
 
 }  // namespace s21
 #endif  // VECTOR_H
