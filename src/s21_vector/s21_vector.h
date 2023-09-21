@@ -26,17 +26,17 @@ class vector {
   using const_iterator = vector<T>::VectorConstIterator;
   using const_iterator_pointer = const T *;
 
-  vector();
-  vector(std::size_t n);
-  vector(std::initializer_list<value_type> const &items);
-  vector(const vector &v);
-  vector(vector &&v);
-  ~vector();
-  vector &operator=(vector &&v);  ////////
+  vector();//
+  vector(std::size_t n);//
+  vector(std::initializer_list<value_type> const &items);//
+  vector(const vector &v);//
+  vector(vector &&v);//
+  ~vector();//
+  vector &operator=(vector &&v);  //
 
-  reference at(size_type pos);
-  reference operator[](size_type pos);
-  const_reference operator[](size_type pos) const;
+  reference at(size_type pos);//
+  reference operator[](size_type pos);//
+  const_reference operator[](size_type pos) const;//
   const_reference front() const;
   const_reference back() const;
   T *data() noexcept;
@@ -46,11 +46,11 @@ class vector {
   iterator end();
   const_iterator cend() const;
 
-  bool empty();
-  size_type size();
-  size_type max_size();
+  bool empty() const;
+  size_type size() const;
+  size_type max_size() const;
   void reserve(size_type size);
-  size_type capacity();
+  size_type capacity() const;
   void shrink_to_fit();
 
   void clear();
@@ -115,4 +115,5 @@ class vector<T>::VectorConstIterator : public VectorIterator {
 };
 
 }  // namespace s21
+#include "s21_vector.tpp"
 #endif  // VECTOR_H
