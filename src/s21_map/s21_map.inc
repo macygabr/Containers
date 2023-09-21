@@ -13,23 +13,26 @@ map<Key, T>::~map() {
   // if (root) delete root;
 }
 template <typename Key, typename T>
-std::pair<typename map<Key, T>::Iterator, bool> map<Key, T>::insert(
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(
     const value_type val) {
-  return insert_recursive(root, val, true, false);
+  bool result = true;
+  return insert_recursive(root, val, &result, false);
 }
 
 template <typename Key, typename T>
-std::pair<typename map<Key, T>::Iterator, bool> map<Key, T>::insert(
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(
     const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
-  return insert_recursive(root, val, true, false);
+  bool result = true;
+  return insert_recursive(root, val, &result, false);
 }
 
 template <typename Key, typename T>
-std::pair<typename map<Key, T>::Iterator, bool> map<Key, T>::insert_or_assign(
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
     const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
-  return insert_recursive(root, val, true, true);
+  bool result = true;
+  return insert_recursive(root, val, &result, true);
 }
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
@@ -37,16 +40,12 @@ T& map<Key, T>::operator[](const Key& key) {
   Node<Key, T>* x = root;
   while (x) {
     if (key == x->key) return x->value;
-    if (key < x->key) x = x->left;
-    if (key > x->key) x = x->right;
+    if (key > x->key)
+      x = x->right;
+    else
+      x = x->left;
   }
-
-  if (!x) {
-    cout << "Error" << endl;
-    pair<int, char> a1 = {1, 'l'};
-    Node<Key, T>* next = new Node<Key, T>(a1);
-    x = next;
-  }
+  if (!x) insert(std::pair<Key, T>(key, T()));
   return x->value;
 }
 //________________________________________________Capacity______________________________________________________________
@@ -54,36 +53,39 @@ T& map<Key, T>::operator[](const Key& key) {
 // bool map<Key, T>::empty() {
 //   return !root->left && !root->right;
 // }
-//________________________________________________Iterators______________________________________________________________
+//________________________________________________iterators______________________________________________________________
 template <typename Key, typename T>
-typename map<Key, T>::Iterator map<Key, T>::begin() {
+typename map<Key, T>::iterator map<Key, T>::begin() {
   if (!root) return root;
-  Iterator begin = root;
+  iterator begin = root;
   while (begin->left) begin = begin->left;
   return begin;
 }
 template <typename Key, typename T>
-typename map<Key, T>::Iterator map<Key, T>::end() {
+typename map<Key, T>::iterator map<Key, T>::end() {
   if (!root) return root;
-  Iterator end = root;
+  iterator end = root;
   while (end->right) end = end->right;
   return end;
+  // я не знаю что это такое, если бы знали что это такое, я не знаю что это
+  // такое
 }
 //________________________________________________Support______________________________________________________________
 template <typename Key, typename T>
-std::pair<typename map<Key, T>::Iterator, bool> map<Key, T>::insert_recursive(
-    Node<Key, T>* x, value_type val, bool check, bool permission) {
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_recursive(
+    Node<Key, T>* x, value_type val, bool* check, bool permission) {
   if (!x) {
     Node<Key, T>* next = new Node<Key, T>(val);
     if (!root) root = next;
-    std::pair<Iterator, bool> p(next, true);
+    std::pair<iterator, bool> p(next, true);
     return p;
   }
   if (val.first == x->key) {
     if (!permission)
-      check = false;
+      *check = false;
     else
       x->value = val.second;
+    return std::pair<iterator, bool>(Nurlanization(x), *check);
   }
 
   if (val.first < x->key) {
@@ -95,8 +97,7 @@ std::pair<typename map<Key, T>::Iterator, bool> map<Key, T>::insert_recursive(
     x->right->parent = x;
   }
   get_balance_factor(x);
-  // std::pair<Iterator, bool> z(Nurlanization(x), check);
-  return std::pair<Iterator, bool>(Nurlanization(x), check);
+  return std::pair<iterator, bool>(Nurlanization(x), *check);
 }
 
 template <typename Key, typename T>

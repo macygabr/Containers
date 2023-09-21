@@ -1,9 +1,10 @@
-#ifndef CPP1_S21_MATRIXPLUS_1_SRC_S21_MAP_H
-#define CPP1_S21_MATRIXPLUS_1_SRC_S21_MAP_H
+#ifndef CPP1_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
+#define CPP1_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
 
 #include <cmath>
 #include <iostream>
 
+#include "iterator.h"
 #include "s21_node.h"
 
 namespace s21 {
@@ -13,37 +14,49 @@ class map {
   using key_type = Key;
   using mapped_type = T;
   using value_type = std::pair<const key_type, mapped_type>;
-  using Iterator = Node<Key, T>*;
+  using reference = value_type&;
+  using const_reference = const value_type&;
+  using iterator = Node<Key, T>*;
+  using const_iterator = Node<Key, T>*;
+  using size_type = std::size_t;
 
   Node<Key, T>* node;
   Node<Key, T>* root;
 
  public:
-  std::pair<Iterator, bool> insert(const value_type val);
-  std::pair<Iterator, bool> insert(const Key& key, const T& obj);
-  std::pair<Iterator, bool> insert_or_assign(const Key& key, const T& obj);
-
- public:
   map();  // Конструктор по умолчанию
-  // map(std::initializer_list<value_type> const &items);
-  // map(const map &m)	//copy constructor
-  // map(map &&m)	//move constructor
-  ~map();  // destructor
-  // operator=(map &&m)	//assignment operator overload for moving object
+  map(std::initializer_list<value_type> const& items);
+  map(const map& m);       // copy constructor
+  map(map&& m);            // move constructor
+  ~map();                  // destructor
+  map operator=(map&& m);  // assignment operator overload for moving object
+  map move(map&& m);       // assignment operator overload for moving object
 
- public:             // Iterators
-  Iterator begin();  // returns an iterator to the beginning
-  Iterator end();    // returns an iterator to the end
  public:
+  T& at(const Key& key);
   T& operator[](const Key& key);
 
+ public:             // Iterators
+  iterator begin();  // returns an iterator to the beginning
+  iterator end();    // returns an iterator to the end
+
  public:  // Capacity
-          // bool empty();
-          // size_type size();
-          // size_type max_size();
+  bool empty();
+  size_type size();
+  size_type max_size();
+
+ public:  // Modifiers
+  void clear();
+  std::pair<iterator, bool> insert(const value_type val);
+  std::pair<iterator, bool> insert(const Key& key, const T& obj);
+  std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+  void erase(iterator pos);
+  void swap(map& other);
+  void merge(map& other);
+
  public:  // support
-  std::pair<Iterator, bool> insert_recursive(Node<Key, T>* x, value_type val,
-                                             bool check, bool permission);
+  std::pair<iterator, bool> insert_recursive(Node<Key, T>* x, value_type val,
+                                             bool* check, bool permission);
   Node<Key, T>* rotate_Left(Node<Key, T>* x);
   Node<Key, T>* rotate_Right(Node<Key, T>* x);
   Node<Key, T>* Nurlanization(Node<Key, T>* x);

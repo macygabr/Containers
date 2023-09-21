@@ -37,7 +37,7 @@ $(FILES).a:
 # 	./$(PATH_TO_FILE)/test
 # 	make clean
 test: 
-	bash ../../clear.sh
+#	bash ../../clear.sh
 	cd $(PATH_TO_FILE); $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS)
 	./$(PATH_TO_FILE)/test
 	make clean
@@ -64,4 +64,4 @@ push: clean goclang
 	git commit -m "$(c)"
 	git push
 
-.PHONY: installDox dvi clean $(FILES).a clang goclang test valgrind check_cppcheck
+.PHONY: installDox dvi clean $(FILES).a clang goclang test valgrind check_cppcheck push
