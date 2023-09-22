@@ -28,6 +28,7 @@ dvi: clean
 
 clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
+	bash ../../clear.sh
 
 $(FILES).a:
 	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).cc; ar rcs $(FILES).a $(FILES).o; rm *.o 
@@ -37,10 +38,8 @@ $(FILES).a:
 # 	./$(PATH_TO_FILE)/test
 # 	make clean
 test: 
-#	bash ../../clear.sh
-	cd $(PATH_TO_FILE); $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS)
-	./$(PATH_TO_FILE)/test
 	make clean
+	$(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
 
 clang:
 	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc
