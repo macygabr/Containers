@@ -5,24 +5,25 @@
 
 namespace s21 {
 template <typename Key, typename T>
-class map {
-  class MapIterator;
+class map : public BinaryTree<Key, T> {
+ private:
+  // BinaryTree<Key, T> binaryTree;
 
  public:
-  using key_type = Key;
-  using mapped_type = T;
-  using value_type = std::pair<const key_type, mapped_type>;
-  using reference = value_type&;
-  using const_reference = const value_type&;
-  using iterator = MapIterator;
-  using const_iterator = const MapIterator;
-  using size_type = std::size_t;
+  // using key_type = Key;
+  // using mapped_type = T;
+  // using value_type = std::pair<const key_type, mapped_type>;
+  // using reference = value_type&;
+  // using const_reference = const value_type&;
+  // using iterator = MapIterator;
+  // using const_iterator = const MapIterator;
+  // using size_type = std::size_t;
 
   // Node<Key, T>* node;
   // Node<Key, T>* root;
 
  public:
-  map() : BinaryTree<Key, T>() {}  // Конструктор по умолчанию
+  map();  // Конструктор по умолчанию
   //   map(std::initializer_list<value_type> const& items);
   //   map(const map& m);       // copy constructor
   //   map(map&& m);            // move constructor
@@ -46,8 +47,8 @@ class map {
 
   //  public:  // Modifiers
   //   void clear();
-  //   std::pair<iterator, bool> insert(const value_type val);
-  //   std::pair<iterator, bool> insert(const Key& key, const T& obj);
+  // std::pair<iterator, bool> insert(const value_type val);
+  // pair<iterator, bool> insert(const Key& key, const T& obj);
   //   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   //   void erase(iterator pos);
   //   void swap(map& other);
@@ -55,15 +56,18 @@ class map {
 
   //  public:  // support
   //   std::pair<iterator, bool> insert_recursive(Node<Key, T>* x, value_type
-  //   val,
-  //                                              bool* check, bool permission);
-  //   Node<Key, T>* rotate_Left(Node<Key, T>* x);
-  //   Node<Key, T>* rotate_Right(Node<Key, T>* x);
-  //   Node<Key, T>* Nurlanization(Node<Key, T>* x);
-  //   int get_height(Node<Key, T>* node);
-  //   int get_balance_factor(Node<Key, T>* node);
-  //   void printTree(const Node<Key, T>* root, int level = 0);
+  //   val,bool* check, bool permission); Node<Key, T>* rotate_Left(Node<Key,
+  //   T>* x); Node<Key, T>* rotate_Right(Node<Key, T>* x); Node<Key, T>*
+  //   Nurlanization(Node<Key, T>* x); int get_height(Node<Key, T>* node); int
+  //   get_balance_factor(Node<Key, T>* node); void printTree(const Node<Key,
+  //   T>* root, int level = 0);
+
+  class MapIterator {
+   public:
+    // MapIterator(Node* node) : node(nullptr) {}
+  };
 };
+
 };  // namespace s21
 
 #include "s21_map.inc"

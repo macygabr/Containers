@@ -2,7 +2,7 @@ CC=g++
 CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest -lgmock -pthread
-TEST_FUNC= tests/mytest.cc
+TEST_FUNC= mytest.cc
 PATH_TO_FILE = s21_map
 
 OS := $(shell uname -s)
@@ -28,7 +28,7 @@ dvi: clean
 
 clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
-	bash ../../clear.sh
+#	bash ../../clear.sh
 
 $(FILES).a:
 	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).cc; ar rcs $(FILES).a $(FILES).o; rm *.o 
@@ -39,7 +39,7 @@ $(FILES).a:
 # 	make clean
 test: 
 	make clean
-	$(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
+	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
 
 clang:
 	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc

@@ -5,9 +5,9 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-// namespace s21 {
-// template <typename Key, typename T>
-// map<Key, T>::map() : node(nullptr), root(nullptr) {}
+namespace s21 {
+template <typename Key, typename T>
+map<Key, T>::map() {}
 
 // // map<Key,T>::map(std::initializer_list<value_type> const &items) {
 // //   for (const auto &item : items)  insert(item);
@@ -25,8 +25,10 @@ using std::pair;
 // }
 
 // template <typename Key, typename T>
-// std::pair<typename map<Key, T>::iterator, bool>  map<Key, T>::insert(
-//     const Key& key, const T& obj) {
+// std::pair<typename map<Key, T>::iterator, bool>  map<Key, T>::insert(const
+// Key& key, const T& obj) {
+
+// cout<<"insert"<<endl;
 //   std::pair<Key, T> val = {key, obj};
 //   bool result = true;
 //   return insert_recursive(root, val, &result, false);
@@ -168,4 +170,4 @@ using std::pair;
 //   cout << x->key << "[" << x->value << "]" << endl;
 //   printTree(x->left, level + 3);
 // }
-// }  // namespace s21
+}  // namespace s21
