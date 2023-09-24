@@ -43,19 +43,21 @@ map<Key, T>::map() {}
 //   return insert_recursive(root, val, &result, true);
 // }
 // //________________________________________________Element_access______________________________________________________________
-// template <typename Key, typename T>
-// T& map<Key, T>::operator[](const Key& key) {
-//   Node<Key, T>* x = root;
-//   while (x) {
-//     if (key == x->key) return x->value;
-//     if (key > x->key)
-//       x = x->right;
-//     else
-//       x = x->left;
-//   }
-//   if (!x) insert(std::pair<Key, T>(key, T()));
-//   return x->value;
-// }
+template <typename Key, typename T>
+T& map<Key, T>::operator[](const Key& key) {
+  typename BinaryTree<Key, T, std::pair<const Key, T>>::Node* x = this->root;
+  while (x) {
+    if (key == x->node_key) return x->node_val;
+    if (key > x->node_key)
+      x = x->right;
+    else
+      x = x->left;
+  }
+  if (!x)
+    BinaryTree<Key, T, std::pair<const Key, T>>::insert(
+        std::pair<Key, T>(key, T()));
+  return x->node_val;
+}
 // //________________________________________________Capacity______________________________________________________________
 // // template <typename Key, typename T>
 // // bool map<Key, T>::empty() {
@@ -162,12 +164,13 @@ map<Key, T>::map() {}
 //   return 1 + std::max(left_height, right_height);
 // }
 
-// template <typename Key, typename T>
-// void map<Key, T>::printTree(const Node<Key, T>* x, int level) {
-//   if (x == nullptr) return;
-//   printTree(x->right, level + 3);
-//   for (int i = 0; i < level; i++) cout << " ";
-//   cout << x->key << "[" << x->value << "]" << endl;
-//   printTree(x->left, level + 3);
-// }
+template <typename Key, typename T>
+void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
+                            int level) {
+  if (x.node == nullptr) return;
+  printTree(x.node->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  std::cout << x.node->node_key << "[" << x.node->node_val << "]" << std::endl;
+  printTree(x.node->left, level + 3);
+}
 }  // namespace s21

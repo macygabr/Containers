@@ -5,19 +5,22 @@
 
 namespace s21 {
 template <typename Key, typename T>
-class map : public BinaryTree<Key, T> {
- private:
-  // BinaryTree<Key, T> binaryTree;
+class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
+ public:
+  class MapIterator;
 
  public:
-  // using key_type = Key;
-  // using mapped_type = T;
-  // using value_type = std::pair<const key_type, mapped_type>;
-  // using reference = value_type&;
-  // using const_reference = const value_type&;
-  // using iterator = MapIterator;
-  // using const_iterator = const MapIterator;
-  // using size_type = std::size_t;
+  void printTree(typename Node *x, int level = 0);
+
+ public:
+  using key_type = Key;
+  using mapped_type = T;
+  using value_type = std::pair<const key_type, mapped_type>;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using iterator = MapIterator;
+  using const_iterator = const MapIterator;
+  using size_type = std::size_t;
 
   // Node<Key, T>* node;
   // Node<Key, T>* root;
@@ -28,13 +31,14 @@ class map : public BinaryTree<Key, T> {
   //   map(const map& m);       // copy constructor
   //   map(map&& m);            // move constructor
   //   ~map();                  // destructor
-  //   map operator=(map&& m);  // assignment operator overload for moving
+  // map operator=(map&& m);  // assignment operator overload for moving
+  map &operator=(const map &other);
   //   object map move(map&& m);       // assignment operator overload for
   //   moving object
 
   //  public:
   //   T& at(const Key& key);
-  //   T& operator[](const Key& key);
+  T &operator[](const Key &key);
 
   //  public:             // Iterators
   //   iterator begin();  // returns an iterator to the beginning
@@ -62,9 +66,12 @@ class map : public BinaryTree<Key, T> {
   //   get_balance_factor(Node<Key, T>* node); void printTree(const Node<Key,
   //   T>* root, int level = 0);
 
-  class MapIterator {
+  class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
    public:
-    // MapIterator(Node* node) : node(nullptr) {}
+    friend class map;
+    MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
+    MapIterator(typename BinaryTree<Key, T, value_type>::Node *node)
+        : BinaryTree<Key, T, value_type>::Iterator(node){};
   };
 };
 

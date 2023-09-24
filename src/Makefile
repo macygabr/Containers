@@ -2,7 +2,7 @@ CC=g++
 CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest -lgmock -pthread
-TEST_FUNC= mytest.cc
+TEST_FUNC= map_tests.cc
 PATH_TO_FILE = s21_map
 
 OS := $(shell uname -s)
