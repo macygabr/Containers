@@ -16,9 +16,9 @@ template <typename Key, typename T>
 std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert(const value_type val) {
   bool result = true;
-  // if(root == terminal_node) root = nullptr;
-  // terminal_node->parent = nullptr;
-  // terminal_node->parent->right = nullptr;
+  if(root == terminal_node) root = nullptr;
+  
+  terminal_node->parent = nullptr;
 
   return insert_recursive(root, val, &result, false);
 }
@@ -65,13 +65,13 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
     Node* next = new Node(val);
     if (!root){
     root = next;
-    next->right = terminal_node;
-    terminal_node->parent = next;
-    }
+    add_terminal_node(root, true);
+    } 
     std::pair<iterator, bool> p(Iterator(next), true);
-    // std::cout<<p.first.node->key<<std::endl;
     return p;
   }
+
+  add_terminal_node(root, false);
 
   if (val.first == x->node_key) {
     if (!permission)
@@ -91,8 +91,7 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
   }
   get_balance_factor(x);
   Nurlanization(x);
-    // x->right = terminal_node;
-    // terminal_node->parent = x;
+  // add_terminal_node(x, true);
   return std::pair<iterator, bool>(Iterator(x), *check);
 }
 
@@ -149,6 +148,19 @@ int BinaryTree<Key, T>::get_height(Node* node) {
   int left_height = get_height(node->left);
   int right_height = get_height(node->right);
   return 1 + std::max(left_height, right_height);
+}
+
+template <typename Key, typename T>
+void BinaryTree<Key, T>::add_terminal_node(Node* node, bool add){
+  while(node->right) node = node->right;
+  if(add)node->right = terminal_node;
+  else node->right = nullptr;
+}
+
+template <typename Key, typename T>
+void BinaryTree<Key, T>::del_terminal_node(Node* node){
+  while(node->right) node = node->right;
+  node->right = nullptr;
 }
 
 //________________________________________________Iterator______________________________________________________________

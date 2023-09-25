@@ -13,8 +13,8 @@ TEST(TestGroupName, Iterators1_int) {
   std::pair<int, int> a5 = {3, 3};
   std::pair<int, int> a6 = {8, 8};
   std::pair<int, int> a7 = {6, 6};
-  // a.insert(a1);
-  // a.insert(a2);
+  a.insert(a1);
+  a.insert(a2);
   // a.insert(a3);
   // a.insert(a4);
   // a.insert(a5);

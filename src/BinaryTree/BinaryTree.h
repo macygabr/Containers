@@ -38,6 +38,8 @@ class BinaryTree {
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   iterator Nurlanization(Node* x);
+  void add_terminal_node(Node* x, bool add);
+  void del_terminal_node(Node* x);
   int get_height(Node* node);
   int get_balance_factor(Node* node);
 
