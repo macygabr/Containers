@@ -65,8 +65,8 @@ class vector {
   template <typename... Args>
   void insert_many_back(Args &&...args);
 
-  //  private:
- public:
+   private:
+//  public:
   iterator_pointer data_;
   size_type size_;
   size_type capacity_;
