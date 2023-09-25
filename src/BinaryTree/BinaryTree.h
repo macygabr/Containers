@@ -8,7 +8,8 @@ class BinaryTree {
   class Iterator;
 
  public:  // change to protected
-  Node* root;
+  Node* root; 
+  Node* terminal_node;
 
  public:
   using key_type = Key;
@@ -74,7 +75,7 @@ class BinaryTree {
     }
   };
 
-class Iterator {
+  class Iterator {
    public:
     Iterator();
     Iterator(Node* node);
