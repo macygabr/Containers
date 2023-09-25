@@ -5,12 +5,13 @@
 
 namespace s21 {
 template <typename Key, typename T>
-class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
+class map : public BinaryTree<Key, T> {
  public:
   class MapIterator;
 
  public:
-  void printTree(typename Node *x, int level = 0);
+  // void printTree(Node *x, int level = 0);
+  void printTree(typename BinaryTree<Key, T>::Node *x, int level = 0);
 
  public:
   using key_type = Key;
@@ -18,7 +19,7 @@ class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
   using value_type = std::pair<const key_type, mapped_type>;
   using reference = value_type &;
   using const_reference = const value_type &;
-  using iterator = MapIterator;
+  // using iterator = MapIterator;
   using const_iterator = const MapIterator;
   using size_type = std::size_t;
 
@@ -66,13 +67,12 @@ class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
   //   get_balance_factor(Node<Key, T>* node); void printTree(const Node<Key,
   //   T>* root, int level = 0);
 
-  class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
-   public:
-    friend class map;
-    MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
-    MapIterator(typename BinaryTree<Key, T, value_type>::Node *node)
-        : BinaryTree<Key, T, value_type>::Iterator(node){};
-  };
+  // class MapIterator : public BinaryTree<Key, T>::Iterator {
+  //  public:
+  // MapIterator() : BinaryTree<Key, T>::Iterator(){};
+  // MapIterator(typename BinaryTree<Key, T>::Node *node) : BinaryTree<Key,
+  // T>::Iterator(node){};
+  // };
 };
 
 };  // namespace s21

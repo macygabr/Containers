@@ -30,8 +30,8 @@ clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
 #	bash ../../clear.sh
 
-$(FILES).a:
-	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).cc; ar rcs $(FILES).a $(FILES).o; rm *.o 
+# $(FILES).a:
+# 	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).; ar rcs $(FILES).a $(FILES).o; rm *.o 
 
 # test: $(FILES).a
 # 	cd $(PATH_TO_FILE); $(CC) $(TEST_FUNC) $(FILES).a -o test $(TEST_FLAGS)

@@ -45,7 +45,7 @@ map<Key, T>::map() {}
 // //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
-  typename BinaryTree<Key, T, std::pair<const Key, T>>::Node* x = this->root;
+  typename BinaryTree<Key, T>::Node* x = this->root;
   while (x) {
     if (key == x->node_key) return x->node_val;
     if (key > x->node_key)
@@ -53,9 +53,7 @@ T& map<Key, T>::operator[](const Key& key) {
     else
       x = x->left;
   }
-  if (!x)
-    BinaryTree<Key, T, std::pair<const Key, T>>::insert(
-        std::pair<Key, T>(key, T()));
+  if (!x) BinaryTree<Key, T>::insert(std::pair<Key, T>(key, T()));
   return x->node_val;
 }
 // //________________________________________________Capacity______________________________________________________________
@@ -165,12 +163,11 @@ T& map<Key, T>::operator[](const Key& key) {
 // }
 
 template <typename Key, typename T>
-void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
-                            int level) {
-  if (x.node == nullptr) return;
-  printTree(x.node->right, level + 3);
+void map<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x, int level) {
+  if (x == nullptr) return;
+  printTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
-  std::cout << x.node->node_key << "[" << x.node->node_val << "]" << std::endl;
-  printTree(x.node->left, level + 3);
+  std::cout << x->node_key << "[" << x->node_val << "]" << std::endl;
+  printTree(x->left, level + 3);
 }
 }  // namespace s21
