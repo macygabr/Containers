@@ -6,7 +6,7 @@ set<Key>::set() {}
 
 template <typename Key>
 void set<Key>::first() {
-    std::cout<<"!!!!"<<std::endl;
+  std::cout << "!!!!" << std::endl;
 }
 
 template <typename Key>

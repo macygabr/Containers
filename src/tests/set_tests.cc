@@ -15,7 +15,6 @@ TEST(TestGroupName, Iterators1_char) {
   a[2];
   a[3];
   a[4];
-  
 
   ASSERT_EQ(a.insert(a1).second, b.insert(b1).second);
   ASSERT_EQ(a.insert(a2).second, b.insert(b2).second);
@@ -38,7 +37,8 @@ TEST(TestGroupName, Iterators2_string) {
   std::map<int, std::string> b;
   std::pair<int, std::string> b1 = {1, "Nurlan"};
   std::pair<int, std::string> b2 = {2, "The"};
-  std::pair<int, std::string> b3 = {3, "Best"};;
+  std::pair<int, std::string> b3 = {3, "Best"};
+  ;
   b.insert(b1);
   b.insert(b2);
   b.insert(b3);
@@ -46,7 +46,7 @@ TEST(TestGroupName, Iterators2_string) {
   ASSERT_EQ(a[1], b[1]);
   ASSERT_EQ(a[2], b[2]);
   ASSERT_EQ(a[3], b[3]);
-    // a.printTree(a.root);
+  // a.printTree(a.root);
 }
 
 // TEST(TestGroupName, Iterators3_string) {

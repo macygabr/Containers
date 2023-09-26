@@ -4,6 +4,7 @@ FILES = s21_map
 TEST_FLAGS=-lgtest -lgmock -pthread
 TEST_FUNC= map_tests.cc
 PATH_TO_FILE = s21_map
+cleanMAC = echo check
 
 OS := $(shell uname -s)
 ifeq ($(OS), Linux)
@@ -11,6 +12,7 @@ ifeq ($(OS), Linux)
 	DOX = echo 'you must install doxygen'
 else
 	DOX =brew install doxygen
+	cleanMAC = bash ../../clear.sh
 endif
 
 all: test
@@ -28,7 +30,7 @@ dvi: clean
 
 clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
-#	bash ../../clear.sh
+	$(cleanMAC)
 
 # $(FILES).a:
 # 	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).; ar rcs $(FILES).a $(FILES).o; rm *.o 
@@ -38,6 +40,7 @@ clean:
 # 	./$(PATH_TO_FILE)/test
 # 	make clean
 test: 
+	make goclang
 	make clean
 	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
 
@@ -45,7 +48,7 @@ clang:
 	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc
 
 goclang:
-	clang-format -style="{BasedOnStyle: Google}" -i $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc
+	clang-format -style="{BasedOnStyle: Google}" -i */*.h */*.inc */*.cc
 
 
 valgrind: clean test

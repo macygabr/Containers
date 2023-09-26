@@ -7,7 +7,7 @@ using std::pair;
 
 namespace s21 {
 template <typename Key, typename T>
-BinaryTree<Key, T>::BinaryTree(){
+BinaryTree<Key, T>::BinaryTree() {
   terminal_node = new Node();
   root = terminal_node;
 }
@@ -16,11 +16,14 @@ template <typename Key, typename T>
 std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert(const value_type val) {
   bool result = true;
-  if(root == terminal_node) root = nullptr;
-  
-  terminal_node->parent = nullptr;
+  if (root == terminal_node) root = nullptr;
+  add_terminal_node(root, false);
+  std::pair<typename BinaryTree<Key, T>::iterator, bool> res =
+      insert_recursive(root, val, &result, false);
+  add_terminal_node(root, true);
 
-  return insert_recursive(root, val, &result, false);
+  // printTree(root);
+  return res;
 }
 
 template <typename Key, typename T>
@@ -28,7 +31,11 @@ std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert(const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
   bool result = true;
-  return insert_recursive(root, val, &result, false);
+  add_terminal_node(root, false);
+  std::pair<typename BinaryTree<Key, T>::iterator, bool> res =
+      insert_recursive(root, val, &result, false);
+  add_terminal_node(root, true);
+  return res;
 }
 
 template <typename Key, typename T>
@@ -36,7 +43,11 @@ std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert_or_assign(const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
   bool result = true;
-  return insert_recursive(root, val, &result, true);
+  add_terminal_node(root, false);
+  std::pair<typename BinaryTree<Key, T>::iterator, bool> res =
+      insert_recursive(root, val, &result, true);
+  add_terminal_node(root, true);
+  return res;
 }
 
 template <typename Key, typename T>
@@ -49,12 +60,7 @@ typename BinaryTree<Key, T>::iterator BinaryTree<Key, T>::begin() {
 
 template <typename Key, typename T>
 typename BinaryTree<Key, T>::iterator BinaryTree<Key, T>::end() {
-  if (!root) return root;
-  iterator end = root;
-  while (end.node->right) end = end.node->right;
-  return end;
-  // я не знаю что это такое, если бы знал что это такое, я не знаю что это
-  // такое
+  return terminal_node;
 }
 //________________________________________________Support______________________________________________________________
 template <typename Key, typename T>
@@ -63,15 +69,10 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
                                      bool permission) {
   if (!x) {
     Node* next = new Node(val);
-    if (!root){
-    root = next;
-    add_terminal_node(root, true);
-    } 
+    if (!root) root = next;
     std::pair<iterator, bool> p(Iterator(next), true);
     return p;
   }
-
-  add_terminal_node(root, false);
 
   if (val.first == x->node_key) {
     if (!permission)
@@ -80,7 +81,6 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
       x->node_val = val.second;
     return std::pair<iterator, bool>(Nurlanization(x), *check);
   }
-
   if (val.first < x->node_key) {
     x->left = insert_recursive(x->left, val, check, permission).first.node;
     x->left->parent = x;
@@ -89,10 +89,9 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
     x->right = insert_recursive(x->right, val, check, permission).first.node;
     x->right->parent = x;
   }
+
   get_balance_factor(x);
-  Nurlanization(x);
-  // add_terminal_node(x, true);
-  return std::pair<iterator, bool>(Iterator(x), *check);
+  return std::pair<iterator, bool>(Nurlanization(x), *check);
 }
 
 template <typename Key, typename T>
@@ -115,6 +114,7 @@ typename BinaryTree<Key, T>::Node* BinaryTree<Key, T>::rotate_Left(Node* x) {
   p->parent = x->parent;
   x->right = p->left;
   p->left = x;
+  x->parent = p;
   if (p->parent == nullptr) root = p;
   get_balance_factor(p);
   get_balance_factor(x);
@@ -151,19 +151,29 @@ int BinaryTree<Key, T>::get_height(Node* node) {
 }
 
 template <typename Key, typename T>
-void BinaryTree<Key, T>::add_terminal_node(Node* node, bool add){
-  while(node->right) node = node->right;
-  if(add)node->right = terminal_node;
-  else node->right = nullptr;
+void BinaryTree<Key, T>::add_terminal_node(Node* node, bool add) {
+  if (!node || node == terminal_node) return;
+
+  while (node->right) node = node->right;
+
+  if (add) {
+    node->right = terminal_node;
+    terminal_node->parent = node;
+  } else
+    node->parent->right = nullptr;
 }
 
-template <typename Key, typename T>
-void BinaryTree<Key, T>::del_terminal_node(Node* node){
-  while(node->right) node = node->right;
-  node->right = nullptr;
-}
+// template <typename Key, typename T>
+// void BinaryTree<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x,
+//                                    int level) {
+//   if (x == nullptr) return;
+//   printTree(x->right, level + 3);
+//   for (int i = 0; i < level; i++) std::cout << " ";
+//   std::cout << x->node_key << "[" << x->node_val << "]" << std::endl;
+//   printTree(x->left, level + 3);
+// }
 
-//________________________________________________Iterator______________________________________________________________
+//________________________________________________Iterators______________________________________________________________
 template <typename Key, typename T>
 BinaryTree<Key, T>::Iterator::Iterator() : node(nullptr) {}
 
@@ -175,8 +185,9 @@ typename BinaryTree<Key, T>::Iterator&
 BinaryTree<Key, T>::Iterator::operator++() {
   if (!node) return *this;
 
+  // cout << terminal_node << " " << node << endl;
   if (!node->right) {
-    if (node->node_val < node->parent->node_val)
+    if (node->node_key < node->parent->node_key)
       node = node->parent;
     else
       node = node->parent->parent;
@@ -186,12 +197,6 @@ BinaryTree<Key, T>::Iterator::operator++() {
     while (node->left) node = node->left;
     return *this;
   }
-
-  // Node *tmp;
-  // if (iter_node_ != nullptr) tmp = GetMax(iter_node_);
-  // iter_node_ = MoveForward(iter_node_);
-  // if (iter_node_ == nullptr) iter_past_node_ = tmp;
-
   return *this;
 }
 
@@ -204,8 +209,40 @@ typename BinaryTree<Key, T>::Iterator BinaryTree<Key, T>::Iterator::operator++(
 }
 
 template <typename Key, typename T>
+typename BinaryTree<Key, T>::Iterator&
+BinaryTree<Key, T>::Iterator::operator--() {
+  if (!node) return *this;
+
+  if (!node->left && !node->right) {
+    node = node->parent;
+    return *this;
+  }
+
+  if (!node->left) {
+    if (node->node_key > node->parent->node_key)
+      node = node->parent;
+    else
+      node = node->parent->parent;
+    return *this;
+  } else {
+    node = node->left;
+    while (node->right) node = node->right;
+    return *this;
+  }
+  return *this;
+}
+
+template <typename Key, typename T>
+typename BinaryTree<Key, T>::Iterator BinaryTree<Key, T>::Iterator::operator--(
+    int) {
+  Iterator temp = *this;
+  operator--();
+  return temp;
+}
+
+template <typename Key, typename T>
 bool BinaryTree<Key, T>::Iterator::operator!=(const iterator& it) {
-  std::cout << "\n!!!===\n" << std::endl;
+  return node != it.node;
 }
 // template <typename Key, typename T>
 // typename BinaryTree<Key, T>::Iterator& BinaryTree<Key,

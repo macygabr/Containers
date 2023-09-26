@@ -8,7 +8,7 @@ class BinaryTree {
   class Iterator;
 
  public:  // change to protected
-  Node* root; 
+  Node* root;
   Node* terminal_node;
 
  public:
@@ -19,6 +19,7 @@ class BinaryTree {
 
  public:
   BinaryTree();
+  void printTree(typename BinaryTree<Key, T>::Node* x, int level = 0);
 
  public:
   BinaryTree& operator=(const BinaryTree& other);
@@ -79,12 +80,13 @@ class BinaryTree {
 
   class Iterator {
    public:
+    BinaryTree* tree = this->tree;
     Iterator();
     Iterator(Node* node);
     iterator& operator++();
     iterator operator++(int);
-    // iterator& operator--();
-    // iterator operator--(int);
+    iterator& operator--();
+    iterator operator--(int);
     // reference operator*();
     // bool operator==(const iterator& it);
     bool operator!=(const iterator& it);

@@ -13,9 +13,9 @@ class set : public BinaryTree<Key, Key> {
   using key_type = Key;
 
  public:
- void first();
+  void first();
   set();  // Конструктор по умолчанию
-  void printTree(typename BinaryTree<Key,Key>::Node* x, int level = 0);
+  void printTree(typename BinaryTree<Key, Key>::Node* x, int level = 0);
 };
 
 };  // namespace s21
