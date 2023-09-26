@@ -19,7 +19,6 @@ class BinaryTree {
 
  public:
   BinaryTree();
-  void printTree(typename BinaryTree<Key, T>::Node* x, int level = 0);
 
  public:
   BinaryTree& operator=(const BinaryTree& other);
@@ -40,7 +39,6 @@ class BinaryTree {
   Node* rotate_Right(Node* x);
   iterator Nurlanization(Node* x);
   void add_terminal_node(Node* x, bool add);
-  void del_terminal_node(Node* x);
   int get_height(Node* node);
   int get_balance_factor(Node* node);
 
@@ -57,6 +55,7 @@ class BinaryTree {
     int balanceFactor = 0;
     T node_val;
     Key node_key;
+    std::size_t size;
 
    public:
     Node()
@@ -80,7 +79,9 @@ class BinaryTree {
 
   class Iterator {
    public:
-    BinaryTree* tree = this->tree;
+    using pointer = T*;
+    using reference = T&;
+
     Iterator();
     Iterator(Node* node);
     iterator& operator++();
@@ -90,6 +91,19 @@ class BinaryTree {
     // reference operator*();
     // bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
+    // pointer operator->() const {
+    //   int Size(Node<T, V> * node) {
+    //     if (node) return node->size;
+    //     return 0;
+    //   }
+    // }
+    // reference operator*() const {
+    //   if (node == nullptr) {
+    //     static T default_value = T{};
+    //     return default_value;
+    //   }
+    //   return node->node_key;
+    // }
 
    public:
     Node* node;

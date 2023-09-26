@@ -188,20 +188,12 @@ TEST(TestGroupName, operator_sub_1) {
   s21::map<int, std::string>::iterator it1 = a.end();
   std::map<int, std::string>::iterator it2 = b.end();
 
-  // for (; it1 != a.begin() && it2 != b.begin(); it1--, it2--) {
-  // it2--;
-  // it2--;
-  // it2--;
-
-  cout << it2->first << endl;
-  // ASSERT_EQ(it1.node->node_key, it2->first);
-  // ASSERT_EQ(it1.node->node_val, it2->second);
-  // }
-  a.printTree(a.root);
+  for (; it1 != a.begin() || it2 != b.begin(); it1--, it2--)
+    ASSERT_EQ(it1.node->node_key, it2->first);
+  // a.printTree(a.root);
 }
 
 int main(int argc, char** argv) {
-  // b.printTree(b.root);
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

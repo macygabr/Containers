@@ -70,6 +70,7 @@ BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
   if (!x) {
     Node* next = new Node(val);
     if (!root) root = next;
+    terminal_node->node_key = next->node_key;
     std::pair<iterator, bool> p(Iterator(next), true);
     return p;
   }
@@ -213,13 +214,13 @@ typename BinaryTree<Key, T>::Iterator&
 BinaryTree<Key, T>::Iterator::operator--() {
   if (!node) return *this;
 
-  if (!node->left && !node->right) {
-    node = node->parent;
-    return *this;
-  }
+  // if (!node->left && !node->right) {
+  //   node = node->parent;
+  //   return *this;
+  // }
 
   if (!node->left) {
-    if (node->node_key > node->parent->node_key)
+    if (node->parent->right)
       node = node->parent;
     else
       node = node->parent->parent;

@@ -67,12 +67,12 @@ class map : public BinaryTree<Key, T> {
   //   get_balance_factor(Node<Key, T>* node); void printTree(const Node<Key,
   //   T>* root, int level = 0);
 
-  // class MapIterator : public BinaryTree<Key, T>::Iterator {
-  //  public:
-  // MapIterator() : BinaryTree<Key, T>::Iterator(){};
-  // MapIterator(typename BinaryTree<Key, T>::Node *node) : BinaryTree<Key,
-  // T>::Iterator(node){};
-  // };
+  class MapIterator : public BinaryTree<Key, T>::Iterator {
+   public:
+    MapIterator() : BinaryTree<Key, T>::Iterator(){};
+    // MapIterator(typename BinaryTree<Key, T>::Node *node) : BinaryTree<Key,
+    // T>::Iterator(node){};
+  };
 };
 
 };  // namespace s21
