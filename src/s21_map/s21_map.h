@@ -39,9 +39,9 @@ class map : public BinaryTree<Key, T> {
           //   iterator begin();  // returns an iterator to the beginning
           //   iterator end();    // returns an iterator to the end
  public:  // Capacity
-          //   bool empty();
-          //   size_type size();
-          //   size_type max_size();
+          // bool empty();
+          // size_type size();
+          // size_type max_size();
  public:  // Modifiers
           //   void clear();
           // void erase(iterator pos);
@@ -55,11 +55,11 @@ class map : public BinaryTree<Key, T> {
   // }
   virtual Key get_key(value_type val) override {
     BinaryTree<Key, T>::get_key(val);
-    return val.first;
+    return Key(val.first);
   }
   virtual T get_val(value_type val) override {
     BinaryTree<Key, T>::get_val(val);
-    return val.second;
+    return T(val.second);
   }
   // virtual bool set_key(typename BinaryTree<Key, T>::Node *fir,
   //                      value_type sec) override {
@@ -77,8 +77,8 @@ class map : public BinaryTree<Key, T> {
   //   val,bool* check, bool permission); Node<Key, T>* rotate_Left(Node<Key,
   //   T>* x); Node<Key, T>* rotate_Right(Node<Key, T>* x); Node<Key, T>*
   //   Nurlanization(Node<Key, T>* x); int get_height(Node<Key, T>* node); int
-  //   get_balance_factor(Node<Key, T>* node); void printTree(const Node<Key,
-  //   T>* root, int level = 0);
+  //   get_balance_factor(Node<Key, T>* node);
+  void printTree(typename BinaryTree<Key, T>::Node *root, int level = 0);
 
   class MapIterator : public BinaryTree<Key, T>::Iterator {
    public:

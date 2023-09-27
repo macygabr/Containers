@@ -40,22 +40,25 @@ map<Key, T>::map() {}
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
-  typename BinaryTree<Key, T>::Node* x = this->root;
-  while (x) {
+  auto x = BinaryTree<Key, T>::root;
+  auto terminal_node = BinaryTree<Key, T>::terminal_node;
+
+  while (x && x != terminal_node) {
     if (key == x->node_key.first) return x->node_key.second;
     if (key > x->node_key.first)
       x = x->right;
     else
       x = x->left;
   }
-  if (!x) BinaryTree<Key, T>::insert(std::pair<Key, T>(key, T()));
+  if (!x || x == terminal_node)
+    BinaryTree<Key, T>::insert(std::pair<Key, T>(Key(key), T()));
   return x->node_key.second;
 }
 //________________________________________________Capacity______________________________________________________________
-// // template <typename Key, typename T>
-// // bool map<Key, T>::empty() {
-// //   return !root->left && !root->right;
-// // }
+// template <typename Key, typename T>
+// bool map<Key, T>::empty() {
+//   return !root->left && !root->right;
+// }
 // //________________________________________________iterators______________________________________________________________
 // template <typename Key, typename T>
 // typename map<Key, T>::iterator map<Key, T>::begin() {
@@ -157,15 +160,14 @@ T& map<Key, T>::operator[](const Key& key) {
 //   return 1 + std::max(left_height, right_height);
 // }
 
-// template <typename Key, typename T>
-// void map<Key, T>::printTree(
-//     typename BinaryTree<Key, T, std::pair<Key, T>>::Node* x, int level) {
-//   if (x == nullptr) return;
-//   printTree(x->right, level + 3);
-//   for (int i = 0; i < level; i++) std::cout << " ";
-//   std::cout << x->node_val.first << "[" << x->node_val.second << "]"
-//             << std::endl;
-//   printTree(x->left, level + 3);
-// }
+template <typename Key, typename T>
+void map<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x, int level) {
+  if (x == nullptr) return;
+  printTree(x->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  std::cout << x->node_key.first << "[" << x->node_key.second << "]"
+            << std::endl;
+  printTree(x->left, level + 3);
+}
 
 }  // namespace s21

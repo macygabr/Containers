@@ -16,40 +16,46 @@ class BinaryTree {
   using mapped_type = T;
   using value_type = std::pair<const Key, T>;
   using iterator = Iterator;
+  using size_type = std::size_t;
 
- public:
+ public:  // Member functions
   BinaryTree();
-
- public:
   BinaryTree& operator=(const BinaryTree& other);
 
- public:
+ public:  // Capacity
+  bool empty();
+  size_type size();
+  size_type max_size();
+
+ public:  // Lookup
+  bool contains(const Key& key);
+
+ public:  // Modifiers
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key, const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+
+ public:  // Element access
+  T& at(const Key& key);
+  T& operator[](const Key& key);
 
  public:             // Iterators
   iterator begin();  // returns an iterator to the beginning
   iterator end();    // returns an iterator to the end
 
  public:  // suport
-  std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
-                                             bool* check, bool permission);
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   iterator Nurlanization(Node* x);
   void add_terminal_node(Node* x, bool add);
   int get_height(Node* node);
   int get_balance_factor(Node* node);
-  void printTree(Node* x, int level = 0);
   virtual Key get_key(value_type val) { return 0; };
   virtual T get_val(value_type val) { return 0; };
-  // virtual bool set_key(Node* fir, value_type sec) { return 0; };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
-
- public:
-  T& at(const Key& key);
-  T& operator[](const Key& key);
+  std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
+                                             bool* check, bool permission);
+  // void printTree(Node* x, int level = 0);
 
  public:
   class Node {
@@ -62,10 +68,17 @@ class BinaryTree {
     std::size_t size;
 
    public:
-    Node() : node_key(), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node()
+        : node_key(value_type()),
+          left(nullptr),
+          right(nullptr),
+          parent(nullptr) {}
 
     Node(value_type val)
-        : node_key(val), left(nullptr), right(nullptr), parent(nullptr) {}
+        : node_key(value_type(val)),
+          left(nullptr),
+          right(nullptr),
+          parent(nullptr) {}
   };
 
   class Iterator {
