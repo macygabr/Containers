@@ -1,3 +1,4 @@
+#include <iostream>
 
 #include "s21_map.h"
 
@@ -16,12 +17,6 @@ map<Key, T>::map() {}
 // template <typename Key, typename T>
 // map<Key, T>::~map() {
 //   // if (root) delete root;
-// }
-// template <typename Key, typename T>
-// std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(
-//     const value_type val) {
-//   bool result = true;
-//   return insert_recursive(root, val, &result, false);
 // }
 
 // template <typename Key, typename T>
@@ -42,21 +37,21 @@ map<Key, T>::map() {}
 //   bool result = true;
 //   return insert_recursive(root, val, &result, true);
 // }
-// //________________________________________________Element_access______________________________________________________________
+//________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
   typename BinaryTree<Key, T>::Node* x = this->root;
   while (x) {
-    if (key == x->node_key) return x->node_val;
-    if (key > x->node_key)
+    if (key == x->node_key.first) return x->node_key.second;
+    if (key > x->node_key.first)
       x = x->right;
     else
       x = x->left;
   }
   if (!x) BinaryTree<Key, T>::insert(std::pair<Key, T>(key, T()));
-  return x->node_val;
+  return x->node_key.second;
 }
-// //________________________________________________Capacity______________________________________________________________
+//________________________________________________Capacity______________________________________________________________
 // // template <typename Key, typename T>
 // // bool map<Key, T>::empty() {
 // //   return !root->left && !root->right;
@@ -162,12 +157,15 @@ T& map<Key, T>::operator[](const Key& key) {
 //   return 1 + std::max(left_height, right_height);
 // }
 
-template <typename Key, typename T>
-void map<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x, int level) {
-  if (x == nullptr) return;
-  printTree(x->right, level + 3);
-  for (int i = 0; i < level; i++) std::cout << " ";
-  std::cout << x->node_key << "[" << x->node_val << "]" << std::endl;
-  printTree(x->left, level + 3);
-}
+// template <typename Key, typename T>
+// void map<Key, T>::printTree(
+//     typename BinaryTree<Key, T, std::pair<Key, T>>::Node* x, int level) {
+//   if (x == nullptr) return;
+//   printTree(x->right, level + 3);
+//   for (int i = 0; i < level; i++) std::cout << " ";
+//   std::cout << x->node_val.first << "[" << x->node_val.second << "]"
+//             << std::endl;
+//   printTree(x->left, level + 3);
+// }
+
 }  // namespace s21

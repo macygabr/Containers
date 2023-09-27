@@ -8,6 +8,7 @@ using std::pair;
 namespace s21 {
 template <typename Key, typename T>
 BinaryTree<Key, T>::BinaryTree() {
+  cout << "BinaryTree()" << endl;
   terminal_node = new Node();
   root = terminal_node;
 }
@@ -67,30 +68,30 @@ template <typename Key, typename T>
 std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert_recursive(Node* x, value_type val, bool* check,
                                      bool permission) {
-  if (!x) {
+  if (!x || x == terminal_node) {
     Node* next = new Node(val);
-    if (!root) root = next;
-    terminal_node->node_key = next->node_key;
+    if (!root || root == terminal_node) root = next;
+    // set_key(terminal_node, next->node_key);
+    terminal_node->node_key.second = next->node_key.second;
     std::pair<iterator, bool> p(Iterator(next), true);
     return p;
   }
 
-  if (val.first == x->node_key) {
+  if (get_key(val) == get_key(x->node_key)) {
     if (!permission)
       *check = false;
     else
-      x->node_val = val.second;
+      set_val(x, val);  // x->node_key.second = val.second;
     return std::pair<iterator, bool>(Nurlanization(x), *check);
   }
-  if (val.first < x->node_key) {
-    x->left = insert_recursive(x->left, val, check, permission).first.node;
+  if (get_key(val) < get_key(x->node_key)) {
+    x->left = (insert_recursive(x->left, val, check, permission)).first.node;
     x->left->parent = x;
   }
-  if (val.first > x->node_key) {
+  if (get_key(val) > get_key(x->node_key)) {
     x->right = insert_recursive(x->right, val, check, permission).first.node;
     x->right->parent = x;
   }
-
   get_balance_factor(x);
   return std::pair<iterator, bool>(Nurlanization(x), *check);
 }
@@ -164,15 +165,16 @@ void BinaryTree<Key, T>::add_terminal_node(Node* node, bool add) {
     node->parent->right = nullptr;
 }
 
-// template <typename Key, typename T>
-// void BinaryTree<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x,
-//                                    int level) {
-//   if (x == nullptr) return;
-//   printTree(x->right, level + 3);
-//   for (int i = 0; i < level; i++) std::cout << " ";
-//   std::cout << x->node_key << "[" << x->node_val << "]" << std::endl;
-//   printTree(x->left, level + 3);
-// }
+template <typename Key, typename T>
+void BinaryTree<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x,
+                                   int level) {
+  if (x == nullptr) return;
+  printTree(x->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  std::cout << get_key(x->node_key) << "[" << get_val(x->node_key) << "]"
+            << std::endl;
+  printTree(x->left, level + 3);
+}
 
 //________________________________________________Iterators______________________________________________________________
 template <typename Key, typename T>

@@ -3,6 +3,7 @@ CFLAGS= -c
 FILES = s21_map
 TEST_FLAGS=-lgtest -lgmock -pthread
 TEST_FUNC= map_tests.cc
+# TEST_FUNC= main.cc set_tests.cc
 PATH_TO_FILE = s21_map
 cleanMAC = echo check
 
@@ -12,7 +13,7 @@ ifeq ($(OS), Linux)
 	DOX = echo 'you must install doxygen'
 else
 	DOX =brew install doxygen
-	cleanMAC = bash ../../clear.sh
+#	cleanMAC = bash ../../clear.sh
 endif
 
 all: test

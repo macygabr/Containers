@@ -5,17 +5,19 @@
 
 namespace s21 {
 template <typename Key>
-class set : public BinaryTree<Key, Key> {
+class set : public BinaryTree<Key, Key, Key> {
  public:
   class SetIterator;
 
  public:
   using key_type = Key;
+  using iterator = SetIterator;
+  using value_type = std::pair<Key, Key>;
 
  public:
-  void first();
   set();  // Конструктор по умолчанию
-  void printTree(typename BinaryTree<Key, Key>::Node* x, int level = 0);
+  void first();
+  // void printTree(typename BinaryTree<Key, Key>::Node* x, int level = 0);
 };
 
 };  // namespace s21

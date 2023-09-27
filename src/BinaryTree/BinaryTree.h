@@ -14,7 +14,7 @@ class BinaryTree {
  public:
   using key_type = Key;
   using mapped_type = T;
-  using value_type = std::pair<const key_type, mapped_type>;
+  using value_type = std::pair<const Key, T>;
   using iterator = Iterator;
 
  public:
@@ -32,7 +32,7 @@ class BinaryTree {
   iterator begin();  // returns an iterator to the beginning
   iterator end();    // returns an iterator to the end
 
- protected:
+ public:  // suport
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
                                              bool* check, bool permission);
   Node* rotate_Left(Node* x);
@@ -41,6 +41,11 @@ class BinaryTree {
   void add_terminal_node(Node* x, bool add);
   int get_height(Node* node);
   int get_balance_factor(Node* node);
+  void printTree(Node* x, int level = 0);
+  virtual Key get_key(value_type val) { return 0; };
+  virtual T get_val(value_type val) { return 0; };
+  // virtual bool set_key(Node* fir, value_type sec) { return 0; };
+  virtual bool set_val(Node* fir, value_type sec) { return 0; };
 
  public:
   T& at(const Key& key);
@@ -53,28 +58,14 @@ class BinaryTree {
     Node* right;
     Node* parent;
     int balanceFactor = 0;
-    T node_val;
-    Key node_key;
+    value_type node_key;
     std::size_t size;
 
    public:
-    Node()
-        : node_val(),
-          node_key(),
-          left(nullptr),
-          right(nullptr),
-          parent(nullptr) {}
+    Node() : node_key(), left(nullptr), right(nullptr), parent(nullptr) {}
 
     Node(value_type val)
-        : node_val(),
-          node_key(),
-          left(nullptr),
-          right(nullptr),
-          parent(nullptr) {
-      node_key = Key(val.first);
-      node_val = T(val.second);
-      // node_key = value_type(val);
-    }
+        : node_key(val), left(nullptr), right(nullptr), parent(nullptr) {}
   };
 
   class Iterator {
