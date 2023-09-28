@@ -40,8 +40,8 @@ map<Key, T>::map() {}
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
-  auto x = BinaryTree<Key, T>::root;
-  auto terminal_node = BinaryTree<Key, T>::terminal_node;
+  auto x = BinaryTree<Key, T, value_type>::root;
+  auto terminal_node = BinaryTree<Key, T, value_type>::terminal_node;
 
   while (x && x != terminal_node) {
     if (key == x->node_key.first) return x->node_key.second;
@@ -50,8 +50,8 @@ T& map<Key, T>::operator[](const Key& key) {
     else
       x = x->left;
   }
-  if (!x || x == terminal_node) BinaryTree<Key, T>::insert(Key(key));
-  // cout << BinaryTree<Key, T>::root->node_key.first << "\n" << endl;
+  if (!x || x == terminal_node)
+    BinaryTree<Key, T, value_type>::insert(Key(key));
   return x->node_key.second;
 }
 //________________________________________________Capacity______________________________________________________________
@@ -161,7 +161,8 @@ T& map<Key, T>::operator[](const Key& key) {
 // }
 
 template <typename Key, typename T>
-void map<Key, T>::printTree(typename BinaryTree<Key, T>::Node* x, int level) {
+void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
+                            int level) {
   if (x == nullptr) return;
   printTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";

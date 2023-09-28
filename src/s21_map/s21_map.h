@@ -5,7 +5,7 @@
 
 namespace s21 {
 template <typename Key, typename T>
-class map : public BinaryTree<Key, T> {
+class map : public BinaryTree<Key, T, pair<const Key, T>> {
  public:
   class MapIterator;
 
@@ -22,12 +22,12 @@ class map : public BinaryTree<Key, T> {
  public:
  public:
   map();  // Конструктор по умолчанию
-  //   map(std::initializer_list<value_type> const& items);
-  //   map(const map& m);       // copy constructor
-  //   map(map&& m);            // move constructor
-  //   ~map();                  // destructor
-  // map operator=(map&& m);  // assignment operator overload for moving
-  map &operator=(const map &other);
+          //   map(std::initializer_list<value_type> const& items);
+          //   map(const map& m);       // copy constructor
+          //   map(map&& m);            // move constructor
+          //   ~map();                  // destructor
+          // map operator=(map&& m);  // assignment operator overload for moving
+          // map &operator=(const map &other);
   //   object map move(map&& m);       // assignment operator overload for
   //   moving object
 
@@ -48,44 +48,41 @@ class map : public BinaryTree<Key, T> {
           // void swap(map &other);
           // void merge(map &other);
  public:  // support
-  // virtual typename BinaryTree<Key, T>::Iterator
+  // virtual typename BinaryTree<Key, T, Value>::Iterator
   // get_iterator(std::pair<iterator, bool> val) override {
-  //   BinaryTree<Key, T>::get_iterator(val);
+  //   BinaryTree<Key, T, Value>::get_iterator(val);
   //   return val.first;
   // }
   virtual Key get_key(value_type val) override {
-    BinaryTree<Key, T>::get_key(val);
+    BinaryTree<Key, T, value_type>::get_key(val);
     return Key(val.first);
   }
   virtual T get_val(value_type val) override {
-    BinaryTree<Key, T>::get_val(val);
+    BinaryTree<Key, T, value_type>::get_val(val);
     return T(val.second);
   }
-  // virtual bool set_key(typename BinaryTree<Key, T>::Node *fir,
+  // virtual bool set_key(typename BinaryTree<Key, T, Value>::Node *fir,
   //                      value_type sec) override {
-  //   BinaryTree<Key, T>::set_key(fir, sec);
+  //   BinaryTree<Key, T, Value>::set_key(fir, sec);
   //   fir->node_key.first = sec.first;
   //   return true;
   // }
-  virtual bool set_val(typename BinaryTree<Key, T>::Node *fir,
+  virtual bool set_val(typename BinaryTree<Key, T, value_type>::Node *fir,
                        value_type sec) override {
-    BinaryTree<Key, T>::set_val(fir, sec);
+    BinaryTree<Key, T, value_type>::set_val(fir, sec);
     fir->node_key.second = sec.second;
     return true;
   }
-  //   std::pair<iterator, bool> insert_recursive(Node<Key, T>* x, value_type
-  //   val,bool* check, bool permission); Node<Key, T>* rotate_Left(Node<Key,
-  //   T>* x); Node<Key, T>* rotate_Right(Node<Key, T>* x); Node<Key, T>*
-  //   Nurlanization(Node<Key, T>* x); int get_height(Node<Key, T>* node); int
-  //   get_balance_factor(Node<Key, T>* node);
-  void printTree(typename BinaryTree<Key, T>::Node *root, int level = 0);
 
-  class MapIterator : public BinaryTree<Key, T>::Iterator {
-   public:
-    MapIterator() : BinaryTree<Key, T>::Iterator(){};
-    // MapIterator(typename BinaryTree<Key, T>::Node *node) : BinaryTree<Key,
-    // T>::Iterator(node){};
-  };
+  void printTree(typename BinaryTree<Key, T, value_type>::Node *root,
+                 int level = 0);
+
+  // class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
+  //  public:
+  //   MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
+  //   // MapIterator(typename BinaryTree<Key, T, Value>::Node *node) :
+  //   // BinaryTree<Key, T>::Iterator(node){};
+  // };
 };
 
 };  // namespace s21

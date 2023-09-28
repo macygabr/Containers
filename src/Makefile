@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS= -c  
 FILES = s21_map
-TEST_FLAGS=-lgtest -lgmock -pthread
+TEST_FLAGS=-lgtest  -pthread
 TEST_FUNC= map_tests.cc
 # TEST_FUNC= main.cc set_tests.cc
 PATH_TO_FILE = s21_map
@@ -41,7 +41,7 @@ clean:
 # 	./$(PATH_TO_FILE)/test
 # 	make clean
 test: 
-	make goclang
+#	make goclang
 	make clean
 	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
 
@@ -52,8 +52,8 @@ goclang:
 	clang-format -style="{BasedOnStyle: Google}" -i */*.h */*.inc */*.cc
 
 
-valgrind: clean test
-	CK_FORK=no valgrind --tool=memcheck --leak-check=yes --track-origins=yes  -s ./test
+valgrind: test
+	CK_FORK=no valgrind --tool=memcheck --leak-check=yes --track-origins=yes  -s ./tests/test
 
 check_cppcheck:
 	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(FILES).cc *.h

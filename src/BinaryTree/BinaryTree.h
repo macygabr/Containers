@@ -1,7 +1,7 @@
 #ifndef CPP2_S21_CONTAINERS_3_SRC_S21_MAP_BINARYTREE_H
 #define CPP2_S21_CONTAINERS_3_SRC_S21_MAP_BINARYTREE_H
 namespace s21 {
-template <typename Key, typename T>
+template <typename Key, typename T, typename Value>
 class BinaryTree {
  public:
   class Node;
@@ -14,48 +14,52 @@ class BinaryTree {
  public:
   using key_type = Key;
   using mapped_type = T;
-  using value_type = std::pair<const Key, T>;
+  using value_type = Value;
   using iterator = Iterator;
   using size_type = std::size_t;
 
  public:  // Member functions
   BinaryTree();
+  ~BinaryTree();
   BinaryTree& operator=(const BinaryTree& other);
 
- public:  // Element access
-  T& at(const Key& key);
-  T& operator[](const Key& key);
+ public:             // Iterators
+  iterator begin();  // returns an iterator to the beginning
+  iterator end();    // returns an iterator to the end
 
  public:  // Capacity
   bool empty();
   size_type size();
   size_type max_size();
 
- public:  // Lookup
-  bool contains(const Key& key);
-
  public:  // Modifiers
+  void clear();
   std::pair<iterator, bool> insert(const value_type val);
-  std::pair<iterator, bool> insert(const Key& key, const T& obj = T());
+  std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
+  void erase(iterator it);
+  // void swap(set& other);
+  // void merge(set& other);
 
- public:             // Iterators
-  iterator begin();  // returns an iterator to the beginning
-  iterator end();    // returns an iterator to the end
+ public:  // Lookup
+  bool contains(const Key& key = Key());
 
  public:  // suport
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   iterator Nurlanization(Node* x);
   void add_terminal_node(Node* x, bool add);
-  int get_height(Node* node);
-  int get_balance_factor(Node* node);
+  int get_height(Node* x);
+  int get_balance_factor(Node* x);
   virtual Key get_key(value_type val) { return Key(); };
   virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
                                              bool* check, bool permission);
-  // void printTree(Node* x, int level = 0);
+  void freeTree(Node* x);
+
+ public:  // constants
+  size_type MAX_SIZE = 100;
 
  public:
   class Node {
@@ -69,16 +73,18 @@ class BinaryTree {
 
    public:
     Node()
-        : node_key(value_type()),
-          left(nullptr),
+        : left(nullptr),
           right(nullptr),
-          parent(nullptr) {}
+          parent(nullptr),
+          balanceFactor(0),
+          node_key(value_type()),
+          size(0) {}
 
     Node(value_type val)
-        : node_key(value_type(val)),
-          left(nullptr),
+        : left(nullptr),
           right(nullptr),
-          parent(nullptr) {}
+          parent(nullptr),
+          node_key(value_type(val)) {}
   };
 
   class Iterator {
