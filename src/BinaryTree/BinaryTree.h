@@ -22,6 +22,10 @@ class BinaryTree {
   BinaryTree();
   BinaryTree& operator=(const BinaryTree& other);
 
+  //  public:  // Element access
+  //   T& at(const Key& key);
+  //   T& operator[](const Key& key);
+
  public:  // Capacity
   bool empty();
   size_type size();
@@ -34,10 +38,6 @@ class BinaryTree {
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key, const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-
- public:  // Element access
-  T& at(const Key& key);
-  T& operator[](const Key& key);
 
  public:             // Iterators
   iterator begin();  // returns an iterator to the beginning

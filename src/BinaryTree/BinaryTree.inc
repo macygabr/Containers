@@ -14,6 +14,23 @@ BinaryTree<Key, T>::BinaryTree() {
   root = terminal_node;
 }
 
+//________________________________________________Element_access______________________________________________________________
+
+// template <typename Key, typename T>
+// T& BinaryTree<Key, T>::operator[](const Key& key) {
+//   auto x = root;
+
+//   while (x && x != terminal_node) {
+//     if (key == x->node_key.first) return x->node_key.second;
+//     if (key > x->node_key.first)
+//       x = x->right;
+//     else
+//       x = x->left;
+//   }
+//   if (!x || x == terminal_node) insert(key);
+//   return x->node_key.second;
+// }
+
 //________________________________________________Modifiers______________________________________________________________
 template <typename Key, typename T>
 std::pair<typename BinaryTree<Key, T>::iterator, bool>
