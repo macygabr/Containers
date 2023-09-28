@@ -50,7 +50,8 @@ T& map<Key, T>::operator[](const Key& key) {
     else
       x = x->left;
   }
-  if (!x || x == terminal_node) BinaryTree<Key, T>::insert(key);
+  if (!x || x == terminal_node) BinaryTree<Key, T>::insert(Key(key));
+  // cout << BinaryTree<Key, T>::root->node_key.first << "\n" << endl;
   return x->node_key.second;
 }
 //________________________________________________Capacity______________________________________________________________

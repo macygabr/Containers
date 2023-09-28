@@ -22,9 +22,9 @@ class BinaryTree {
   BinaryTree();
   BinaryTree& operator=(const BinaryTree& other);
 
-  //  public:  // Element access
-  //   T& at(const Key& key);
-  //   T& operator[](const Key& key);
+ public:  // Element access
+  T& at(const Key& key);
+  T& operator[](const Key& key);
 
  public:  // Capacity
   bool empty();
@@ -50,8 +50,8 @@ class BinaryTree {
   void add_terminal_node(Node* x, bool add);
   int get_height(Node* node);
   int get_balance_factor(Node* node);
-  virtual Key get_key(value_type val) { return 0; };
-  virtual T get_val(value_type val) { return 0; };
+  virtual Key get_key(value_type val) { return Key(); };
+  virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
                                              bool* check, bool permission);

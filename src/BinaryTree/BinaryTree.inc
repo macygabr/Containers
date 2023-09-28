@@ -27,7 +27,7 @@ BinaryTree<Key, T>::BinaryTree() {
 //     else
 //       x = x->left;
 //   }
-//   if (!x || x == terminal_node) insert(key);
+//   if (!x || x == terminal_node) insert(Key(key));
 //   return x->node_key.second;
 // }
 
@@ -50,15 +50,7 @@ template <typename Key, typename T>
 std::pair<typename BinaryTree<Key, T>::iterator, bool>
 BinaryTree<Key, T>::insert(const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
-  bool result = true;
-
-  if (root == terminal_node) root = nullptr;
-
-  // add_terminal_node(root, false);
-  // std::pair<typename BinaryTree<Key, T>::iterator, bool> res =
-  //     insert_recursive(root, val, &result, false);
-  // add_terminal_node(root, true);
-  // return res;
+  return insert(val);
 }
 
 template <typename Key, typename T>

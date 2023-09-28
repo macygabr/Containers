@@ -99,9 +99,9 @@ TEST(TestGroupName, Iterators3_string) {
   a["the"];
   a["best"];
 
-  // ASSERT_EQ(a.insert("Nurlan", "the Best").second, false);
-  // ASSERT_EQ(a.insert_or_assign("Nurlan", "the Best").second, true);
-  // ASSERT_EQ(a.insert("NeNurlan", "the Best").second, true);
+  ASSERT_EQ(a.insert("Nurlan", "the Best").second, false);
+  ASSERT_EQ(a.insert_or_assign("Nurlan", "the Best").second, true);
+  ASSERT_EQ(a.insert("NeNurlan", "the Best").second, true);
 
   a.printTree(a.root);
 }
