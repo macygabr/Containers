@@ -6,6 +6,7 @@ class BinaryTree {
  public:
   class Node;
   class Iterator;
+  class Const_Iterator;
 
  public:  // change to protected
   Node* root;
@@ -16,6 +17,7 @@ class BinaryTree {
   using mapped_type = T;
   using value_type = Value;
   using iterator = Iterator;
+  using const_iterator = Const_Iterator;
   using size_type = std::size_t;
 
  public:  // Member functions
@@ -38,6 +40,7 @@ class BinaryTree {
   std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   void erase(iterator it);
+  iterator erase(const_iterator it);
   // void swap(set& other);
   // void merge(set& other);
 
@@ -47,7 +50,7 @@ class BinaryTree {
  public:  // suport
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
-  iterator Nurlanization(Node* x);
+  Node* Nurlanization(Node* x);
   void add_terminal_node(Node* x, bool add);
   int get_height(Node* x);
   int get_balance_factor(Node* x);
@@ -57,6 +60,10 @@ class BinaryTree {
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
                                              bool* check, bool permission);
   void freeTree(Node* x);
+  void delete_node_with_all_childrens(iterator it);
+  void delete_node_with_right_childrens(iterator it);
+  void delete_node_with_left_childrens(iterator it);
+  void delete_node_with_not_childrens(iterator it);
 
  public:  // constants
   size_type MAX_SIZE = 100;
@@ -89,15 +96,18 @@ class BinaryTree {
 
   class Iterator {
    public:
-    using pointer = T*;
-    using reference = T&;
+    // using pointer = T*;
+    // using reference = T&;
 
-    Iterator();
+    // Iterator();
     Iterator(Node* node);
+    Iterator(const Iterator& it);
+    Iterator(Iterator&& it);
     iterator& operator++();
     iterator operator++(int);
     iterator& operator--();
     iterator operator--(int);
+    iterator& operator=(const iterator& it);
     // reference operator*();
     // bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
@@ -118,6 +128,8 @@ class BinaryTree {
    public:
     Node* node;
   };
+
+  class Const_Iterator : public Iterator {};
 };
 };  // namespace s21
 #include "BinaryTree.inc"

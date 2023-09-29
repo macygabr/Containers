@@ -32,7 +32,7 @@
 //   s21::map<int, int>::iterator it1 = a.begin();
 //   std::map<int, int>::iterator it2 = b.begin();
 
-//   for (; it1 != a.end() || it2 != b.end(); it1++, it2++) {
+//   for (; it1 != a.end() ; it1++) {
 //     ASSERT_EQ(it1.node->node_key.first, it2->first);
 //     ASSERT_EQ(it1.node->node_key.second, it2->second);
 //   }
@@ -190,7 +190,7 @@
 
 // TEST(TestGroupName, max_size_1) {
 //   s21::map<int, std::string> a;
-//   for (int i = 0; i < int(a.max_size()); i++) a.insert({i, "Nurlan"});
+//   for (int i = 0; i < int(a.max_size()); i++) a.insert(i, "Nurlan");
 //   ASSERT_EQ(a.max_size(), 100);
 //   EXPECT_THROW(a.insert(100, "Best"), std::length_error);
 //   // a.printTree(a.root);
@@ -198,7 +198,7 @@
 
 // TEST(TestGroupName, contains_1) {
 //   s21::map<int, std::string> a;
-//   for (int i = 0; i < 10; i++) a.insert({i, "Nurlan"});
+//   for (int i = 0; i < 10; i++) a.insert(i, "Nurlan");
 //   ASSERT_EQ(a.contains(), true);
 //   ASSERT_EQ(a.contains(5), true);
 //   ASSERT_EQ(a.contains(-2), false);
@@ -207,24 +207,27 @@
 
 TEST(TestGroupName, erase_1) {
   s21::map<int, std::string> a;
-  for (int i = 0; i <= 12; i++) a.insert(i, "Valia");
-  s21::map<int, std::string>::iterator it1 = a.begin();
-  ++it1;
-  ++it1;
-  ++it1;
-  ++it1;
-  ++it1;
-  ++it1;
-  ++it1;
+  std::map<int, std::string> b;
+  int s = 0;
+  for (int i = 0; i < 4; i++) {
+    std::pair<int, std::string> x = {i, "Nurlan"};
+    b.insert(x);
+    a.insert(x);
+    cout << endl;
+  }
 
-  cout << it1.node->node_key.first << endl;
+  // s21::map<int, std::string>::iterator it1= a.begin();
+  // std::map<int, std::string>::iterator it2 = b.begin();
+
+  // for(; s<20; s++){
+  // cout<<it1.node->node_key.first << " " << it2->first <<endl;
   // cout<<it1.node->node_key.first<<endl;
-  // cout<<it1.node->parent->node_key.first<<endl;
-  // cout<<it1.node->node_key.first<<endl;
-  // cout<<it1.node->parent->node_key.first<<endl;
-  a.printTree(a.root);
-  cout << endl;
-  a.erase(it1);
+  // it2 = b.erase(it2);
+  // }
+
+  // cout<<it1.node->node_key.first << " " << it2->first <<endl;
+  // ASSERT_EQ(a.size(), b.size());
+  // ASSERT_EQ(it1.node->node_key.first, it2->first);
   a.printTree(a.root);
 }
 
