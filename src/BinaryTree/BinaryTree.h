@@ -16,6 +16,8 @@ class BinaryTree {
   using key_type = Key;
   using mapped_type = T;
   using value_type = Value;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using iterator = Iterator;
   using const_iterator = Const_Iterator;
   using size_type = std::size_t;
@@ -39,12 +41,12 @@ class BinaryTree {
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-  iterator erase(iterator it);
-
- public:
-  void erase1(iterator it);
+  iterator erase(const_iterator it);
+  void erase(iterator it);
   // void swap(set& other);
   // void merge(set& other);
+  // vector<std::pair<iterator,bool>> insert_many(Args&&... args) // inserts new
+  // elements into the container
 
  public:  // Lookup
   bool contains(const Key& key = Key());
@@ -96,16 +98,16 @@ class BinaryTree {
           node_key(value_type(val)) {}
   };
 
+ public:
   class Iterator {
    public:
-    // using pointer = T*;
-    // using reference = T&;
-
-    // Iterator(); // не использую
+    Iterator();
     Iterator(Node* node);
     Iterator(const Iterator& it);
-    Iterator& operator=(const Iterator& it);
     // Iterator(Iterator&& it); // не использую
+
+   public:
+    iterator& operator=(const iterator& it);
     iterator& operator++();
     iterator operator++(int);
     iterator& operator--();
@@ -113,25 +115,22 @@ class BinaryTree {
     // reference operator*();
     // bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
-    // pointer operator->() const {
-    //   int Size(Node<T, V> * node) {
-    //     if (node) return node->size;
-    //     return 0;
-    //   }
-    // }
-    // reference operator*() const {
-    //   if (node == nullptr) {
-    //     static T default_value = T{};
-    //     return default_value;
-    //   }
-    //   return node->node_key;
-    // }
+    // T* operator->() const {return &(node->node_key.second);};
+    reference operator*() const {
+      if (node == nullptr) return T{};
+      return node->node_key;
+    }
 
    public:
     Node* node;
   };
 
-  class Const_Iterator : public Iterator {};
+ public:
+  class Const_Iterator : public Iterator {
+    // Const_Iterator();
+    // Const_Iterator(const Iterator& it);
+    // Const_Iterator& operator=(const Iterator& it);
+  };
 };
 };  // namespace s21
 #include "BinaryTree.inc"

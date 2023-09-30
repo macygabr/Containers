@@ -80,7 +80,7 @@ BinaryTree<Key, T, Value>::insert_or_assign(const Key& key, const T& obj) {
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::erase1(iterator it) {
+void BinaryTree<Key, T, Value>::erase(iterator it) {
   if (!it.node || it.node == terminal_node) return;
 
   auto nod = it.node;
@@ -100,13 +100,15 @@ void BinaryTree<Key, T, Value>::erase1(iterator it) {
   Nurlanization(root);
 }
 
-template <typename Key, typename T, typename Value>
-typename BinaryTree<Key, T, Value>::Iterator BinaryTree<Key, T, Value>::erase(
-    iterator it) {
-  cout << it.node->node_key.first << endl;
-  erase1(it);
-  return ++it;
-}
+// template <typename Key, typename T, typename Value>
+// typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T,
+// Value>::erase(
+//     const_iterator it) {
+//   iterator it2(it);
+//   erase(it2);
+//   it.node = ++it2.node;
+//   return it;
+// }
 
 //________________________________________________Lookup______________________________________________________________
 template <typename Key, typename T, typename Value>
@@ -136,8 +138,8 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::end() {
   return terminal_node;
 }
 
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator() : node(nullptr) {}
+template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>::Iterator::Iterator() : node(nullptr) {}
 
 template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::Iterator::Iterator(Node* newnode) : node(newnode) {}
@@ -211,11 +213,25 @@ bool BinaryTree<Key, T, Value>::Iterator::operator!=(const iterator& it) {
 }
 
 template <typename Key, typename T, typename Value>
-typename BinaryTree<Key, T, Value>::iterator&
+typename BinaryTree<Key, T, Value>::Iterator&
 BinaryTree<Key, T, Value>::Iterator::operator=(const iterator& it) {
   node = it.node;
   return *this;
 }
+
+//________________________________________________Const_Iterators______________________________________________________________
+
+// template <typename Key, typename T, typename Value>
+// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators() : node(nullptr)
+// {}
+
+// template <typename Key, typename T, typename Value>
+// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(Node* newnode) :
+// node(newnode) {}
+
+// template <typename Key, typename T, typename Value>
+// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(BinaryTree<Key,
+// T, Value>::Iterator::Iterators it) : node(it.node) {}
 
 //________________________________________________Capacity______________________________________________________________
 template <typename Key, typename T, typename Value>
@@ -353,6 +369,7 @@ void BinaryTree<Key, T, Value>::freeTree(Node* x) {
 
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
+  if (!it.node->left || !it.node->right) return;
   auto nod = it.node;
   auto par = it.node->parent;
   auto lef = it.node->left;
@@ -396,7 +413,10 @@ void BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::delete_node_with_right_childrens(iterator it) {
   if (it.node->parent) {
-    it.node->parent->right = it.node->right;
+    if (it.node->parent->right == it.node)
+      it.node->parent->right = it.node->right;
+    if (it.node->parent->left == it.node)
+      it.node->parent->left = it.node->right;
     it.node->right->parent = it.node->parent;
   } else {
     root = it.node->right;
@@ -424,6 +444,7 @@ void BinaryTree<Key, T, Value>::delete_node_with_left_childrens(iterator it) {
 
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::delete_node_with_not_childrens(iterator it) {
+  if (!it.node) return;
   if (it.node->parent) {
     if (it.node->parent->right == it.node)
       it.node->parent->right = it.node->right;
@@ -443,7 +464,7 @@ void BinaryTree<Key, T, Value>::delete_node_with_not_childrens(iterator it) {
 //   if (x == nullptr) return;
 //   printTree(x->right, level + 3);
 //   for (int i = 0; i < level; i++) std::cout << " ";
-//   std::cout << get_key(x->node_key) << "[" << get_val(x->node_key) << "]"prin
+//   std::cout << get_key(x->node_key) << "[" << get_val(x->node_key) << "]"
 //             << std::endl;
 //   printTree(x->left, level + 3);
 // }

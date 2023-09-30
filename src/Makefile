@@ -13,7 +13,7 @@ ifeq ($(OS), Linux)
 	DOX = echo 'you must install doxygen'
 else
 	DOX =brew install doxygen
-#	cleanMAC = bash ../../clear.sh
+	cleanMAC = bash ../../clear.sh
 endif
 
 all: test

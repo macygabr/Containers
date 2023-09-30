@@ -13,11 +13,6 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   using key_type = Key;
   using mapped_type = T;
   using value_type = std::pair<const Key, T>;
-  using reference = value_type &;
-  using const_reference = const value_type &;
-  // using iterator = MapIterator;
-  using const_iterator = const MapIterator;
-  using size_type = std::size_t;
 
  public:
  public:
@@ -32,27 +27,12 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   //   moving object
 
  public:
-  //   T& at(const Key& key);
   T &operator[](const Key &key);
+  // T &operator[](Key &&key);
+  T &at(const Key &key);
+  const T &at(const Key &key) const;
 
- public:  // Iterators
-          //   iterator begin();  // returns an iterator to the beginning
-          //   iterator end();    // returns an iterator to the end
- public:  // Capacity
-          // bool empty();
-          // size_type size();
-          // size_type max_size();
- public:  // Modifiers
-          //   void clear();
-          // void erase(iterator pos);
-          // void swap(map &other);
-          // void merge(map &other);
  public:  // support
-  // virtual typename BinaryTree<Key, T, Value>::Iterator
-  // get_iterator(std::pair<iterator, bool> val) override {
-  //   BinaryTree<Key, T, Value>::get_iterator(val);
-  //   return val.first;
-  // }
   virtual Key get_key(value_type val) override {
     BinaryTree<Key, T, value_type>::get_key(val);
     return Key(val.first);
@@ -61,12 +41,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
     BinaryTree<Key, T, value_type>::get_val(val);
     return T(val.second);
   }
-  // virtual bool set_key(typename BinaryTree<Key, T, Value>::Node *fir,
-  //                      value_type sec) override {
-  //   BinaryTree<Key, T, Value>::set_key(fir, sec);
-  //   fir->node_key.first = sec.first;
-  //   return true;
-  // }
+
   virtual bool set_val(typename BinaryTree<Key, T, value_type>::Node *fir,
                        value_type sec) override {
     BinaryTree<Key, T, value_type>::set_val(fir, sec);
@@ -76,13 +51,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
 
   void printTree(typename BinaryTree<Key, T, value_type>::Node *root,
                  int level = 0);
-
-  // class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
-  //  public:
-  //   MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
-  //   // MapIterator(typename BinaryTree<Key, T, Value>::Node *node) :
-  //   // BinaryTree<Key, T>::Iterator(node){};
-  // };
+  T &search(bool add, const Key &key);
 };
 
 };  // namespace s21
