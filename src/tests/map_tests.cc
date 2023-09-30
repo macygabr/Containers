@@ -209,25 +209,31 @@ TEST(TestGroupName, erase_1) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   int s = 0;
-  for (int i = 0; i < 4; i++) {
+
+  for (int i = 0; i < 40; i++) {
     std::pair<int, std::string> x = {i, "Nurlan"};
-    b.insert(x);
     a.insert(x);
-    cout << endl;
+    b.insert(x);
   }
 
-  // s21::map<int, std::string>::iterator it1= a.begin();
-  // std::map<int, std::string>::iterator it2 = b.begin();
-
+  s21::map<int, std::string>::iterator it1 = a.begin();
+  std::map<int, std::string>::iterator it2 = b.begin();
   // for(; s<20; s++){
-  // cout<<it1.node->node_key.first << " " << it2->first <<endl;
-  // cout<<it1.node->node_key.first<<endl;
+  // it1 = a.erase(it1);
   // it2 = b.erase(it2);
   // }
+  cout << "(" << it1.node->node_key.first << ")" << endl;
+  // a.erase1(it1);
+  it1++;
+  cout << "(" << it1.node->node_key.first << ")" << endl;
+  a.erase1(it1);
+  it1++;
+  cout << "(" << it1.node->node_key.first << ")" << endl;
+  // a.erase1(it1);
 
-  // cout<<it1.node->node_key.first << " " << it2->first <<endl;
-  // ASSERT_EQ(a.size(), b.size());
-  // ASSERT_EQ(it1.node->node_key.first, it2->first);
+  // for(it2 = b.begin(), it1 = a.begin(); it2 != b.end(); it1++,it2++) {
+  //   cout<<"["<<it1.node->node_key.first<<" "<<it2->first<<"]"<<endl;
+  // }
   a.printTree(a.root);
 }
 

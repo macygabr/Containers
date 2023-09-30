@@ -39,8 +39,10 @@ class BinaryTree {
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-  void erase(iterator it);
-  iterator erase(const_iterator it);
+  iterator erase(iterator it);
+
+ public:
+  void erase1(iterator it);
   // void swap(set& other);
   // void merge(set& other);
 
@@ -99,15 +101,15 @@ class BinaryTree {
     // using pointer = T*;
     // using reference = T&;
 
-    // Iterator();
+    // Iterator(); // не использую
     Iterator(Node* node);
     Iterator(const Iterator& it);
-    Iterator(Iterator&& it);
+    Iterator& operator=(const Iterator& it);
+    // Iterator(Iterator&& it); // не использую
     iterator& operator++();
     iterator operator++(int);
     iterator& operator--();
     iterator operator--(int);
-    iterator& operator=(const iterator& it);
     // reference operator*();
     // bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
