@@ -55,21 +55,24 @@ void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
 
 template <typename Key, typename T>
 T& map<Key, T>::search(bool add, const Key& key) {
-  auto x = BinaryTree<Key, T, value_type>::root;
+  auto root = BinaryTree<Key, T, value_type>::root;
+  auto x = root;
   auto terminal_node = BinaryTree<Key, T, value_type>::terminal_node;
 
   while (x && x != terminal_node) {
+    // cout<<x->node_key.first<<" "<<x->node_key.second<<endl;
     if (key == x->node_key.first) return x->node_key.second;
     if (key > x->node_key.first)
       x = x->right;
     else
       x = x->left;
   }
-  if (add)
-    BinaryTree<Key, T, value_type>::insert(Key(key));
-  else
+  if (add) {
+    auto res = BinaryTree<Key, T, value_type>::insert(Key(key));
+    return res.first.node->node_key.second;
+  } else
     throw std::out_of_range("Key not found");
-  return x->node_key.second;
+  return root->node_key.second;
 }
 
 }  // namespace s21

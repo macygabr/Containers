@@ -62,7 +62,8 @@ class BinaryTree {
   virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
-                                             bool* check, bool permission);
+                                             bool* check, bool permission,
+                                             Node* new_node);
   void freeTree(Node* x);
   void delete_node_with_all_childrens(iterator it);
   void delete_node_with_right_childrens(iterator it);
@@ -96,6 +97,12 @@ class BinaryTree {
           right(nullptr),
           parent(nullptr),
           node_key(value_type(val)) {}
+
+    // ~Node() {
+    //   if (left) delete left;
+    //   if (right) delete right;
+    //   if (parent) delete parent;
+    // }
   };
 
  public:
@@ -104,7 +111,8 @@ class BinaryTree {
     Iterator();
     Iterator(Node* node);
     Iterator(const Iterator& it);
-    // Iterator(Iterator&& it); // не использую
+    // ~Iterator(){if(node) delete node;};
+    // Iterator(Iterator&& it); // не использую?
 
    public:
     iterator& operator=(const iterator& it);
@@ -112,14 +120,13 @@ class BinaryTree {
     iterator operator++(int);
     iterator& operator--();
     iterator operator--(int);
-    // reference operator*();
-    // bool operator==(const iterator& it);
+    bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
     // T* operator->() const {return &(node->node_key.second);};
-    reference operator*() const {
-      if (node == nullptr) return T{};
-      return node->node_key;
-    }
+    // reference operator*() const {
+    // if (node == nullptr) return Value();
+    // return node->node_key;
+    // }
 
    public:
     Node* node;
