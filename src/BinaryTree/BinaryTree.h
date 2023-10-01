@@ -21,6 +21,7 @@ class BinaryTree {
   using iterator = Iterator;
   using const_iterator = Const_Iterator;
   using size_type = std::size_t;
+  using pointer = value_type*;
 
  public:  // Member functions
   BinaryTree();
@@ -43,8 +44,8 @@ class BinaryTree {
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   iterator erase(const_iterator it);
   void erase(iterator it);
-  // void swap(set& other);
-  // void merge(set& other);
+  void swap(BinaryTree& other);
+  void merge(BinaryTree& other);
   // vector<std::pair<iterator,bool>> insert_many(Args&&... args) // inserts new
   // elements into the container
 
@@ -122,11 +123,10 @@ class BinaryTree {
     iterator operator--(int);
     bool operator==(const iterator& it);
     bool operator!=(const iterator& it);
-    // T* operator->() const {return &(node->node_key.second);};
-    // reference operator*() const {
-    // if (node == nullptr) return Value();
-    // return node->node_key;
-    // }
+    pointer operator->() const {
+      return node ? &(node->node_key) : throw std::exception();
+    };
+    reference operator*() const { return node->node_key; };
 
    public:
     Node* node;

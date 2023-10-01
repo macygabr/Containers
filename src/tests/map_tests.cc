@@ -11,15 +11,15 @@ TEST(TestGroupName, Begin) {
   a[99] = 'N';
   b[99] = 'N';
 
-  ASSERT_EQ(a.begin().node->node_key.first, b.begin()->first);
+  ASSERT_EQ(a.begin()->first, b.begin()->first);
   for (int i = 0; i < 10; i++) ASSERT_EQ(a[i], b[i]);
-  ASSERT_EQ(a.begin().node->node_key.first, b.begin()->first);
+  ASSERT_EQ(a.begin()->first, b.begin()->first);
 }
 
 TEST(TestGroupName, End) {
   s21::map<int, char> a;
 
-  ASSERT_EQ(a.begin().node->node_key.first, a.end().node->node_key.second);
+  ASSERT_EQ(a.begin()->first, a.end()->second);
 }
 
 //________________________________________________Capacity__________________________________________________
@@ -65,7 +65,7 @@ TEST(TestGroupName, at) {
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end() || it2 != b.end();
        it1++, it2++) {
-    ASSERT_EQ(a.at(it1.node->node_key.first), b.at(it2->first));
+    ASSERT_EQ(a.at(it1->first), b.at(it2->first));
   }
 
   for (int i = 50; i < 100; i++) {
@@ -94,7 +94,7 @@ TEST(TestGroupName, Insert_int_int) {
   b[77] = 3;
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -112,7 +112,7 @@ TEST(TestGroupName, Insert_int_char) {
   a[77] = 'O';
   b[77] = 'O';
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -132,7 +132,7 @@ TEST(TestGroupName, Insert_int_string) {
   b[90] = "Nurlan";
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -152,7 +152,7 @@ TEST(TestGroupName, Insert_string_int) {
   b["Nurlan"] = 333;
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -172,7 +172,7 @@ TEST(TestGroupName, Insert_string_char) {
   b["Nurlan"] = 'O';
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -193,7 +193,7 @@ TEST(TestGroupName, Insert_string_string) {
   b["Nurlan"] = "The Best";
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -216,7 +216,7 @@ TEST(TestGroupName, Insert_or_assign_int_string) {
   for (int i = 49; i >= 0; i--) a.insert_or_assign(i, std::to_string(i));
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
   }
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
@@ -234,10 +234,10 @@ TEST(TestGroupName, Insert_pair) {
   }
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first.first, it2->first.first);
-    ASSERT_EQ(it1.node->node_key.first.second, it2->first.second);
-    ASSERT_EQ(it1.node->node_key.second.first, it2->second.first);
-    ASSERT_EQ(it1.node->node_key.second.second, it2->second.second);
+    ASSERT_EQ(it1->first.first, it2->first.first);
+    ASSERT_EQ(it1->first.second, it2->first.second);
+    ASSERT_EQ(it1->second.first, it2->second.first);
+    ASSERT_EQ(it1->second.second, it2->second.second);
   }
   ASSERT_EQ(a.size(), b.size());
 }
@@ -276,10 +276,8 @@ TEST(TestGroupName, Insert_my_class) {
   }
 
   for (it1 = a.begin(); it1 != a.end(); it1++) {
-    ASSERT_EQ(it1.node->node_key.first.val.first,
-              it1.node->node_key.second.val.second);
-    ASSERT_EQ(it1.node->node_key.first.val.second,
-              it1.node->node_key.second.val.first);
+    ASSERT_EQ(it1->first.val.first, it1->second.val.second);
+    ASSERT_EQ(it1->first.val.second, it1->second.val.first);
   }
   ASSERT_EQ(a.size(), 50);
 }
@@ -303,9 +301,8 @@ TEST(TestGroupName, Erase) {
     b.erase(it2++);
   }
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
-  }
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
 
   for (; i < 10; i++, it1++, it2++)
     ;
@@ -315,12 +312,74 @@ TEST(TestGroupName, Erase) {
     b.erase(it2++);
   }
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
-  }
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
 
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
+}
+
+TEST(TestGroupName, Swap) {
+  s21::map<int, double> a1;
+  s21::map<int, double> a2;
+  std::map<int, double> b1;
+  std::map<int, double> b2;
+  s21::map<int, double>::iterator it1;
+  std::map<int, double>::iterator it2;
+
+  for (int i = 0, j = 49; i < 50; i++, j--) {
+    std::pair<int, double> x = {i, j / 10.};
+    ASSERT_EQ(a1.insert(x).second, b1.insert(x).second);
+  }
+  for (int i = 0, j = 49; i < 50; i++, j--) {
+    std::pair<int, double> x = {i, j << 1};
+    ASSERT_EQ(a2.insert(x).second, b2.insert(x).second);
+  }
+
+  for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
+
+  a1.swap(a2);
+  b1.swap(b2);
+
+  for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
+  for (it1 = a2.begin(), it2 = b2.begin(); it1 != a2.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
+
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a2.size(), b2.size());
+  // a1.printTree(a1.root);
+}
+
+TEST(TestGroupName, Merge) {
+  s21::map<int, double> a1;
+  s21::map<int, double> a2;
+  std::map<int, double> b1;
+  std::map<int, double> b2;
+  s21::map<int, double>::iterator it1;
+  std::map<int, double>::iterator it2;
+  for (int i = 0, j = 49; i < 50; i++, j--) {
+    std::pair<int, double> x = {i, j / 10.};
+    ASSERT_EQ(a1.insert(x).second, b1.insert(x).second);
+  }
+  for (int i = 40, j = 80; i < 80; i++, j--) {
+    std::pair<int, double> x = {i, j / 10.};
+    ASSERT_EQ(a2.insert(x).second, b2.insert(x).second);
+  }
+  ASSERT_EQ(a1.size(), b1.size());
+  ASSERT_EQ(a2.size(), b2.size());
+  // a1.merge(a2);
+  // b1.merge(b2);
+  // for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
+  //   ASSERT_EQ(it1->first, it2->first);
+
+  // for (it1 = a2.begin(), it2 = b2.begin(); it1 != a2.end(); it1++, it2++)
+  //   ASSERT_EQ(it1->first, it2->first);
+
+  ASSERT_EQ(a1.size(), 80);
+  ASSERT_EQ(a2.size(), 30);
+  a1.printTree(a1.root);
 }
 //________________________________________________Lookup____________________________________________________
 TEST(TestGroupName, Contains) {
@@ -336,8 +395,8 @@ TEST(TestGroupName, Contains) {
   for (int i = 0; i < 50; i++) ASSERT_EQ(a.contains(i), true);
   for (int i = 50; i < 100; i++) ASSERT_EQ(a.contains(i), false);
 }
-//________________________________________________Iterators_________________________________________________
 
+//________________________________________________Iterators_________________________________________________
 TEST(TestGroupName, operator_plus) {
   s21::map<int, char> a;
   std::map<int, char> b;
@@ -349,13 +408,11 @@ TEST(TestGroupName, operator_plus) {
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
   }
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
-  }
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+    ASSERT_EQ(it1->first, it2->first);
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2) {
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
-  }
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2)
+    ASSERT_EQ(it1->first, it2->first);
 }
 
 TEST(TestGroupName, operator_sub) {
@@ -374,7 +431,7 @@ TEST(TestGroupName, operator_sub) {
   do {
     it1--;
     it2--;
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
 
   } while (it1 != a.begin() && it2 != b.begin());
 
@@ -383,7 +440,7 @@ TEST(TestGroupName, operator_sub) {
   do {
     --it1;
     --it2;
-    ASSERT_EQ(it1.node->node_key.first, it2->first);
+    ASSERT_EQ(it1->first, it2->first);
 
   } while (it1 != a.begin() || it2 != b.begin());
   ASSERT_EQ(a.size(), b.size());
@@ -403,6 +460,39 @@ TEST(TestGroupName, operator_equal) {
   ASSERT_EQ(it11 == it11, it21 == it21);
   ASSERT_EQ(it11 != it12, it21 != it22);
   ASSERT_EQ(it11 == it12, it21 == it22);
+}
+
+TEST(TestGroupName, operator_Arrow) {
+  s21::map<char, char> a;
+  std::map<char, char> b;
+  s21::map<char, char>::iterator it1;
+  std::map<char, char>::iterator it2;
+  EXPECT_THROW(it1->first, std::exception);
+
+  for (int i = 0; i < 26; i++) {
+    std::pair<char, char> x = {'a' + i, 'a' + i};
+    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+  }
+
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2)
+    ASSERT_EQ(it1->first, it2->first);
+  // a.printTree(a.root);
+}
+
+TEST(TestGroupName, Dereferencing_operator) {
+  s21::map<char, char> a;
+  std::map<char, char> b;
+  s21::map<char, char>::iterator it1;
+  std::map<char, char>::iterator it2;
+
+  for (int i = 0; i < 26; i++) {
+    std::pair<char, char> x = {'a' + i, 'a' + i};
+    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+  }
+
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2)
+    ASSERT_EQ((*it1).first, (*it2).first);
+  // a.printTree(a.root);
 }
 
 int main(int argc, char** argv) {

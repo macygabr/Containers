@@ -17,7 +17,7 @@ BinaryTree<Key, T, Value>::BinaryTree() {
 template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::~BinaryTree() {
   clear();
-  delete root;
+  // if(root) delete root;
 }
 
 //________________________________________________Element_access______________________________________________________________
@@ -59,7 +59,7 @@ BinaryTree<Key, T, Value>::insert(const value_type val) {
       Iterator(new_node),
       insert_recursive(root, val, &result, false, new_node).second};
   add_terminal_node(root, true);
-  if (!result) delete new_node;
+  // if (!result) delete new_node;
   return res;
 }
 
@@ -80,7 +80,7 @@ BinaryTree<Key, T, Value>::insert_or_assign(const Key& key, const T& obj) {
   std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res =
       insert_recursive(root, val, &result, true, new_node);
   add_terminal_node(root, true);
-  delete new_node;
+  // delete new_node;
   return res;
 }
 
@@ -102,8 +102,8 @@ void BinaryTree<Key, T, Value>::erase(iterator it) {
   else
     delete_node_with_not_childrens(it);
 
-  delete it.node;
   Nurlanization(root);
+  // delete it.node;
 }
 
 template <typename Key, typename T, typename Value>
@@ -112,6 +112,22 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
   iterator it2(it);
   erase(it2);
   return ++it;
+}
+
+template <typename Key, typename T, typename Value>
+void BinaryTree<Key, T, Value>::swap(BinaryTree& other) {
+  auto first = other.root;
+  other.root = root;
+  root = first;
+
+  std::swap(terminal_node, other.terminal_node);
+}
+
+template <typename Key, typename T, typename Value>
+void BinaryTree<Key, T, Value>::merge(BinaryTree& other) {
+  auto it = other.begin();
+  for (; it != other.end(); ++it)
+    if (insert(*it).second) other.erase(it);
 }
 
 //________________________________________________Lookup______________________________________________________________
