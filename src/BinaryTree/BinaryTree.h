@@ -98,12 +98,6 @@ class BinaryTree {
           right(nullptr),
           parent(nullptr),
           node_key(value_type(val)) {}
-
-    // ~Node() {
-    //   if (left) delete left;
-    //   if (right) delete right;
-    //   if (parent) delete parent;
-    // }
   };
 
  public:
@@ -112,6 +106,7 @@ class BinaryTree {
     Iterator();
     Iterator(Node* node);
     Iterator(const Iterator& it);
+    Iterator(const_iterator& it);
     // ~Iterator(){if(node) delete node;};
     // Iterator(Iterator&& it); // не использую?
 
@@ -135,7 +130,7 @@ class BinaryTree {
  public:
   class Const_Iterator : public Iterator {
     // Const_Iterator();
-    // Const_Iterator(const Iterator& it);
+    Const_Iterator(const Iterator& it);
     // Const_Iterator& operator=(const Iterator& it);
   };
 };

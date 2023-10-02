@@ -17,7 +17,7 @@ BinaryTree<Key, T, Value>::BinaryTree() {
 template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::~BinaryTree() {
   clear();
-  // if(root) delete root;
+  if (root) delete root;
 }
 
 //________________________________________________Element_access______________________________________________________________
@@ -59,7 +59,7 @@ BinaryTree<Key, T, Value>::insert(const value_type val) {
       Iterator(new_node),
       insert_recursive(root, val, &result, false, new_node).second};
   add_terminal_node(root, true);
-  // if (!result) delete new_node;
+  if (!result) delete new_node;
   return res;
 }
 
@@ -77,17 +77,18 @@ BinaryTree<Key, T, Value>::insert_or_assign(const Key& key, const T& obj) {
   bool result = true;
   Node* new_node = new Node(val);
   add_terminal_node(root, false);
-  std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res =
-      insert_recursive(root, val, &result, true, new_node);
+  std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res = {
+      Iterator(new_node),
+      insert_recursive(root, val, &result, true, new_node).second};
   add_terminal_node(root, true);
-  // delete new_node;
+  delete new_node;
   return res;
 }
 
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::erase(iterator it) {
   if (!it.node || it.node == terminal_node) return;
-
+  // it.del_node = it.node;
   auto nod = it.node;
   auto par = it.node->parent;
   auto lef = it.node->left;
@@ -103,7 +104,7 @@ void BinaryTree<Key, T, Value>::erase(iterator it) {
     delete_node_with_not_childrens(it);
 
   Nurlanization(root);
-  // delete it.node;
+  delete it.node;
 }
 
 template <typename Key, typename T, typename Value>
@@ -126,8 +127,8 @@ void BinaryTree<Key, T, Value>::swap(BinaryTree& other) {
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::merge(BinaryTree& other) {
   auto it = other.begin();
-  for (; it != other.end(); ++it)
-    if (insert(*it).second) other.erase(it);
+  for (; it != other.end();)
+    if (insert(*it).second) it = other.erase(const_iterator(it));
 }
 
 //________________________________________________Lookup______________________________________________________________
@@ -168,6 +169,10 @@ template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::Iterator::Iterator(const Iterator& it)
     : node(it.node) {}
 
+template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>::Iterator::Iterator(const_iterator& it)
+    : node(it.node) {}
+
 // template <typename Key, typename T, typename Value>
 // BinaryTree<Key, T, Value>::Iterator::Iterator(Iterator&& it) : node(it.node)
 // {
@@ -177,7 +182,7 @@ BinaryTree<Key, T, Value>::Iterator::Iterator(const Iterator& it)
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
 BinaryTree<Key, T, Value>::Iterator::operator++() {
-  if (!node) return *this;
+  if (!node) throw std::out_of_range("Iterator is out of range");
 
   if (node->right) {
     node = node->right;
@@ -254,8 +259,8 @@ BinaryTree<Key, T, Value>::Iterator::operator=(const iterator& it) {
 // node(newnode) {}
 
 // template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(BinaryTree<Key,
-// T, Value>::Iterator::Iterators it) : node(it.node) {}
+// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(const
+// BinaryTree<Key, T, Value>::Iterator::Iterators it) : node(it.node) {}
 
 //________________________________________________Capacity______________________________________________________________
 template <typename Key, typename T, typename Value>
