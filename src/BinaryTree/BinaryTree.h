@@ -11,6 +11,8 @@ class BinaryTree {
  public:  // change to protected
   Node* root;
   Node* terminal_node;
+  Iterator next;
+  Iterator prev;
 
  public:
   using key_type = Key;
@@ -124,14 +126,15 @@ class BinaryTree {
     reference operator*() const { return node->node_key; };
 
    public:
-    Node* node;
+    Node* node = nullptr;
+    Node* del_node = nullptr;
   };
 
  public:
   class Const_Iterator : public Iterator {
     // Const_Iterator();
-    Const_Iterator(const Iterator& it);
-    // Const_Iterator& operator=(const Iterator& it);
+    // Const_Iterator(Iterator it);
+    // Const_Iterator& operator=(const Iterator& it) {;};
   };
 };
 };  // namespace s21
