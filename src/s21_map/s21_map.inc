@@ -48,8 +48,7 @@ void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
   if (x == nullptr) return;
   printTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
-  std::cout << x->node_key.first << "[" << x->node_key.second << "]"
-            << std::endl;
+  std::cout << x->node_key.first << "[" << x->balanceFactor << "]" << std::endl;
   printTree(x->left, level + 3);
 }
 

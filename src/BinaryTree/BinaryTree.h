@@ -11,8 +11,7 @@ class BinaryTree {
  public:  // change to protected
   Node* root;
   Node* terminal_node;
-  // Iterator next;
-  // Iterator prev;
+  Node* del_node = nullptr;
 
  public:
   using key_type = Key;
@@ -44,8 +43,7 @@ class BinaryTree {
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-  iterator erase(const_iterator it);
-  void erase(iterator it);
+  iterator erase(iterator it);
   void swap(BinaryTree& other);
   void merge(BinaryTree& other);
   // vector<std::pair<iterator,bool>> insert_many(Args&&... args) // inserts new
@@ -65,13 +63,13 @@ class BinaryTree {
   virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
-                                             bool* check, bool permission,
-                                             Node* new_node);
+                                             Iterator* it_result,
+                                             bool permission);
   void freeTree(Node* x);
-  void delete_node_with_all_childrens(iterator it);
-  void delete_node_with_right_childrens(iterator it);
-  void delete_node_with_left_childrens(iterator it);
-  void delete_node_with_not_childrens(iterator it);
+  iterator delete_node_with_all_childrens(iterator it);
+  iterator delete_node_with_right_childrens(iterator it);
+  iterator delete_node_with_left_childrens(iterator it);
+  iterator delete_node_with_not_childrens(iterator it);
 
  public:  // constants
   size_type MAX_SIZE = 100;
@@ -105,10 +103,10 @@ class BinaryTree {
  public:
   class Iterator {
    public:
-    Iterator();
-    Iterator(Node* node);
-    Iterator(const Iterator& it);
-    Iterator(const_iterator& it);
+    Iterator() : node(nullptr){};
+    Iterator(Node* newnode) : node(newnode){};
+    // Iterator(const Iterator& it);
+    // Iterator(const_iterator& it);
     // ~Iterator(){if(node) delete node;};
     // Iterator(Iterator&& it); // не использую?
 
@@ -127,15 +125,10 @@ class BinaryTree {
 
    public:
     Node* node = nullptr;
-    Node* del_node = nullptr;
   };
 
  public:
-  class Const_Iterator : public Iterator {
-    // Const_Iterator();
-    // Const_Iterator(Iterator it);
-    // Const_Iterator& operator=(const Iterator& it) {;};
-  };
+  class Const_Iterator : public Iterator {};
 };
 };  // namespace s21
 #include "BinaryTree.inc"
