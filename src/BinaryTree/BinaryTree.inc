@@ -59,7 +59,10 @@ BinaryTree<Key, T, Value>::insert(const value_type val) {
       Iterator(new_node),
       insert_recursive(root, val, &result, false, new_node).second};
   add_terminal_node(root, true);
-  if (!result) delete new_node;
+  if (!result) {
+    res.first = Iterator(root);
+    delete new_node;
+  }
   return res;
 }
 
@@ -104,8 +107,8 @@ void BinaryTree<Key, T, Value>::erase(iterator it) {
     delete_node_with_not_childrens(it);
 
   Nurlanization(root);
-  next = ++it;
-  prev = --it;
+  // next = ++it;
+  // prev = --it;
   delete it.node;
 }
 
@@ -194,9 +197,9 @@ BinaryTree<Key, T, Value>::Iterator::Iterator(const_iterator& it)
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
 BinaryTree<Key, T, Value>::Iterator::operator++() {
-  if (this->del_node) cout << "del_node" << endl;
+  // if (this->del_node) cout << "del_node" << endl;
 
-  if (!node) return *next;
+  if (!node) return *this;
 
   if (node->right) {
     node = node->right;

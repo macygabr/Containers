@@ -16,49 +16,53 @@
 //   ASSERT_EQ(a.begin()->first, b.begin()->first);
 // }
 
-// TEST(TestGroupName, End) {
-//   s21::map<int, char> a;
-//   std::map<int, char> b;
-//   s21::map<int, char>::iterator it1;
-//   std::map<int, char>::iterator it2;
+TEST(TestGroupName, End) {
+  s21::map<int, char> a;
+  std::map<int, char> b;
+  s21::map<int, char>::iterator it1;
+  std::map<int, char>::iterator it2;
 
-//   for (int i = 1, j = 50; i < 50; i++, j--) {  // leaks
-//     std::pair<int, int> x = {i, j};
-//     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
-//   }
-//   for (it1 = a.begin(), it2 = b.begin(); it2 != b.end(); it1++, it2++)
-//     ASSERT_EQ(a[it1->first], b[it2->first]);
+  for (int i = 1, j = 50; i < 50; i++, j--) {  // leaks
+    std::pair<int, int> x = {i, j};
+    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+  }
+  for (it1 = a.begin(), it2 = b.begin(); it2 != b.end(); it1++, it2++)
+    ASSERT_EQ(a[it1->first], b[it2->first]);
 
-//   it1 = a.begin();
-//   it2 = b.begin();
+  it1 = a.begin();
+  it2 = b.begin();
 
-//   it1++;
-//   it2++;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   it1++;
-//   it2++;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   it1++;
-//   it2++;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   --it1;
-//   --it2;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   --it1;
-//   --it2;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   --it1;
-//   --it2;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   it1++;
-//   it2++;
-//   ASSERT_EQ(a[it1->first], b[it2->first]);
-//   ASSERT_EQ(a[(++it1)->first], b[(++it2)->first]);
-//   ASSERT_EQ(a[(++it1)->first], b[(++it2)->first]);
-//   ASSERT_EQ(a[(it1--)->first], b[(it2--)->first]);
+  cout << a.insert({99, 'N'}).first->first << endl;
+  cout << a.insert({99, 'N'}).first->first << " " << a.insert({99, 'N'}).second
+       << endl;
+  a.printTree(a.root);
+  //   it1++;
+  //   it2++;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   it1++;
+  //   it2++;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   it1++;
+  //   it2++;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   --it1;
+  //   --it2;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   --it1;
+  //   --it2;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   --it1;
+  //   --it2;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   it1++;
+  //   it2++;
+  //   ASSERT_EQ(a[it1->first], b[it2->first]);
+  //   ASSERT_EQ(a[(++it1)->first], b[(++it2)->first]);
+  //   ASSERT_EQ(a[(++it1)->first], b[(++it2)->first]);
+  //   ASSERT_EQ(a[(it1--)->first], b[(it2--)->first]);
 
-//   ASSERT_EQ(a.end()->first, b.end()->second);
-// }
+  //   ASSERT_EQ(a.end()->first, b.end()->second);
+}
 
 // //________________________________________________Capacity__________________________________________________
 // TEST(TestGroupName, Capacity) {
@@ -398,23 +402,23 @@
 // }
 
 TEST(TestGroupName, Merge) {
-  s21::map<int, double> a1;
-  s21::map<int, double> a2;
-  std::map<int, double> b1;
-  s21::map<int, double>::iterator it1;
-  std::map<int, double>::iterator it2;
-  for (int i = 0; i <= 50; i++) {
-    std::pair<int, double> x = {i, 1 / 10.};
-    a1.insert(x).second;
-  }
-  for (int i = 40; i <= 80; i++) {
-    std::pair<int, double> x = {i, 10.};
-    a2.insert(x).second;
-  }
-  it1 = a1.begin();
-  // for(it1 = a1.begin(); it1 != a1.end(); it1++) {
-  a1.erase(it1);
-  it1++;
+  // s21::map<int, double> a1;
+  // s21::map<int, double> a2;
+  // std::map<int, double> b1;
+  // s21::map<int, double>::iterator it1;
+  // std::map<int, double>::iterator it2;
+  // for (int i = 0; i <= 50; i++) {
+  //   std::pair<int, double> x = {i, 1 / 10.};
+  //   a1.insert(x).second;
+  // }
+  // for (int i = 40; i <= 80; i++) {
+  //   std::pair<int, double> x = {i, 10.};
+  //   a2.insert(x).second;
+  // }
+  // it1 = a1.begin();
+  // // for(it1 = a1.begin(); it1 != a1.end(); it1++) {
+  // a1.erase(it1);
+  // it1++;
   // a1.erase(it1);
   // it1++;
   // }
@@ -442,7 +446,7 @@ TEST(TestGroupName, Merge) {
 
   // ASSERT_EQ(a1.size(), 80);
   // ASSERT_EQ(a2.size(), 30);
-  a1.printTree(a1.root);
+  // a1.printTree(a1.root);
 }
 // //________________________________________________Lookup____________________________________________________
 // TEST(TestGroupName, Contains) {

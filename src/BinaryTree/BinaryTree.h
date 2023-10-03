@@ -11,8 +11,8 @@ class BinaryTree {
  public:  // change to protected
   Node* root;
   Node* terminal_node;
-  Iterator next;
-  Iterator prev;
+  // Iterator next;
+  // Iterator prev;
 
  public:
   using key_type = Key;
