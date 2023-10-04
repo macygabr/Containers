@@ -12,5 +12,8 @@ clean:
 	rm -rf *.o *.a *.out *.log $(TEST_TARGET)
 
 test: clean
-	$(CC) $(CFLAGS) s21_vector/*.cpp $(TEST_FLAGS) -o $(TEST_TARGET)
+	$(CC) $(CFLAGS) s21_list/*.cpp $(TEST_FLAGS) -o $(TEST_TARGET)
 	./$(TEST_TARGET)
+
+
+

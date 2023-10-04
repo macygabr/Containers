@@ -4,7 +4,7 @@
 namespace s21 {
 
 template <typename T>
-class queue :list{
+class queue {
  public:
   class queueIterator;
   class queueConstIterator;

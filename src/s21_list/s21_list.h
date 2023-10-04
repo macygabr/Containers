@@ -1,5 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
+#include <algorithm>
+#include <cstddef>
+#include <initializer_list>
+#include <limits>
+#include <stdexcept>
+#include <utility>
 
 namespace s21 {
 
@@ -15,7 +21,7 @@ class list {
   using iterator = list<T>::listIterator;
   using const_iterator = list<T>::listConstIterator;
   using size_type = std::size_t;
-  //   using iterator_pointer = T *;
+    using iterator_pointer = T *;
   //   using const_iterator_pointer = const T *;
 
   list();             // default constructor, creates empty list
@@ -58,7 +64,7 @@ class list {
   void reserve();    // reverses the order of the elements
   void unique();     //	removes consecutive duplicate elements
   void sort();       //	sorts the elements
-
+/*
   iterator insert_many(const_iterator pos,
                        Args &&...args);  // inserts new elements into the
                                          // container directly before pos
@@ -66,14 +72,46 @@ class list {
       Args &&...args);  // appends new elements to the end of the container
   void insert_many_front(
       Args &&...args);  // void insert_many_front(Args&&... args)
-
+*/
   //  private:
  public:
-  iterator_pointer data_;
+struct Node {
+    value_type value_;
+    Node* prev_;
+    Node* next_;
+
+    Node(const value_type& value)
+        : value_(value), prev_(nullptr), next_(nullptr) {}
+  };
+
+  Node* head_;
+  Node* tail_;
+  Node* end_;
   size_type size_;
-  size_type capacity_;
+};
+
+template <typename T>
+class list<T>::listIterator {
+ public:
+  listIterator() = default;
+  listIterator(iterator_pointer ptr);
+
+  reference operator*();
+  listIterator &operator++(int);
+  listIterator &operator--(int);
+  listIterator &operator++();
+  listIterator &operator--();
+  listIterator operator+(int n) const;
+  listIterator operator-(int n) const;
+  ptrdiff_t operator-(const listIterator &other) const;
+  bool operator==(const listIterator &other) const;
+  bool operator!=(const listIterator &other) const;
+
+ private:
+  iterator_pointer ptr_;
 };
 
 }  // namespace s21
+#include "s21_list.tpp"
 
 #endif  // LIST_H

@@ -4,7 +4,7 @@
 namespace s21 {
 
 template <typename T>
-class stack:list {
+class stack {
  public:
   class stackIterator;
   class stackConstIterator;
