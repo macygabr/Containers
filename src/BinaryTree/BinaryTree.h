@@ -70,6 +70,7 @@ class BinaryTree {
   iterator delete_node_with_right_childrens(iterator it);
   iterator delete_node_with_left_childrens(iterator it);
   iterator delete_node_with_not_childrens(iterator it);
+  bool check_balance();
 
  public:  // constants
   size_type MAX_SIZE = 100;

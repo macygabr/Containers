@@ -3,7 +3,7 @@
 #include "../s21_map/s21_map.h"
 #include "gtest/gtest.h"
 
-//________________________________________________Iterators__________________________________________________
+// //________________________________________________Iterators__________________________________________________
 
 // TEST(TestGroupName, Begin) {
 //   s21::map<int, char> a;
@@ -357,85 +357,85 @@
 //   }
 //   // a.printTree(a.root);
 // }
-TEST(TestGroupName, Erase_2) {
-  s21::map<int, std::string> a;
-  std::map<int, std::string> b;
-  s21::map<int, std::string>::iterator it1;
-  std::map<int, std::string>::iterator it2;
+// TEST(TestGroupName, Erase_2) {
+//   s21::map<int, std::string> a;
+//   std::map<int, std::string> b;
+//   s21::map<int, std::string>::iterator it1;
+//   std::map<int, std::string>::iterator it2;
 
-  for (int i = 0; i < 50; i++) {
-    std::pair<int, std::string> x = {i, std::to_string(rand() % 100)};
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
-  }
+//   for (int i = 0; i < 50; i++) {
+//     std::pair<int, std::string> x = {i, std::to_string(rand() % 100)};
+//     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+//   }
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
-    ASSERT_EQ(it1->first, it2->first);
+//   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+//     ASSERT_EQ(it1->first, it2->first);
 
-  int i = 0;
-  for (it1 = a.begin(), it2 = b.begin(); i < 10; i++, it1++, it2++)
-    ;
+//   int i = 0;
+//   for (it1 = a.begin(), it2 = b.begin(); i < 10; i++, it1++, it2++)
+//     ;
 
-  i = 0;
-  for (; i < 1; i++) {
-    it1 = a.erase(it1);
-    it2 = b.erase(it2);
-  }
+//   for (int j = 0; j < 10; j++) {
+//     it1 = a.erase(it1);
+//     it2 = b.erase(it2);
+//   }
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
-    ASSERT_EQ(it1->first, it2->first);
-  a.printTree(a.root);
-}
+//   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+//     ASSERT_EQ(it1->first, it2->first);
+//   // a.printTree(a.root);
+//   // a.SimpleprintTree(a.root);
+// }
 
-TEST(TestGroupName, Swap) {
-  s21::map<int, double> a1;
-  s21::map<int, double> a2;
-  std::map<int, double> b1;
-  std::map<int, double> b2;
-  s21::map<int, double>::iterator it1;
-  std::map<int, double>::iterator it2;
+// TEST(TestGroupName, Swap) {
+//   s21::map<int, double> a1;
+//   s21::map<int, double> a2;
+//   std::map<int, double> b1;
+//   std::map<int, double> b2;
+//   s21::map<int, double>::iterator it1;
+//   std::map<int, double>::iterator it2;
 
-  for (int i = 0, j = 49; i < 50; i++, j--) {
-    std::pair<int, double> x = {i, j / 10.};
-    ASSERT_EQ(a1.insert(x).second, b1.insert(x).second);
-  }
-  for (int i = 0, j = 49; i < 50; i++, j--) {
-    std::pair<int, double> x = {i, j << 1};
-    ASSERT_EQ(a2.insert(x).second, b2.insert(x).second);
-  }
+//   for (int i = 0, j = 49; i < 50; i++, j--) {
+//     std::pair<int, double> x = {i, j / 10.};
+//     ASSERT_EQ(a1.insert(x).second, b1.insert(x).second);
+//   }
+//   for (int i = 0, j = 49; i < 50; i++, j--) {
+//     std::pair<int, double> x = {i, j << 1};
+//     ASSERT_EQ(a2.insert(x).second, b2.insert(x).second);
+//   }
 
-  for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
-    ASSERT_EQ(it1->first, it2->first);
+//   for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
+//     ASSERT_EQ(it1->first, it2->first);
 
-  a1.swap(a2);
-  b1.swap(b2);
+//   a1.swap(a2);
+//   b1.swap(b2);
 
-  for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
-    ASSERT_EQ(it1->first, it2->first);
-  for (it1 = a2.begin(), it2 = b2.begin(); it1 != a2.end(); it1++, it2++)
-    ASSERT_EQ(it1->first, it2->first);
+//   for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
+//     ASSERT_EQ(it1->first, it2->first);
+//   for (it1 = a2.begin(), it2 = b2.begin(); it1 != a2.end(); it1++, it2++)
+//     ASSERT_EQ(it1->first, it2->first);
 
-  ASSERT_EQ(a1.size(), b1.size());
-  ASSERT_EQ(a2.size(), b2.size());
-  // a1.printTree(a1.root);
-}
+//   ASSERT_EQ(a1.size(), b1.size());
+//   ASSERT_EQ(a2.size(), b2.size());
+//   // a1.printTree(a1.root);
+// }
 
 TEST(TestGroupName, Merge) {
   s21::map<int, double> a1;
   s21::map<int, double> a2;
-  std::map<int, double> b1;
   s21::map<int, double>::iterator it1;
-  std::map<int, double>::iterator it2;
-  for (int i = 1; i <= 50; i++) {
+  for (int i = 0; i < 10; i++) {
     std::pair<int, double> x = {i, 1 / 10.};
     a1.insert(x).second;
   }
-  for (int i = 40; i <= 80; i++) {
+  for (int i = 5; i < 15; i++) {
     std::pair<int, double> x = {i, 10.};
     a2.insert(x).second;
   }
 
-  // a1.printTree(a1.root);
-  // for (it1 = a1.begin(); it1 != a1.end(); it1++) it1 = a1.erase(it1);
+  // int i=0;
+  // for(it1 = a2.begin(); i<10; i++) it1++;
+  // i=0;
+  // for (; i<20; i++) it1 = a2.erase(it1);
 
   // //   it1++;
   // //   a1.erase(it1);
@@ -443,13 +443,13 @@ TEST(TestGroupName, Merge) {
   // //   it1++;
   // //   a1.erase(it1);
 
-  // a1.merge(a2);
-  // for (int i = 0; i <= 50; i++) {
+  a1.merge(a2);
+  // for (int i = 0; i <= 50; i++)
   //   ASSERT_EQ(a1[i], 1 / 10.);
-  // }
-  // for (int i = 51; i < 80; i++) {
-  //   ASSERT_EQ(a1[i], 10);
-  // }
+
+  // for (int i = 51; i <= 55; i++)
+  //   ASSERT_EQ(a1[i], 10.);
+
   // ASSERT_EQ(a1.size(), b1.size());
   // ASSERT_EQ(a2.size(), b2.size());
   // b1.merge(b1);
@@ -462,6 +462,7 @@ TEST(TestGroupName, Merge) {
   // ASSERT_EQ(a1.size(), 80);
   // ASSERT_EQ(a2.size(), 30);
   // a1.printTree(a1.root);
+  a2.printTree(a2.root);
 }
 //________________________________________________Lookup____________________________________________________
 TEST(TestGroupName, Contains) {

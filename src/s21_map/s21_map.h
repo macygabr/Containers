@@ -51,6 +51,8 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
 
   void printTree(typename BinaryTree<Key, T, value_type>::Node *root,
                  int level = 0);
+  void SimpleprintTree(typename BinaryTree<Key, T, value_type>::Node *root,
+                       int level = 0);
   T &search(bool add, const Key &key);
 };
 

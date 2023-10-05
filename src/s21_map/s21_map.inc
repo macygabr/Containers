@@ -48,8 +48,44 @@ void map<Key, T>::printTree(typename BinaryTree<Key, T, value_type>::Node* x,
   if (x == nullptr) return;
   printTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
-  std::cout << x->node_key.first << "[" << x->balanceFactor << "]" << std::endl;
+  if (!x->parent && (!x->left && !x->right)) {
+    std::cout << x->node_key.first << "[NULL]"
+              << "[NULL]"
+              << "[NULL]" << std::endl;
+  } else if (x->parent && !x->left && !x->right) {
+    std::cout << x->node_key.first << "[" << x->parent->node_key.first
+              << "][NULL]"
+              << "[NULL]" << std::endl;
+  } else if (x->parent && x->left && !x->right) {
+    std::cout << x->node_key.first << "[" << x->parent->node_key.first << "]["
+              << x->left->node_key.first << "][NULL]" << std::endl;
+  } else if (x->parent && !x->left && x->right) {
+    std::cout << x->node_key.first << "[" << x->parent->node_key.first
+              << "][NULL][" << x->right->node_key.first << "]" << std::endl;
+  } else if (x->parent && x->left && x->right) {
+    std::cout << x->node_key.first << "[" << x->parent->node_key.first << "]["
+              << x->left->node_key.first << "][" << x->right->node_key.first
+              << "]" << std::endl;
+  } else if (!x->parent && x->left && x->right) {
+    std::cout << x->node_key.first << "[NULL][" << x->left->node_key.first
+              << "][" << x->right->node_key.first << "]" << std::endl;
+  } else if (!x->parent && !x->left && x->right) {
+    std::cout << x->node_key.first << "[NULL][NULL]["
+              << x->right->node_key.first << "]" << std::endl;
+  } else if (!x->parent && x->left && !x->right) {
+    std::cout << x->node_key.first << "[NULL][" << x->left->node_key.first
+              << "][NULL]" << std::endl;
+  }
   printTree(x->left, level + 3);
+}
+template <typename Key, typename T>
+void map<Key, T>::SimpleprintTree(
+    typename BinaryTree<Key, T, value_type>::Node* x, int level) {
+  if (x == nullptr) return;
+  SimpleprintTree(x->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  std::cout << x->node_key.first << "[" << x->balanceFactor << "]" << std::endl;
+  SimpleprintTree(x->left, level + 3);
 }
 
 template <typename Key, typename T>
