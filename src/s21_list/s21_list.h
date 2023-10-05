@@ -40,6 +40,8 @@ class list {
 
   iterator begin();  // returns an iterator to the beginning
   iterator end();    // returns an iterator to the end
+  const_iterator begin() const;  // returns an iterator to the beginning
+  const_iterator end() const;    // returns an iterator to the end
 
   bool empty() const;          // checks whether the container is empty
   size_type size() const;      // returns the number of elements
@@ -47,9 +49,9 @@ class list {
                                // elements
 
   void clear();  // clears the contents
-  iterator insert(
-      iterator pos,
-      const_reference value);  // inserts element into concrete pos and returns
+  // iterator insert(
+      // iterator pos,
+      // const_reference value);  // inserts element into concrete pos and returns
                                // the iterator that points to the new element
   void erase(iterator pos);    // erases element at pos
   void push_back(const_reference value);   //	adds an element to the end
@@ -57,11 +59,11 @@ class list {
   void push_front(const_reference value);  //	adds an element to the head
   void pop_front();                        //	removes the first element
   void swap(list &other);                  // swaps the contents
-  void merge(list &other);                 // merges two sorted lists
-  void splice(
-      const_iterator pos,
-      list &other);  // transfers elements from list other starting from pos
-  void reserve();    // reverses the order of the elements
+  // void merge(list &other);                 // merges two sorted lists
+  // void splice(
+      // const_iterator pos,
+      // list &other);  // transfers elements from list other starting from pos
+  // void reserve();    // reverses the order of the elements
   void unique();     //	removes consecutive duplicate elements
   void sort();       //	sorts the elements
 /*
@@ -83,7 +85,6 @@ struct Node {
     Node(const value_type& value)
         : value_(value), prev_(nullptr), next_(nullptr) {}
   };
-
   Node* head_;
   Node* tail_;
   Node* end_;
@@ -93,9 +94,8 @@ struct Node {
 template <typename T>
 class list<T>::listIterator {
  public:
-  listIterator() = default;
-  listIterator(iterator_pointer ptr);
-
+  listIterator();
+  listIterator(Node* ptr);
   reference operator*();
   listIterator &operator++(int);
   listIterator &operator--(int);
@@ -106,12 +106,11 @@ class list<T>::listIterator {
   ptrdiff_t operator-(const listIterator &other) const;
   bool operator==(const listIterator &other) const;
   bool operator!=(const listIterator &other) const;
-
- private:
-  iterator_pointer ptr_;
+  Node *ptr_;
+//  private:
 };
 
 }  // namespace s21
-#include "s21_list.tpp"
+// #include "s21_list.tpp"
 
 #endif  // LIST_H
