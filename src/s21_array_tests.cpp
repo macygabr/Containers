@@ -292,6 +292,10 @@ TEST(s21_array_test, swap_2) {
 
 
 int main(int argc, char **argv) {
+  #ifdef __APPLE__
+  free(__cxxabiv1::__cxa_get_globals());
+#endif
+
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
