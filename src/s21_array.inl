@@ -11,7 +11,7 @@ s21::array<value_type, N>::array(
     i++;
   }
 
-  if (items.size() < N) {  // TODO: проверить, точно ли надо эту часть
+  if (items.size() < N) {
     for (; i < N; i++) {
       arr_[i] = 0;
     }
@@ -32,7 +32,7 @@ s21::array<value_type, N>::array(array &&other) {
 
 template <typename value_type, std::size_t N>
 s21::array<value_type, N> &s21::array<value_type, N>::operator=(
-    array &&other) {  // TODO: проверить
+    array &&other) {
   if (this != &other) {
     for (size_type i = 0; i < N; i++) arr_[i] = other.arr_[i];
   }
@@ -41,7 +41,7 @@ s21::array<value_type, N> &s21::array<value_type, N>::operator=(
 
 template <typename value_type, std::size_t N>
 s21::array<value_type, N> &s21::array<value_type, N>::operator=(
-    const array &other) {  // TODO: проверить
+    const array &other) {
   if (this != &other) {
     if (size_ != other.size_) {
       throw std::length_error("Error");
