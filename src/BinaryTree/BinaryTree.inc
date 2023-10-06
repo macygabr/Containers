@@ -15,6 +15,42 @@ BinaryTree<Key, T, Value>::BinaryTree() {
 }
 
 template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>::BinaryTree(const BinaryTree& other) {
+  terminal_node = new Node();
+  root = terminal_node;
+  root = copy_recursive(other.root);
+}
+
+template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>::BinaryTree(BinaryTree&& other) {
+  root = other.root;
+  terminal_node = other.terminal_node;
+  other.root = nullptr;
+  other.terminal_node = nullptr;
+}
+
+template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>& BinaryTree<Key, T, Value>::operator=(
+    BinaryTree&& other) {
+  if (this != &other) {
+    root = other.root;
+    other.root = nullptr;
+  }
+  return *this;
+}
+
+template <typename Key, typename T, typename Value>
+BinaryTree<Key, T, Value>& BinaryTree<Key, T, Value>::operator=(
+    const BinaryTree& other) {
+  if (this != &other) {
+    BinaryTree temp(other);
+    FreeNode(root);
+    *this = std::move(temp);
+  }
+  return *this;
+}
+
+template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::~BinaryTree() {
   clear();
   if (root) delete root;
@@ -24,6 +60,7 @@ BinaryTree<Key, T, Value>::~BinaryTree() {
 
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::clear() {
+  if (!root) return;
   freeTree(root);
   root = terminal_node;
   root->parent = nullptr;
@@ -77,13 +114,13 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
   // if(it.node->parent) auto par = it.node->parent;
   auto lef = it.node->left;
   auto rig = it.node->right;
-  if (lef && rig && rig != terminal_node)
+  if (lef && rig)
     it = delete_node_with_all_childrens(it);
-  else if (!lef && rig && rig != terminal_node)
+  else if (!lef && rig)
     it = delete_node_with_right_childrens(it);
-  else if (lef && (!rig || rig == terminal_node))
+  else if (lef && !rig)
     it = delete_node_with_left_childrens(it);
-  else if (!lef && (!rig || rig == terminal_node))
+  else if (!lef && !rig)
     it = delete_node_with_not_childrens(it);
 
   get_balance_factor(root);
@@ -91,7 +128,6 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
     for (auto it1 = Iterator(begin()); it1.node != terminal_node; it1++)
       it1.node = Nurlanization(it1.node);
   }
-
   return it;
 }
 
@@ -106,10 +142,24 @@ void BinaryTree<Key, T, Value>::swap(BinaryTree& other) {
 
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::merge(BinaryTree& other) {
-  for (iterator it = other.begin(); it != other.end(); it++) {
-    if (insert(*it).second) it = other.erase(it);
+  for (iterator it = other.begin(); it != other.end();) {
+    if (insert(*it).second)
+      it = other.erase(it);
+    else
+      it++;
   }
 }
+
+// template <typename Key, typename T, typename Value>
+// template <class... Args>
+// std::vector<std::pair<typename map<Key, T>::iterator, bool>>
+// BinaryTree<Key, T, Value>::insert_many(Args &&...args) {
+//   std::vector<std::pair<typename map<Key, T>::iterator, bool>> vec;
+//   for (const auto &arg : {args...})
+//     vec.push_back(insert(arg));
+
+//   return vec;
+// }
 
 //________________________________________________Lookup______________________________________________________________
 template <typename Key, typename T, typename Value>
@@ -136,7 +186,9 @@ BinaryTree<Key, T, Value>::begin() {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::end() {
-  return terminal_node;
+  auto x = root;
+  while (x->right) x = x->right;
+  return x;
 }
 
 // template <typename Key, typename T, typename Value>
@@ -170,10 +222,12 @@ BinaryTree<Key, T, Value>::Iterator::operator++() {
     while (node->left) node = node->left;
   } else {
     if (node->parent->right == node)
-      while (node->parent->parent && node->parent->right == node) {
-        node = node->parent;
-      }
-    node = node->parent;
+      while (node->parent && node->parent->right == node) node = node->parent;
+
+    if (node->parent)
+      node = node->parent;
+    else
+      while (node->right) node = node->right;
   }
   return *this;
 }
@@ -253,11 +307,8 @@ template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::size_type
 BinaryTree<Key, T, Value>::size() {
   size_type res = 0;
-  BinaryTree<Key, T, Value>::iterator it(begin());
-  while (it.node && it.node != terminal_node) {
-    it++;
-    res++;
-  }
+  if (root)
+    for (auto it = begin(); it != end(); it++) res++;
   return size_type(res);
 }
 
@@ -489,7 +540,6 @@ BinaryTree<Key, T, Value>::delete_node_with_left_childrens(iterator it) {
   auto par = it.node->parent;
   auto lef = it.node->left;
   auto rig = it.node->right;
-  // cout << "OK" << endl;
   if (it.node->parent) {
     if (it.node->parent->right == it.node)
       it.node->parent->right = it.node->left;
@@ -534,20 +584,74 @@ BinaryTree<Key, T, Value>::delete_node_with_not_childrens(iterator it) {
 
 template <typename Key, typename T, typename Value>
 bool BinaryTree<Key, T, Value>::check_balance() {
-  for (auto it = begin(); it != end(); ++it) {
+  iterator it = begin();
+  for (iterator it = begin(); it != end(); it++) {
     if (abs(get_balance_factor(it.node)) > 1) return false;
   }
+
   return true;
 }
-// template <typename Key, typename T, typename Value>
-// void BinaryTree<Key, T, Value>::printTree(typename BinaryTree<Key, T,
-// Value>::Node* x,
-//                                    int level) {
-//   if (x == nullptr) return;
-//   printTree(x->right, level + 3);
-//   for (int i = 0; i < level; i++) std::cout << " ";
-//   std::cout << get_key(x->node_key) << "[" << get_val(x->node_key) << "]"
-//             << std::endl;
-//   printTree(x->left, level + 3);
-// }
+
+template <typename Key, typename T, typename Value>
+typename BinaryTree<Key, T, Value>::Node*
+BinaryTree<Key, T, Value>::copy_recursive(Node* x) {
+  if (!x || x == terminal_node) return nullptr;
+  Node* next = new Node(x->node_key);
+  next->left = copy_recursive(x->left);
+  if (next->left) next->left->parent = next;
+  next->right = copy_recursive(x->right);
+  if (next->right) next->right->parent = next;
+  return next;
+}
+
+template <typename Key, typename T, typename Value>
+void BinaryTree<Key, T, Value>::SimpleprintTree(
+    typename BinaryTree<Key, T, Value>::Node* x, int level) {
+  if (x == nullptr) return;
+  SimpleprintTree(x->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  std::cout << "\033[92m" << get_key(x->node_key) << "\033[0m["
+            << get_val(x->node_key) << "]" << std::endl;
+  SimpleprintTree(x->left, level + 3);
+}
+
+template <typename Key, typename T, typename Value>
+void BinaryTree<Key, T, Value>::printTree(
+    typename BinaryTree<Key, T, value_type>::Node* x, int level) {
+  if (x == nullptr) return;
+  printTree(x->right, level + 3);
+  for (int i = 0; i < level; i++) std::cout << " ";
+  if (!x->parent && (!x->left && !x->right)) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]"
+              << "[NULL]"
+              << "[NULL]" << std::endl;
+  } else if (x->parent && !x->left && !x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
+              << x->parent->node_key.first << "][NULL]"
+              << "[NULL]" << std::endl;
+  } else if (x->parent && x->left && !x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
+              << x->parent->node_key.first << "][" << x->left->node_key.first
+              << "][NULL]" << std::endl;
+  } else if (x->parent && !x->left && x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
+              << x->parent->node_key.first << "][NULL]["
+              << x->right->node_key.first << "]" << std::endl;
+  } else if (x->parent && x->left && x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
+              << x->parent->node_key.first << "][" << x->left->node_key.first
+              << "][" << x->right->node_key.first << "]" << std::endl;
+  } else if (!x->parent && x->left && x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]["
+              << x->left->node_key.first << "][" << x->right->node_key.first
+              << "]" << std::endl;
+  } else if (!x->parent && !x->left && x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL][NULL]["
+              << x->right->node_key.first << "]" << std::endl;
+  } else if (!x->parent && x->left && !x->right) {
+    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]["
+              << x->left->node_key.first << "][NULL]" << std::endl;
+  }
+  printTree(x->left, level + 3);
+}
 }  // namespace s21

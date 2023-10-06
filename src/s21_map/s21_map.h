@@ -7,32 +7,28 @@ namespace s21 {
 template <typename Key, typename T>
 class map : public BinaryTree<Key, T, pair<const Key, T>> {
  public:
-  class MapIterator;
-
- public:
   using key_type = Key;
   using mapped_type = T;
-  using value_type = std::pair<const Key, T>;
+  using value_type = std::pair<const key_type, mapped_type>;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using size_type = size_t;
+  // using const_iterator = ConstMapIterator;
+  // using iterator = MapIterator;
 
- public:
  public:
   map();  // Конструктор по умолчанию
-          //   map(std::initializer_list<value_type> const& items);
-          //   map(const map& m);       // copy constructor
-          //   map(map&& m);            // move constructor
-          //   ~map();                  // destructor
-          // map operator=(map&& m);  // assignment operator overload for moving
-          // map &operator=(const map &other);
-  //   object map move(map&& m);       // assignment operator overload for
-  //   moving object
+  map(std::initializer_list<value_type> const &items);
+  // map(const map &m);       // copy constructor
+  // map(map &&m);            // move constructor
+  // ~map();                  // destructor
+  // operator=(map &&m);  // assignment operator overload for moving object
 
- public:
+ public:  // Element access
   T &operator[](const Key &key);
-  // T &operator[](Key &&key);
   T &at(const Key &key);
-  const T &at(const Key &key) const;
 
- public:  // support
+ protected:  // support
   virtual Key get_key(value_type val) override {
     BinaryTree<Key, T, value_type>::get_key(val);
     return Key(val.first);
@@ -49,10 +45,6 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
     return true;
   }
 
-  void printTree(typename BinaryTree<Key, T, value_type>::Node *root,
-                 int level = 0);
-  void SimpleprintTree(typename BinaryTree<Key, T, value_type>::Node *root,
-                       int level = 0);
   T &search(bool add, const Key &key);
 };
 

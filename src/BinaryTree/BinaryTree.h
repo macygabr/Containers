@@ -8,10 +8,9 @@ class BinaryTree {
   class Iterator;
   class Const_Iterator;
 
- public:  // change to protected
+ protected:  // change to protected
   Node* root;
   Node* terminal_node;
-  Node* del_node = nullptr;
 
  public:
   using key_type = Key;
@@ -26,8 +25,11 @@ class BinaryTree {
 
  public:  // Member functions
   BinaryTree();
+  BinaryTree(const BinaryTree& other);
+  BinaryTree(BinaryTree&& other);
   ~BinaryTree();
   BinaryTree& operator=(const BinaryTree& other);
+  BinaryTree& operator=(BinaryTree&& other);
 
  public:             // Iterators
   iterator begin();  // returns an iterator to the beginning
@@ -52,7 +54,7 @@ class BinaryTree {
  public:  // Lookup
   bool contains(const Key& key = Key());
 
- public:  // suport
+ protected:  // suport
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   Node* Nurlanization(Node* x);
@@ -71,8 +73,13 @@ class BinaryTree {
   iterator delete_node_with_left_childrens(iterator it);
   iterator delete_node_with_not_childrens(iterator it);
   bool check_balance();
+  Node* copy_recursive(Node* x);
+  void SimpleprintTree(typename BinaryTree<Key, T, value_type>::Node* root,
+                       int level = 0);
+  void printTree(typename BinaryTree<Key, T, value_type>::Node* root,
+                 int level = 0);
 
- public:  // constants
+ private:  // constants
   size_type MAX_SIZE = 100;
 
  public:
