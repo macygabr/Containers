@@ -15,17 +15,17 @@ map<Key, T>::map(const std::initializer_list<value_type>& items) {
   for (auto it = items.begin(); it != items.end(); it++) this->insert(*it);
 }
 
-// template <typename Key, typename T>
-// map<Key, T> &map<Key, T>::operator=(map &&other) {
-//   if (this != &other)
-//     BinaryTree<Key, T>::operator=(other);
-//   return *this;
-// }
+template <typename Key, typename T>
+map<Key, T>& map<Key, T>::operator=(map&& m) {
+  if (this != &m) BinaryTree<Key, T, value_type>::operator=(std::move(m));
+  return *this;
+}
 
-// template <typename Key, typename T>
-// map<Key, T>::~map() {
-//   // if (root) delete root;
-// }
+template <typename Key, typename T>
+map<Key, T>& map<Key, T>::operator=(const map& other) {
+  if (this != &other) BinaryTree<Key, T, value_type>::operator=(other);
+  return *this;
+}
 
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
@@ -54,7 +54,7 @@ T& map<Key, T>::search(bool add, const Key& key) {
       x = x->left;
   }
   if (add) {
-    auto res = BinaryTree<Key, T, value_type>::insert(Key(key));
+    auto res = BinaryTree<Key, T, value_type>::insert(Key(key), T());
     return res.first.node->node_key.second;
   } else
     throw std::out_of_range("Key not found");

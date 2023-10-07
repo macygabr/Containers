@@ -5,19 +5,21 @@
 
 //________________________________________________Member_functions__________________________________________________
 
-TEST(TestGroupName, Initializer_list) {
+TEST(TestMapGroup, Initializer_list) {
   s21::map<int, char> a = {{1, 'N'}, {2, 'u'}, {3, 'r'},
                            {4, 'l'}, {4, 'a'}, {4, 'n'}};
   std::map<int, char> b = {{1, 'N'}, {2, 'u'}, {3, 'r'},
                            {4, 'l'}, {4, 'a'}, {4, 'n'}};
-  for (auto it1 = a.begin(), it2 = a.begin(); it1 != a.end(); it1++, it2++) {
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  for (; it1 != a.end(); it1++, it2++) {
     EXPECT_EQ(it1->first, it2->first);
     EXPECT_EQ(it1->second, it2->second);
   }
   EXPECT_EQ(a.size(), b.size());
 }
 
-TEST(TestGroupName, ConstructorCopy) {
+TEST(TestMapGroup, ConstructorCopy) {
   s21::map<int, int> a = {{1, 2}, {3, 4}, {5, 6}};
   std::map<int, int> b = {{1, 2}, {3, 4}, {5, 6}};
   s21::map<int, int> a_copy = a;
@@ -49,7 +51,7 @@ TEST(map, ConstructorMoveMap) {
 
 //________________________________________________Iterators__________________________________________________
 
-TEST(TestGroupName, Begin) {
+TEST(TestMapGroup, Begin) {
   s21::map<int, char> a;
   std::map<int, char> b;
   a[99] = 'N';
@@ -60,7 +62,7 @@ TEST(TestGroupName, Begin) {
   ASSERT_EQ(a.begin()->first, b.begin()->first);
 }
 
-TEST(TestGroupName, End) {
+TEST(TestMapGroup, End) {
   s21::map<int, char> a;
   std::map<int, char> b;
   s21::map<int, char>::iterator it1;
@@ -75,7 +77,6 @@ TEST(TestGroupName, End) {
 
   it1 = a.begin();
   it2 = b.begin();
-
   it1++;
   it2++;
   ASSERT_EQ(a[it1->first], b[it2->first]);
@@ -106,7 +107,7 @@ TEST(TestGroupName, End) {
 }
 
 //________________________________________________Capacity__________________________________________________
-TEST(TestGroupName, Capacity) {
+TEST(TestMapGroup, Capacity) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   ASSERT_EQ(a.empty(), b.empty());
@@ -121,7 +122,7 @@ TEST(TestGroupName, Capacity) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Size) {
+TEST(TestMapGroup, Size) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   ASSERT_EQ(a.size(), b.size());
@@ -132,7 +133,7 @@ TEST(TestGroupName, Size) {
   ASSERT_EQ(a.size(), b.size());
 }
 //________________________________________________Element_access____________________________________________
-TEST(TestGroupName, operator) {
+TEST(TestMapGroup, operator) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   for (int i = 0; i < 50; i++) {
@@ -142,13 +143,13 @@ TEST(TestGroupName, operator) {
   for (int i = 0; i < 100; i++) ASSERT_EQ(a[i], b[i]);
 }
 
-TEST(TestGroupName, at1) {
+TEST(TestMapGroup, at1) {
   s21::map<char, std::string> a = {
       {'a', "Alina"}, {'b', "Boris"}, {'c', "Chuck"}};
   EXPECT_THROW(a.at('g') = "Alisa", std::out_of_range);
 }
 
-TEST(TestGroupName, at2) {
+TEST(TestMapGroup, at2) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -172,7 +173,7 @@ TEST(TestGroupName, at2) {
 
 //________________________________________________Modifiers_________________________________________________
 
-TEST(TestGroupName, Clear) {
+TEST(TestMapGroup, Clear) {
   s21::map<int, int> a;
   std::map<int, int> b;
   a.clear();
@@ -186,9 +187,10 @@ TEST(TestGroupName, Clear) {
   EXPECT_EQ(a.empty(), b.empty());
 }
 
-TEST(TestGroupName, Insert_int_int) {
+TEST(TestMapGroup, Insert_int_int) {
   s21::map<int, int> a;
   std::map<int, int> b;
+  std::pair<int, int> a1 = {99, 0};
   std::pair<int, int> b1 = {99, 0};
   s21::map<int, int>::iterator it1;
   std::map<int, int>::iterator it2;
@@ -197,8 +199,8 @@ TEST(TestGroupName, Insert_int_int) {
     std::pair<int, int> x = {rand() % 100, rand() % 100};
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
   }
-  ASSERT_EQ(a.insert(99).second, true);
-  ASSERT_EQ(a.insert(99).second, false);
+  ASSERT_EQ(a.insert(a1).second, true);
+  ASSERT_EQ(a.insert(a1).second, false);
   ASSERT_EQ(b.insert(b1).second, true);
   a[77] = 3;
   b[77] = 3;
@@ -209,7 +211,7 @@ TEST(TestGroupName, Insert_int_int) {
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
 }
-TEST(TestGroupName, Insert_int_char) {
+TEST(TestMapGroup, Insert_int_char) {
   s21::map<int, char> a;
   std::map<int, char> b;
   s21::map<int, char>::iterator it1;
@@ -228,7 +230,7 @@ TEST(TestGroupName, Insert_int_char) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_int_string) {
+TEST(TestMapGroup, Insert_int_string) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -248,7 +250,7 @@ TEST(TestGroupName, Insert_int_string) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_string_int) {
+TEST(TestMapGroup, Insert_string_int) {
   s21::map<std::string, int> a;
   std::map<std::string, int> b;
   s21::map<std::string, int>::iterator it1;
@@ -269,7 +271,7 @@ TEST(TestGroupName, Insert_string_int) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_string_char) {
+TEST(TestMapGroup, Insert_string_char) {
   s21::map<std::string, char> a;
   std::map<std::string, char> b;
   s21::map<std::string, char>::iterator it1;
@@ -283,14 +285,14 @@ TEST(TestGroupName, Insert_string_char) {
   a["Nurlan"] = 'O';
   b["Nurlan"] = 'O';
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(it1->first, it2->first);
-  }
+
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_string_string) {
+TEST(TestMapGroup, Insert_string_string) {
   s21::map<std::string, std::string> a;
   std::map<std::string, std::string> b;
   s21::map<std::string, std::string>::iterator it1;
@@ -311,7 +313,7 @@ TEST(TestGroupName, Insert_string_string) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_or_assign_int_string) {
+TEST(TestMapGroup, Insert_or_assign_int_string) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -334,7 +336,7 @@ TEST(TestGroupName, Insert_or_assign_int_string) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Insert_pair) {
+TEST(TestMapGroup, Insert_pair) {
   s21::map<std::pair<int, int>, std::pair<int, int>> a;
   std::map<std::pair<int, int>, std::pair<int, int>> b;
   s21::map<std::pair<int, int>, std::pair<int, int>>::iterator it1;
@@ -376,7 +378,7 @@ class my_class {
 };
 }  // namespace s21
 
-TEST(TestGroupName, Insert_my_class) {
+TEST(TestMapGroup, Insert_my_class) {
   s21::map<s21::my_class, s21::my_class> a;
   s21::map<s21::my_class, s21::my_class>::iterator it1;
 
@@ -394,7 +396,7 @@ TEST(TestGroupName, Insert_my_class) {
   ASSERT_EQ(a.size(), 50);
 }
 
-TEST(TestGroupName, Erase_1) {
+TEST(TestMapGroup, Erase_1) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -424,7 +426,7 @@ TEST(TestGroupName, Erase_1) {
   }
   // a.printTree(a.root);
 }
-TEST(TestGroupName, Erase_2) {
+TEST(TestMapGroup, Erase_2) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -453,7 +455,7 @@ TEST(TestGroupName, Erase_2) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestGroupName, Swap) {
+TEST(TestMapGroup, Swap) {
   s21::map<int, double> a1;
   s21::map<int, double> a2;
   std::map<int, double> b1;
@@ -486,7 +488,7 @@ TEST(TestGroupName, Swap) {
   // a1.printTree(a1.root);
 }
 
-TEST(TestGroupName, Merge) {
+TEST(TestMapGroup, Merge) {
   s21::map<int, double> a1;
   s21::map<int, double> a2;
   s21::map<int, double>::iterator it1;
@@ -508,7 +510,7 @@ TEST(TestGroupName, Merge) {
   // a2.printTree(a2.root);
 }
 //________________________________________________Lookup____________________________________________________
-TEST(TestGroupName, Contains) {
+TEST(TestMapGroup, Contains) {
   s21::map<int, std::string> a;
   std::map<int, std::string> b;
   s21::map<int, std::string>::iterator it1;
@@ -523,7 +525,7 @@ TEST(TestGroupName, Contains) {
 }
 
 //________________________________________________Iterators_________________________________________________
-TEST(TestGroupName, operator_plus) {
+TEST(TestMapGroup, operator_plus) {
   s21::map<int, char> a;
   std::map<int, char> b;
   s21::map<int, char>::iterator it1;
@@ -541,7 +543,7 @@ TEST(TestGroupName, operator_plus) {
     ASSERT_EQ(it1->first, it2->first);
 }
 
-TEST(TestGroupName, operator_sub) {
+TEST(TestMapGroup, operator_sub) {
   s21::map<int, int> a;
   std::map<int, int> b;
   s21::map<int, int>::iterator it1;
@@ -573,7 +575,7 @@ TEST(TestGroupName, operator_sub) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, operator_equal) {
+TEST(TestMapGroup, operator_equal) {
   s21::map<std::string, std::string> a;
   std::map<std::string, std::string> b;
   a["Nurlan"] = "The Best";
@@ -588,7 +590,7 @@ TEST(TestGroupName, operator_equal) {
   ASSERT_EQ(it11 == it12, it21 == it22);
 }
 
-TEST(TestGroupName, operator_Arrow) {
+TEST(TestMapGroup, operator_Arrow) {
   s21::map<char, char> a;
   std::map<char, char> b;
   s21::map<char, char>::iterator it1;
@@ -605,7 +607,7 @@ TEST(TestGroupName, operator_Arrow) {
   // a.printTree(a.root);
 }
 
-TEST(TestGroupName, Dereferencing_operator) {
+TEST(TestMapGroup, Dereferencing_operator) {
   s21::map<char, char> a;
   std::map<char, char> b;
   s21::map<char, char>::iterator it1;

@@ -1,5 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
-#define CPP2_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
+#ifndef CPP1_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
+#define CPP1_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
 
 #include "../BinaryTree/BinaryTree.h"
 
@@ -8,16 +8,49 @@ template <typename Key>
 class set : public BinaryTree<Key, Key, Key> {
  public:
   class SetIterator;
+  // class ConstSetIterator;
 
  public:
   using key_type = Key;
-  using iterator = SetIterator;
-  using value_type = std::pair<Key, Key>;
+  using setped_type = Key;
+  using value_type = Key;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using size_type = size_t;
+  // using const_iterator = ConstSetIterator;
+  using iterator = typename BinaryTree<Key, Key, Key>::Iterator;
 
  public:
   set();  // Конструктор по умолчанию
-  void first();
-  // void printTree(typename BinaryTree<Key, Key>::Node* x, int level = 0);
+  set(std::initializer_list<value_type> const &items);
+  set(const set &m) : BinaryTree<Key, Key, Key>(m){};        // copy constructor
+  set(set &&m) : BinaryTree<Key, Key, Key>(std::move(m)){};  // move constructor
+  ~set() = default;
+  set &operator=(set &&m);  // assignment operator overload for moving object
+  set &operator=(
+      const set &m);  // assignment operator overload for copying object
+
+ public:  // Lookup
+  iterator find(const Key &key);
+
+ protected:  // support
+  virtual Key get_key(value_type val) override {
+    BinaryTree<Key, Key, Key>::get_key(val);
+    return Key(val);
+  }
+  virtual Key get_val(value_type val) override {
+    BinaryTree<Key, Key, Key>::get_val(val);
+    return Key(val);
+  }
+
+  virtual bool set_val(typename BinaryTree<Key, Key, Key>::Node *fir,
+                       value_type sec) override {
+    BinaryTree<Key, Key, Key>::set_val(fir, sec);
+    fir->node_key = sec;
+    return true;
+  }
+
+  iterator search(const Key &key);
 };
 
 };  // namespace s21

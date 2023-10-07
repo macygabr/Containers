@@ -2,8 +2,7 @@ CC=g++
 CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest  -pthread
-TEST_FUNC= map_tests.cc
-# TEST_FUNC= main.cc set_tests.cc
+TEST_FUNC= map_tests.cc set_tests.cc
 PATH_TO_FILE = s21_map
 cleanMAC = echo check
 
@@ -33,13 +32,6 @@ clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
 	$(cleanMAC)
 
-# $(FILES).a:
-# 	cd $(PATH_TO_FILE); $(CC) $(CFLAGS) $(FILES).; ar rcs $(FILES).a $(FILES).o; rm *.o 
-
-# test: $(FILES).a
-# 	cd $(PATH_TO_FILE); $(CC) $(TEST_FUNC) $(FILES).a -o test $(TEST_FLAGS)
-# 	./$(PATH_TO_FILE)/test
-# 	make clean
 test: 
 #	make goclang
 	make clean

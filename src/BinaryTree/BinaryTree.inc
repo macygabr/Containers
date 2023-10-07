@@ -191,27 +191,6 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::end() {
   return x;
 }
 
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator() : node(nullptr) {}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator(Node* newnode) : node(newnode)
-// {}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator(const Iterator& it)
-//     : node(it.node) {}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator(const_iterator& it)
-//     : node(it.node) {}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Iterator::Iterator(Iterator&& it) : node(it.node)
-// {
-//   it.node = nullptr;
-// }
-
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
 BinaryTree<Key, T, Value>::Iterator::operator++() {
@@ -449,8 +428,6 @@ void BinaryTree<Key, T, Value>::freeTree(Node* x) {
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
 BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
-  // if (!it.node) return Iterator(root);
-  // cout << "(" << it.node->node_key.first << ")" << endl;
   auto nod = it.node;
   auto lef = it.node->left;
   auto rig = it.node->right;
@@ -492,15 +469,6 @@ BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
     }
     lef->parent = nod;
     nod->left = lef;
-    // cout << "(" << nod->node_key.first << ")" << endl;
-
-    // if (nod->right) {
-    //   nod->right->right = rig;
-    //   rig->parent = nod->right;
-    // } else {
-    //   nod->right = rig;
-    //   rig->parent = nod;
-    // }
   }
 
   delete it.node;
@@ -622,35 +590,36 @@ void BinaryTree<Key, T, Value>::printTree(
   printTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
   if (!x->parent && (!x->left && !x->right)) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]"
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]"
               << "[NULL]"
               << "[NULL]" << std::endl;
   } else if (x->parent && !x->left && !x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
-              << x->parent->node_key.first << "][NULL]"
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
+              << get_val(x->parent->node_key) << "][NULL]"
               << "[NULL]" << std::endl;
   } else if (x->parent && x->left && !x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
-              << x->parent->node_key.first << "][" << x->left->node_key.first
-              << "][NULL]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
+              << get_val(x->parent->node_key) << "]["
+              << get_val(x->left->node_key) << "][NULL]" << std::endl;
   } else if (x->parent && !x->left && x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
-              << x->parent->node_key.first << "][NULL]["
-              << x->right->node_key.first << "]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
+              << get_val(x->parent->node_key) << "][NULL]["
+              << get_val(x->right->node_key) << "]" << std::endl;
   } else if (x->parent && x->left && x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m["
-              << x->parent->node_key.first << "][" << x->left->node_key.first
-              << "][" << x->right->node_key.first << "]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
+              << get_val(x->parent->node_key) << "]["
+              << get_val(x->left->node_key) << "]["
+              << get_val(x->right->node_key) << "]" << std::endl;
   } else if (!x->parent && x->left && x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]["
-              << x->left->node_key.first << "][" << x->right->node_key.first
-              << "]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]["
+              << get_val(x->left->node_key) << "]["
+              << get_val(x->right->node_key) << "]" << std::endl;
   } else if (!x->parent && !x->left && x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL][NULL]["
-              << x->right->node_key.first << "]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL][NULL]["
+              << get_val(x->right->node_key) << "]" << std::endl;
   } else if (!x->parent && x->left && !x->right) {
-    std::cout << "\033[92m" << x->node_key.first << "\033[0m[NULL]["
-              << x->left->node_key.first << "][NULL]" << std::endl;
+    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]["
+              << get_val(x->left->node_key) << "][NULL]" << std::endl;
   }
   printTree(x->left, level + 3);
 }

@@ -8,7 +8,7 @@ class BinaryTree {
   class Iterator;
   class Const_Iterator;
 
- protected:  // change to protected
+ public:
   Node* root;
   Node* terminal_node;
 
@@ -43,7 +43,7 @@ class BinaryTree {
  public:  // Modifiers
   void clear();
   std::pair<iterator, bool> insert(const value_type val);
-  std::pair<iterator, bool> insert(const Key& key = Key(), const T& obj = T());
+  std::pair<iterator, bool> insert(const Key& key, const T& obj);
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   iterator erase(iterator it);
   void swap(BinaryTree& other);
@@ -54,7 +54,7 @@ class BinaryTree {
  public:  // Lookup
   bool contains(const Key& key = Key());
 
- protected:  // suport
+ public:  // suport
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   Node* Nurlanization(Node* x);
@@ -129,7 +129,12 @@ class BinaryTree {
     pointer operator->() const {
       return node ? &(node->node_key) : throw std::exception();
     };
-    reference operator*() const { return node->node_key; };
+    reference operator*() const {
+      if (node)
+        return node->node_key;
+      else
+        throw std::exception();
+    };
 
    public:
     Node* node = nullptr;

@@ -19,10 +19,13 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
  public:
   map();  // Конструктор по умолчанию
   map(std::initializer_list<value_type> const &items);
-  // map(const map &m);       // copy constructor
-  // map(map &&m);            // move constructor
-  // ~map();                  // destructor
-  // operator=(map &&m);  // assignment operator overload for moving object
+  map(const map &m) : BinaryTree<Key, T, value_type>(m){};  // copy constructor
+  map(map &&m)
+      : BinaryTree<Key, T, value_type>(std::move(m)){};  // move constructor
+  ~map() = default;
+  map &operator=(map &&m);  // assignment operator overload for moving object
+  map &operator=(
+      const map &m);  // assignment operator overload for copying object
 
  public:  // Element access
   T &operator[](const Key &key);
@@ -46,6 +49,29 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   }
 
   T &search(bool add, const Key &key);
+
+  //   class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
+  //    public:
+  //     friend class map;
+  //     MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
+  //     MapIterator(typename BinaryTree<Key, T, value_type>::Node *node,
+  //                 typename BinaryTree<Key, T, value_type>::Node *past_node =
+  //                 nullptr)
+  //         : BinaryTree<Key, T, value_type>::Iterator(node, past_node =
+  //         nullptr){};
+  //     value_type &operator*();
+  //   };
+
+  //   class ConstMapIterator : public MapIterator {
+  //    public:
+  //     friend class map;
+  //     ConstMapIterator() : MapIterator(){};
+  //     ConstMapIterator(typename BinaryTree<Key, T, value_type>::Node *node,
+  //                      typename BinaryTree<Key, T, value_type>::Node
+  //                      *past_node = nullptr)
+  //         : MapIterator(node, past_node = nullptr){};
+  //     const_reference operator*() const { return MapIterator::operator*(); };
+  //   };
 };
 
 };  // namespace s21
