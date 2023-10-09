@@ -18,11 +18,10 @@ class list {
   using value_type = T;
   using reference = T &;
   using const_reference = const T &;
-  using iterator = list<T>::listIterator;
-  using const_iterator = list<T>::listConstIterator;
+  using iterator = listIterator;
+  using const_iterator = listConstIterator;
   using size_type = std::size_t;
   using iterator_pointer = T *;
-  //   using const_iterator_pointer = const T *;
 
   list();             // default constructor, creates empty list
   list(size_type n);  // parameterized constructor, creates the list of size n
@@ -64,18 +63,20 @@ class list {
       const_iterator pos,
       list &other);  // transfers elements from list other starting from pos
   void reverse();    // reverses the order of the elements
-  void unique();  //	removes consecutive duplicate elements
-  void sort();    //	sorts the elements
-                  /*
-                    iterator insert_many(const_iterator pos,
-                                         Args &&...args);  // inserts new elements into the
-                                                           // container directly before pos
-                    void insert_many_back(
-                        Args &&...args);  // appends new elements to the end of the container
-                    void insert_many_front(
-                        Args &&...args);  // void insert_many_front(Args&&... args)
-                  */
-                  //  private:
+  void unique();     //	removes consecutive duplicate elements
+  void sort();       //	sorts the elements
+  template <class... Args>
+  iterator insert_many(const_iterator pos,
+                       Args &&...args);  // inserts new elements into the
+                                         // container directly before pos
+  template <class... Args>
+  void insert_many_back(
+      Args &&...args);  // appends new elements to the end of the container
+  template <class... Args>
+  void insert_many_front(
+      Args &&...args);  // void insert_many_front(Args&&... args)
+
+  //  private:
  public:
   struct Node {
     value_type value_;
@@ -84,7 +85,6 @@ class list {
     Node(const value_type &value)
         : value_(value), prev_(nullptr), next_(nullptr) {}
   };
-
   Node *head_;
   Node *tail_;
   Node *end_;
@@ -155,7 +155,86 @@ class list<T>::listIterator {
   //  private:
 };
 
+// template <typename T>
+//   class listConstIterator : public listIterator<T>{
+
+//  public:
+//   listConstIterator() { ptr_ = nullptr; }
+
+//   listConstIterator(Node *ptr) : ptr_(ptr) {}
+
+//   listConstIterator(listIterator<T> other) : listIterator<T>(other) {}
+//   const T &operator*() { return listIterator<T>::operator*(); }
+// };
+
+template <typename T>
+class list<T>::listConstIterator {
+ public:
+ 
+
+
+  listConstIterator() { ptr_ = nullptr; }
+
+  listConstIterator(Node *ptr) : ptr_(ptr) {}
+
+  reference operator*() {
+    if (!this->ptr_) {
+      throw std::invalid_argument("Value is nullptr");
+    }
+    return this->ptr_->value_;
+  }
+
+  listConstIterator operator++(int) {
+    listConstIterator it = *this;
+    ptr_ = ptr_->next_;
+    return it;
+  }
+
+  listConstIterator operator--(int) {
+    listConstIterator it = *this;
+    ptr_ = ptr_->prev_;
+    return it;
+  }
+
+  listConstIterator operator++() {
+    ptr_ = ptr_->next_;
+    return *this;
+  }
+
+  listConstIterator operator--() {
+    ptr_ = ptr_->prev_;
+    return *this;
+  }
+
+  listConstIterator operator+(int n) const {
+    Node *tmp = ptr_;
+    for (size_type i = 0; i < n; i++) {
+      tmp = tmp->next_;
+    }
+    listConstIterator res(tmp);
+    return res;
+  }
+
+  listConstIterator operator-(const size_type value) {
+    Node *tmp = ptr_;
+    for (size_type i = 0; i < value; i++) {
+      tmp = tmp->prev_;
+    }
+    listConstIterator res(tmp);
+    return res;
+  }
+  // ptrdiff_t operator-(const listConstIterator &other) const;
+  bool operator==(const listConstIterator &other) const {
+    return this->ptr_ == other.ptr_;
+  }
+  bool operator!=(const listConstIterator &other) const {
+    return this->ptr_ != other.ptr_;
+  }
+  Node *ptr_;
+  //  private:
+};
+
 }  // namespace s21
-// #include "s21_list.tpp"
+#include "s21_list.tpp"
 
 #endif  // LIST_H

@@ -54,15 +54,15 @@ list<T>::list(const list& l)
   //--------------------
 }
 
+
 /*template <typename value_type>
 list<value_type>::list(list&& l)
     : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
   swap(l);
 }*/
 template <typename T>
-list<T>::list(list&& l)
-    : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
-  swap(l);
+list<T>::list(list&& other)  {
+   std::move(this, other);
 }
 
 /* template <typename value_type>
@@ -174,7 +174,7 @@ typename list<value_type>::size_type list<value_type>::max_size() {
 }*/
 template <typename T>
 typename list<T>::size_type list<T>::max_size() const {
-  return std::numeric_limits<size_type>::max() / sizeof(Node) / 2;
+  return std::numeric_limits<size_type>::max() / sizeof(Node) ;
 }
 
 /*List Modifiers
@@ -281,7 +281,6 @@ void list<T>::erase(iterator pos) {
   } else {
     throw std::invalid_argument("Invalid argument");
   }
-  //   change_end();
 }
 
 /*template <typename value_type>
@@ -310,7 +309,6 @@ void list<T>::push_back(const_reference value) {
     tail_ = new_node;
   }
   size_++;
-  //   change_end();
 }
 
 /*template <typename value_type>
@@ -341,7 +339,6 @@ void list<T>::pop_back() {
   if (last_node == head_) head_ = nullptr;
   delete last_node;
   size_--;
-  //   change_end();
 }
 
 /*template <typename value_type>
@@ -370,7 +367,6 @@ void list<T>::push_front(const_reference value) {
     head_ = new_node;
   }
   size_++;
-  //   change_end();
 }
 
 /* template <typename value_type>
@@ -401,7 +397,6 @@ void list<T>::pop_front() {
   if (first_node == tail_) tail_ = nullptr;
   delete first_node;
   size_--;
-  //   change_end();
 }
 
 /* template <typename value_type>
@@ -417,7 +412,6 @@ void list<T>::swap(list& other) {
   std::swap(this->head_, other.head_);
   std::swap(this->tail_, other.tail_);
   std::swap(this->size_, other.size_);
-  // std::swap(this->end_, other.end_);
 }
 
 /*// template <typename T>
@@ -550,45 +544,30 @@ void list<T>::sort() {
   }
 }
 
-}  // namespace s21
+template <typename T>
+template <typename... Args>
+typename list<T>::iterator list<T>::insert_many(const_iterator pos,
+                                                Args&&... args) {
+  for (const auto& arg : {args...}) {
+    insert(pos, arg);
+  }
+  return pos;
+}
 
-int main() {
-  s21::list<int> my_list{1, 2, 3, 1, 2, 3};
-  // s21::list<int> my_list2{3, 2, 1, 3, 2, 1};
-  // s21::list<int> std_list{1, 2, 3, 1, 2, 3};
-  // s21::list<int> std_list2{3, 2, 1, 3, 2, 1};
-  // my_list.merge(my_list2);
-  my_list.reverse();
-  // std::cout << "[";
-  // for (auto it = my_list.begin(); it != my_list.end(); ++it) {
-  //   std::cout << *it;
-  //   std::cout << ", ";
-  // }
-  // std::cout << "]\n";
-  // s21::list<int> my_list2{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1};
-  //  auto my_it = my_list.begin();
-  // for (size_t i = 0; i != my_list.size(); ++i) {
-  // if (my_it!=my_list.end())
-  //  std::cout <<my_it.ptr_->value_;
-  // ++my_it;
-  // my_list.insert(my_it,6);
-  //     }
-  // my_node++;
-
-  // std::cout << "\n";
-
-  // std::cout << my_node->value_;
-  // my_list.unique();
-  s21::list<int>::Node* my_node = my_list.head_;
-  if (my_list.empty())
-    std::cout << "[ ]\n";
-  else {
-    std::cout << "[";
-    while (my_node != my_list.tail_) {
-      std::cout << my_node->value_ << " ";
-      my_node = my_node->next_;
-    }
-    std::cout << my_node->value_;
-    std::cout << "]\n";
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_back(Args&&... args) {
+  for (const auto& arg : {args...}) {
+    push_back(arg);
   }
 }
+
+template <typename T>
+template <typename... Args>
+void list<T>::insert_many_front(Args&&... args) {
+  for (const auto& arg : {args...}) {
+    push_front(arg);
+  }
+}
+
+}  // namespace s21
