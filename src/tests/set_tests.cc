@@ -1,6 +1,6 @@
 #include <set>
 
-#include "../s21_set/s21_set.h"
+#include "../s21_containers.h"
 #include "gtest/gtest.h"
 
 //________________________________________________Member_functions__________________________________________________
@@ -149,10 +149,10 @@ TEST(TestSetGroup, Insert_int) {
     int x = rand() % 100;
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
   }
-  ASSERT_EQ(a.insert(99).second, true);
-  ASSERT_EQ(a.insert(99).second, false);
-  ASSERT_EQ(b.insert(99).second, true);
-  ASSERT_EQ(b.insert(99).second, false);
+  ASSERT_EQ(a.insert(999).second, true);
+  ASSERT_EQ(a.insert(999).second, false);
+  ASSERT_EQ(b.insert(999).second, true);
+  ASSERT_EQ(b.insert(999).second, false);
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(*it1, *it2);
@@ -250,6 +250,28 @@ TEST(TestSetGroup, Insert_my_class) {
     ASSERT_EQ((*it1).val.second, j);
   }
   ASSERT_EQ(a.size(), 50);
+}
+
+TEST(TestSetGroup, Insert_many) {
+  s21::set<int> a;
+  std::set<int> b;
+  int x1 = 1;
+  int x2 = 2;
+  int x3 = 3;
+  // cout << "\033[94m" << a.insert(x1).second << endl;
+
+  std::vector<std::pair<s21::set<int>::iterator, bool>> v1;
+  v1 = a.insert_many(x1, x2, x3);
+
+  std::vector<std::pair<std::set<int>::iterator, bool>> v2;
+  v2.push_back(b.insert(x1));
+  v2.push_back(b.insert(x2));
+  v2.push_back(b.insert(x3));
+
+  for (int i = 0; i < v1.size(); i++) {
+    ASSERT_EQ(*v1[i].first, *v2[i].first);
+    ASSERT_EQ(v1[i].second, v2[i].second);
+  }
 }
 
 TEST(TestSetGroup, Erase_1) {

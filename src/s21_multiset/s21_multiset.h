@@ -1,11 +1,11 @@
-#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
-#define CPP2_S21_CONTAINERS_3_SRC_S21_SET_S21_SET_H
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_MULTISET_S21_SET_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_MULTISET_S21_SET_H
 
 #include "../BinaryTree/BinaryTree.h"
 
 namespace s21 {
 template <typename Key>
-class set : public BinaryTree<Key, Key, Key> {
+class multiset : public BinaryTree<Key, Key, Key> {
  public:
   using key_type = Key;
   using setped_type = Key;
@@ -17,17 +17,23 @@ class set : public BinaryTree<Key, Key, Key> {
   using iterator = typename BinaryTree<Key, Key, Key>::Iterator;
 
  public:
-  set();  // Конструктор по умолчанию
-  set(std::initializer_list<value_type> const &items);
-  set(const set &m) : BinaryTree<Key, Key, Key>(m){};        // copy constructor
-  set(set &&m) : BinaryTree<Key, Key, Key>(std::move(m)){};  // move constructor
-  ~set() = default;
-  set &operator=(set &&m);  // assignment operator overload for moving object
-  set &operator=(
-      const set &m);  // assignment operator overload for copying object
+  multiset();  // Конструктор по умолчанию
+  multiset(std::initializer_list<value_type> const &items);
+  multiset(const multiset &m)
+      : BinaryTree<Key, Key, Key>(m){};  // copy constructor
+  multiset(multiset &&m)
+      : BinaryTree<Key, Key, Key>(std::move(m)){};  // move constructor
+  ~multiset() = default;
+  multiset &operator=(
+      multiset &&m);  // assignment operator overload for moving object
+  multiset &operator=(
+      const multiset &m);  // assignment operator overload for copying object
 
  public:  // Lookup
   iterator find(const Key &key);
+  iterator insert(const Key &key);
+  // template <class... Args>
+  // std::vector<std::pair<iterator, bool>> insert_many(Args &&...args);
 
  protected:  // support
   virtual Key get_key(value_type val) override {
@@ -45,11 +51,15 @@ class set : public BinaryTree<Key, Key, Key> {
     fir->node_key = sec;
     return true;
   }
+  virtual bool is_multiset() override {
+    BinaryTree<Key, Key, Key>::is_multiset();
+    return true;
+  }
 
   iterator search(const Key &key);
 };
 
 };  // namespace s21
 
-#include "s21_set.inc"
+#include "s21_multiset.inc"
 #endif

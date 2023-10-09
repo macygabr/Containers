@@ -1,5 +1,5 @@
-#ifndef CPP1_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
-#define CPP1_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_MAP_S21_MAP_H
 
 #include "../BinaryTree/BinaryTree.h"
 
@@ -13,8 +13,9 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   using reference = value_type &;
   using const_reference = const value_type &;
   using size_type = size_t;
-  // using const_iterator = ConstMapIterator;
-  // using iterator = MapIterator;
+  using iterator = typename BinaryTree<Key, T, pair<const Key, T>>::Iterator;
+  using const_iterator =
+      typename BinaryTree<Key, T, pair<const Key, T>>::Const_Iterator;
 
  public:
   map();  // Конструктор по умолчанию
@@ -30,6 +31,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
  public:  // Element access
   T &operator[](const Key &key);
   T &at(const Key &key);
+  pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
   virtual Key get_key(value_type val) override {
@@ -47,31 +49,6 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
     fir->node_key.second = sec.second;
     return true;
   }
-
-  T &search(bool add, const Key &key);
-
-  //   class MapIterator : public BinaryTree<Key, T, value_type>::Iterator {
-  //    public:
-  //     friend class map;
-  //     MapIterator() : BinaryTree<Key, T, value_type>::Iterator(){};
-  //     MapIterator(typename BinaryTree<Key, T, value_type>::Node *node,
-  //                 typename BinaryTree<Key, T, value_type>::Node *past_node =
-  //                 nullptr)
-  //         : BinaryTree<Key, T, value_type>::Iterator(node, past_node =
-  //         nullptr){};
-  //     value_type &operator*();
-  //   };
-
-  //   class ConstMapIterator : public MapIterator {
-  //    public:
-  //     friend class map;
-  //     ConstMapIterator() : MapIterator(){};
-  //     ConstMapIterator(typename BinaryTree<Key, T, value_type>::Node *node,
-  //                      typename BinaryTree<Key, T, value_type>::Node
-  //                      *past_node = nullptr)
-  //         : MapIterator(node, past_node = nullptr){};
-  //     const_reference operator*() const { return MapIterator::operator*(); };
-  //   };
 };
 
 };  // namespace s21

@@ -1,24 +1,25 @@
 #include <set>
 
-#include "../s21_set/s21_set.h"
+#include "../s21_containersplus.h"
 #include "gtest/gtest.h"
 
 //________________________________________________Member_functions__________________________________________________
 
-TEST(TestSetGroup, Initializer_list) {
-  s21::set<int> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  std::set<int> b = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+TEST(TestMultisetGroup, Initializer_list) {
+  s21::multiset<int> a = {1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
+  std::multiset<int> b = {1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
   auto it1 = a.begin();
   auto it2 = b.begin();
   for (; it1 != a.end(); it1++, it2++) EXPECT_EQ(*it1, *it2);
+  // a.SimpleprintTree(a.root);
   EXPECT_EQ(a.size(), b.size());
 }
 
-TEST(TestSetGroup, ConstructorCopy) {
-  s21::set<int> a = {1, 3, 4, 5};
-  std::set<int> b = {1, 3, 4, 5};
-  s21::set<int> a_copy = a;
-  std::set<int> b_copy = b;
+TEST(TestMultisetGroup, ConstructorCopy) {
+  s21::multiset<int> a = {1, 1, 1, 1};
+  std::multiset<int> b = {1, 1, 1, 1};
+  s21::multiset<int> a_copy = a;
+  std::multiset<int> b_copy = b;
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
   auto it2 = b_copy.begin();
@@ -27,24 +28,25 @@ TEST(TestSetGroup, ConstructorCopy) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestSetGroup, ConstructorMoveset) {
-  s21::set<int> a = {1, 2, 3, 4, 5, 6};
-  std::set<int> b = {1, 2, 3, 4, 5, 6};
-  s21::set<int> a_copy = std::move(a);
-  std::set<int> b_copy = std::move(b);
+TEST(TestMultisetGroup, ConstructorMovemultiset) {
+  s21::multiset<int> a = {1, 2, 1, 4, 1, 6};
+  std::multiset<int> b = {1, 2, 1, 4, 1, 6};
+  s21::multiset<int> a_copy = std::move(a);
+  std::multiset<int> b_copy = std::move(b);
   EXPECT_EQ(a.size(), b.size());
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
   auto it2 = b_copy.begin();
   for (; it1 != a_copy.end(); ++it1, ++it2) EXPECT_EQ(*it1, *it2);
   EXPECT_EQ(a.size(), b.size());
+  // a_copy.printTree(a_copy.root);
 }
 
 //________________________________________________Iterators__________________________________________________
 
-TEST(TestSetGroup, Begin) {
-  s21::set<char> a = {'N', 'U', 'R', 'L', 'A', 'N'};
-  std::set<char> b = {'N', 'U', 'R', 'L', 'A', 'N'};
+TEST(TestMultisetGroup, Begin) {
+  s21::multiset<char> a = {'N', 'U', 'N', 'U', 'U', 'N'};
+  std::multiset<char> b = {'N', 'U', 'N', 'U', 'U', 'N'};
   auto it1 = a.begin();
   auto it2 = b.begin();
   ASSERT_EQ(*it1, *it2);
@@ -52,16 +54,14 @@ TEST(TestSetGroup, Begin) {
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(TestSetGroup, End) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TEST(TestMultisetGroup, End) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  s21::multiset<int>::iterator it1;
+  std::multiset<int>::iterator it2;
 
-  for (int i = 1; i < 50; i++) {
-    auto x = rand() % 100;
-    ASSERT_EQ(a.insert(i).second, b.insert(i).second);
-  }
+  for (int i = 1; i < 50; i++) ASSERT_EQ(*a.insert(1), *b.insert(1));
+
   for (it1 = a.begin(), it2 = b.begin(); it2 != b.end(); it1++, it2++)
     ASSERT_EQ(*a.find(*it1), *b.find(*it2));
 
@@ -97,24 +97,24 @@ TEST(TestSetGroup, End) {
 }
 
 //________________________________________________Capacity__________________________________________________
-TEST(TestSetGroup, Capacity) {
-  s21::set<std::string> a;
-  std::set<std::string> b;
+TEST(TestMultisetGroup, Capacity) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
   ASSERT_EQ(a.empty(), b.empty());
   a.insert("Nurlan");
   b.insert("Nurlan");
   ASSERT_EQ(a.empty(), b.empty());
-  s21::set<std::string>::iterator it1 = a.begin();
-  std::set<std::string>::iterator it2 = b.begin();
+  s21::multiset<std::string>::iterator it1 = a.begin();
+  std::multiset<std::string>::iterator it2 = b.begin();
   a.erase(it1);
   b.erase(it2);
   ASSERT_EQ(a.empty(), b.empty());
   // a.printTree(a.root);
 }
 
-TEST(TestSetGroup, Size) {
-  s21::set<std::string> a;
-  std::set<std::string> b;
+TEST(TestMultisetGroup, Size) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
   ASSERT_EQ(a.size(), b.size());
   for (int i = 0; i < 6; i++) {
     a.insert("Nurlan");
@@ -125,9 +125,9 @@ TEST(TestSetGroup, Size) {
 
 //________________________________________________Modifiers_________________________________________________
 
-TEST(TestSetGroup, Clear) {
-  s21::set<int> a;
-  std::set<int> b;
+TEST(TestMultisetGroup, Clear) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
   a.clear();
   b.clear();
   EXPECT_EQ(a.empty(), b.empty());
@@ -139,54 +139,17 @@ TEST(TestSetGroup, Clear) {
   EXPECT_EQ(a.empty(), b.empty());
 }
 
-TEST(TestSetGroup, Insert_int) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TEST(TestMultisetGroup, Insert_int) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  s21::multiset<int>::iterator it1;
+  std::multiset<int>::iterator it2;
 
   for (int i = 1; i < 50; i++) {
     int x = rand() % 100;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
-  ASSERT_EQ(a.insert(99).second, true);
-  ASSERT_EQ(a.insert(99).second, false);
-  ASSERT_EQ(b.insert(99).second, true);
-  ASSERT_EQ(b.insert(99).second, false);
-
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
-    ASSERT_EQ(*it1, *it2);
-
-  ASSERT_EQ(a.size(), b.size());
-  // a.printTree(a.root);
-}
-TEST(TestSetGroup, Insert_char) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
-
-  for (int i = 0; i < 50; i++) {
-    char x = 'N' + i;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
-  }
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
-    ASSERT_EQ(*it1, *it2);
-
-  ASSERT_EQ(a.size(), b.size());
-  // a.printTree(a.root);
-}
-
-TEST(TestSetGroup, Insert_string) {
-  s21::set<std::string> a;
-  std::set<std::string> b;
-  s21::set<std::string>::iterator it1;
-  std::set<std::string>::iterator it2;
-
-  for (int i = 0; i < 50; i++) {
-    std::string x = std::to_string(i);
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
-  }
+  ASSERT_EQ(*a.insert(99), *b.insert(99));
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(*it1, *it2);
@@ -195,20 +158,49 @@ TEST(TestSetGroup, Insert_string) {
   // a.printTree(a.root);
 }
 
-TEST(TestSetGroup, Insert_pair) {
-  s21::set<std::pair<int, int>> a;
-  std::set<std::pair<int, int>> b;
-  s21::set<std::pair<int, int>>::iterator it1;
-  std::set<std::pair<int, int>>::iterator it2;
+TEST(TestMultisetGroup, Insert_char) {
+  s21::multiset<char> a;
+  std::multiset<char> b;
+  s21::multiset<char>::iterator it1;
+  std::multiset<char>::iterator it2;
 
-  for (int i = 0, j = 49; i < 50; i++, j--) {
-    std::pair<int, int> x = {i, j};
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
-  }
+  for (int i = 0; i < 50; i++) ASSERT_EQ(*a.insert('N'), *b.insert('N'));
+
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+    ASSERT_EQ(*it1, *it2);
+
+  ASSERT_EQ(a.size(), b.size());
+  // a.printTree(a.root);
+}
+
+TEST(TestMultisetGroup, Insert_string) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
+  s21::multiset<std::string>::iterator it1;
+  std::multiset<std::string>::iterator it2;
+
+  for (int i = 0; i < 50; i++) ASSERT_EQ(*a.insert("OK"), *b.insert("OK"));
+
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
+    ASSERT_EQ(*it1, *it2);
+
+  ASSERT_EQ(a.size(), b.size());
+  // a.printTree(a.root);
+}
+
+TEST(TestMultisetGroup, Insert_pair) {
+  s21::multiset<std::pair<int, int>> a;
+  std::multiset<std::pair<int, int>> b;
+  s21::multiset<std::pair<int, int>>::iterator it1;
+  std::multiset<std::pair<int, int>>::iterator it2;
+
+  for (int i = 0; i < 50; i++)
+    ASSERT_EQ(*a.insert(std::pair<int, int>{1, 2}),
+              *b.insert(std::pair<int, int>{1, 2}));
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
     ASSERT_EQ((*it1).first, (*it2).first);
-    ASSERT_EQ((*it1).second, (*it2).second);
+    ASSERT_EQ((*it1), (*it2));
   }
   ASSERT_EQ(a.size(), b.size());
 }
@@ -235,34 +227,55 @@ class my_class {
 };
 }  // namespace s21
 
-TEST(TestSetGroup, Insert_my_class) {
-  s21::set<s21::my_class> a;
-  s21::set<s21::my_class>::iterator it1;
+TEST(TestMultisetGroup, Insert_my_class) {
+  s21::multiset<s21::my_class> a;
+  s21::multiset<s21::my_class>::iterator it1;
 
-  for (int i = 0, j = 49; i < 50; i++, j--) {
-    s21::my_class a1(i, j);
+  for (int i = 0; i < 50; i++) {
+    s21::my_class a1(10, 11);
     s21::my_class x = a1;
-    ASSERT_EQ(a.insert(x).second, true);
+    *a.insert(x);
   }
-  int i = 0, j = 49;
-  for (it1 = a.begin(); it1 != a.end(); it1++, i++, j--) {
-    ASSERT_EQ((*it1).val.first, i);
-    ASSERT_EQ((*it1).val.second, j);
+  for (it1 = a.begin(); it1 != a.end(); it1++) {
+    ASSERT_EQ((*it1).val.first, 10);
+    ASSERT_EQ((*it1).val.second, 11);
   }
   ASSERT_EQ(a.size(), 50);
 }
 
-TEST(TestSetGroup, Erase_1) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
-  s21::set<int>::iterator save_it1;
-  std::set<int>::iterator save_it2;
+TEST(TestMultisetGroup, Insert_many) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  int x1 = 1;
+  int x2 = 2;
+  int x3 = 3;
+  // cout << "\033[94m" << a.insert(x1).second << endl;
+
+  std::vector<std::pair<s21::multiset<int>::iterator, bool>> v1;
+  v1 = a.insert_many(x1, x2, x3);
+
+  std::vector<std::pair<std::multiset<int>::iterator, bool>> v2;
+  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x1), true});
+  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x2), true});
+  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x3), true});
+
+  for (int i = 0; i < v1.size(); i++) {
+    ASSERT_EQ(*v1[i].first, *v2[i].first);
+    ASSERT_EQ(v1[i].second, v2[i].second);
+  }
+}
+
+TEST(TestMultisetGroup, Erase_1) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  s21::multiset<int>::iterator it1;
+  std::multiset<int>::iterator it2;
+  s21::multiset<int>::iterator save_it1;
+  std::multiset<int>::iterator save_it2;
 
   for (int i = 0; i < 50; i++) {
     int x = rand() % 100;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
 
   int i = 0;
@@ -281,15 +294,14 @@ TEST(TestSetGroup, Erase_1) {
   // a.printTree(a.root);
 }
 
-TEST(TestSetGroup, Erase_2) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TEST(TestMultisetGroup, Erase_2) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  s21::multiset<int>::iterator it1;
+  std::multiset<int>::iterator it2;
 
   for (int i = 0; i < 50; i++) {
-    int x = i;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    ASSERT_EQ(*a.insert(11), *b.insert(11));
   }
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
@@ -310,21 +322,21 @@ TEST(TestSetGroup, Erase_2) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestSetGroup, Swap) {
-  s21::set<double> a1;
-  s21::set<double> a2;
-  std::set<double> b1;
-  std::set<double> b2;
-  s21::set<double>::iterator it1;
-  std::set<double>::iterator it2;
+TEST(TestMultisetGroup, Swap) {
+  s21::multiset<double> a1;
+  s21::multiset<double> a2;
+  std::multiset<double> b1;
+  std::multiset<double> b2;
+  s21::multiset<double>::iterator it1;
+  std::multiset<double>::iterator it2;
 
   for (int i = 0, j = 49; i < 50; i++, j--) {
     double x = j / 10.;
-    ASSERT_EQ(a1.insert(x).second, b1.insert(x).second);
+    ASSERT_EQ(*a1.insert(x), *b1.insert(x));
   }
   for (int i = 0, j = 49; i < 50; i++, j--) {
     double x = j << 1;
-    ASSERT_EQ(a2.insert(x).second, b2.insert(x).second);
+    ASSERT_EQ(*a2.insert(x), *b2.insert(x));
   }
 
   for (it1 = a1.begin(), it2 = b1.begin(); it1 != a1.end(); it1++, it2++)
@@ -343,39 +355,38 @@ TEST(TestSetGroup, Swap) {
   // a1.printTree(a1.root);
 }
 
-TEST(TestSetGroup, Merge) {
-  s21::set<double> a1;
-  s21::set<double> a2;
-  s21::set<double>::iterator it1;
-  for (int i = 0; i <= 10; i++) {
-    a1.insert(i).second;
-  }
-  for (int i = 5; i <= 15; i++) {
-    a2.insert(i).second;
-  }
+TEST(TestMultisetGroup, Merge) {
+  s21::multiset<double> a1;
+  s21::multiset<double> a2;
+  s21::multiset<double>::iterator it1;
+  for (int i = 0; i <= 10; i++) a1.insert(i);
+
+  for (int i = 5; i <= 15; i++) a2.insert(i);
 
   a1.merge(a2);
   int i = 0;
-  for (it1 = a1.begin(); i <= 10; i++, it1++) ASSERT_EQ(*it1, i);
-  i = 11;
-  for (int i = 11; i <= 15; i++, it1++) ASSERT_EQ(*it1, i);
+  for (it1 = a1.begin(); i < 5; i++, it1++) ASSERT_EQ(*it1, i);
   i = 5;
-  it1 = a2.begin();
-  for (int i = 5; i <= 10; i++, it1++) ASSERT_EQ(*it1, i);
-  ASSERT_EQ(a2.size(), 6);
+  for (int i = 5; i <= 10; it1++, i++) {
+    ASSERT_EQ(*it1++, i);
+    ASSERT_EQ(*it1, i);
+  }
+  for (i = 11; i <= 15; i++, it1++) ASSERT_EQ(*it1, i);
+  ASSERT_EQ(a1.size(), 22);
+  ASSERT_EQ(a2.size(), 0);
 
   // a1.SimpleprintTree(a1.root);
   // a2.printTree(a2.root);
 }
 //________________________________________________Lookup____________________________________________________
-TEST(TestSetGroup, Contains) {
-  s21::set<std::string> a;
-  std::set<std::string> b;
-  s21::set<std::string>::iterator it1;
+TEST(TestMultisetGroup, Contains) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
+  s21::multiset<std::string>::iterator it1;
 
   for (int i = 0; i < 50; i++) {
     std::string x = std::to_string(i);
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
 
   for (int i = 0; i < 50; i++) ASSERT_EQ(a.contains(std::to_string(i)), true);
@@ -384,15 +395,15 @@ TEST(TestSetGroup, Contains) {
 }
 
 //________________________________________________Iterators_________________________________________________
-TEST(TestSetGroup, operator_plus) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
+TEST(TestMultisetGroup, operator_plus) {
+  s21::multiset<char> a;
+  std::multiset<char> b;
+  s21::multiset<char>::iterator it1;
+  std::multiset<char>::iterator it2;
 
   for (int i = 0; i < 50; i++) {
-    char x = i;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    char x = 'N';
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
@@ -402,15 +413,15 @@ TEST(TestSetGroup, operator_plus) {
     ASSERT_EQ(*it1, *it2);
 }
 
-TEST(TestSetGroup, operator_sub) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TEST(TestMultisetGroup, operator_sub) {
+  s21::multiset<int> a;
+  std::multiset<int> b;
+  s21::multiset<int>::iterator it1;
+  std::multiset<int>::iterator it2;
 
   for (int i = 0; i < 10; i++) {
-    int x = i;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    int x = 4;
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
 
   it1 = a.end();
@@ -434,30 +445,30 @@ TEST(TestSetGroup, operator_sub) {
   // a.printTree(a.root);
 }
 
-TEST(TestSetGroup, operator_equal) {
-  s21::set<std::string> a;
-  std::set<std::string> b;
+TEST(TestMultisetGroup, operator_equal) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
   a.insert("Nurlan");
   b.insert("Nurlan");
-  s21::set<std::string>::iterator it11 = a.begin();
-  s21::set<std::string>::iterator it12 = a.begin();
-  std::set<std::string>::iterator it21 = b.end();
-  std::set<std::string>::iterator it22 = b.end();
+  s21::multiset<std::string>::iterator it11 = a.begin();
+  s21::multiset<std::string>::iterator it12 = a.begin();
+  std::multiset<std::string>::iterator it21 = b.end();
+  std::multiset<std::string>::iterator it22 = b.end();
   ASSERT_EQ(it11 != it11, it21 != it21);
   ASSERT_EQ(it11 == it11, it21 == it21);
   ASSERT_EQ(it11 != it12, it21 != it22);
   ASSERT_EQ(it11 == it12, it21 == it22);
 }
 
-TEST(TestSetGroup, operator_Arrow) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
+TEST(TestMultisetGroup, operator_Arrow) {
+  s21::multiset<char> a;
+  std::multiset<char> b;
+  s21::multiset<char>::iterator it1;
+  std::multiset<char>::iterator it2;
   EXPECT_THROW(*it1, std::exception);
   for (int i = 0; i < 26; i++) {
-    char x = 'a' + i;
-    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+    char x = 'a';
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
   }
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2)

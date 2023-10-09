@@ -30,35 +30,20 @@ map<Key, T>& map<Key, T>::operator=(const map& other) {
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
-  return search(true, key);
+  return BinaryTree<Key, T, value_type>::search(true, key);
 }
 
 template <typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-  return search(false, key);
+  return BinaryTree<Key, T, value_type>::search(false, key);
+}
+
+template <typename Key, typename T>
+pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
+    const Key& key, const T& obj) {
+  return BinaryTree<Key, T, value_type>::insert_or_assign(key, obj);
 }
 
 //________________________________________________Support______________________________________________________________
-
-template <typename Key, typename T>
-T& map<Key, T>::search(bool add, const Key& key) {
-  auto root = BinaryTree<Key, T, value_type>::root;
-  auto x = root;
-  auto terminal_node = BinaryTree<Key, T, value_type>::terminal_node;
-
-  while (x && x != terminal_node) {
-    if (key == x->node_key.first) return x->node_key.second;
-    if (key > x->node_key.first)
-      x = x->right;
-    else
-      x = x->left;
-  }
-  if (add) {
-    auto res = BinaryTree<Key, T, value_type>::insert(Key(key), T());
-    return res.first.node->node_key.second;
-  } else
-    throw std::out_of_range("Key not found");
-  return root->node_key.second;
-}
 
 }  // namespace s21

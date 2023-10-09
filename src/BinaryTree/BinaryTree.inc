@@ -76,7 +76,7 @@ BinaryTree<Key, T, Value>::insert(const value_type val) {
   if (root == terminal_node) root = nullptr;
 
   add_terminal_node(root, false);
-  res = insert_recursive(root, val, &it_result, false);
+  res = insert_recursive(root, val, &it_result, false, is_multiset());
   res.first = it_result;
   add_terminal_node(root, true);
   return res;
@@ -106,12 +106,22 @@ BinaryTree<Key, T, Value>::insert_or_assign(const Key& key, const T& obj) {
 }
 
 template <typename Key, typename T, typename Value>
+template <class... Args>
+std::vector<std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>>
+BinaryTree<Key, T, Value>::insert_many(Args&&... args) {
+  std::vector<std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>>
+      vec;
+  for (const auto& arg : {args...}) vec.push_back(this->insert(arg));
+
+  return vec;
+}
+
+template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
     iterator it) {
   if (!it.node) throw std::out_of_range("Iterator not found");
   if (it.node == terminal_node) return Iterator(terminal_node);
   auto nod = it.node;
-  // if(it.node->parent) auto par = it.node->parent;
   auto lef = it.node->left;
   auto rig = it.node->right;
   if (lef && rig)
@@ -302,8 +312,7 @@ template <typename Key, typename T, typename Value>
 std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>
 BinaryTree<Key, T, Value>::insert_recursive(Node* x, value_type val,
                                             Iterator* it_result,
-                                            bool permission) {
-  bool bool_result = true;
+                                            bool permission, bool multisetOn) {
   std::pair<iterator, bool> pair;
   if (!x || x == terminal_node) {
     Node* new_node = new Node(val);
@@ -313,27 +322,34 @@ BinaryTree<Key, T, Value>::insert_recursive(Node* x, value_type val,
   }
   if (get_key(val) == get_key(x->node_key)) {
     if (!permission) {
-      it_result->node = x;
-      return std::pair<iterator, bool>(Iterator(x), false);
+      if (multisetOn) {
+        pair =
+            insert_recursive(x->right, val, it_result, permission, multisetOn);
+        x->right = pair.first.node;
+        x->right->parent = x;
+      } else {
+        it_result->node = x;
+        return std::pair<iterator, bool>(Iterator(x), false);
+      }
     } else
       set_val(x, val);  // x->node_key.second = val.second;
   } else {
     if (get_key(val) < get_key(x->node_key)) {
-      pair = insert_recursive(x->left, val, it_result, permission);
+      pair = insert_recursive(x->left, val, it_result, permission, multisetOn);
       x->left = pair.first.node;
       x->left->parent = x;
     }
 
     if (get_key(val) > get_key(x->node_key)) {
-      pair = insert_recursive(x->right, val, it_result, permission);
+      pair = insert_recursive(x->right, val, it_result, permission, multisetOn);
       x->right = pair.first.node;
       x->right->parent = x;
     }
   }
 
   get_balance_factor(x);
-  bool_result = pair.second;
-  return std::pair<iterator, bool>(Iterator(Nurlanization(x)), bool_result);
+
+  return std::pair<iterator, bool>(Iterator(Nurlanization(x)), pair.second);
 }
 
 template <typename Key, typename T, typename Value>
@@ -570,6 +586,25 @@ BinaryTree<Key, T, Value>::copy_recursive(Node* x) {
   next->right = copy_recursive(x->right);
   if (next->right) next->right->parent = next;
   return next;
+}
+
+template <typename Key, typename T, typename Value>
+T& BinaryTree<Key, T, Value>::search(bool add, const Key& key) {
+  auto x = root;
+
+  while (x && x != terminal_node) {
+    if (key == x->node_key.first) return x->node_key.second;
+    if (key > x->node_key.first)
+      x = x->right;
+    else
+      x = x->left;
+  }
+  if (add) {
+    auto res = insert(Key(key), T());
+    return res.first.node->node_key.second;
+  } else
+    throw std::out_of_range("Key not found");
+  return root->node_key.second;
 }
 
 template <typename Key, typename T, typename Value>

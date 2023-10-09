@@ -1,6 +1,6 @@
 #include <map>
 
-#include "../s21_map/s21_map.h"
+#include "../s21_containers.h"
 #include "gtest/gtest.h"
 
 //________________________________________________Member_functions__________________________________________________
@@ -17,6 +17,8 @@ TEST(TestMapGroup, Initializer_list) {
     EXPECT_EQ(it1->second, it2->second);
   }
   EXPECT_EQ(a.size(), b.size());
+  // s21::map<int, char>:
+  // std::map<int, char>:
 }
 
 TEST(TestMapGroup, ConstructorCopy) {
@@ -329,9 +331,9 @@ TEST(TestMapGroup, Insert_or_assign_int_string) {
 
   for (int i = 49; i >= 0; i--) a.insert_or_assign(i, std::to_string(i));
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(it1->first, it2->first);
-  }
+
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
 }
@@ -394,6 +396,29 @@ TEST(TestMapGroup, Insert_my_class) {
     ASSERT_EQ(it1->first.val.second, it1->second.val.first);
   }
   ASSERT_EQ(a.size(), 50);
+}
+
+TEST(TestMapGroup, Insert_many) {
+  s21::map<int, int> a;
+  std::map<int, int> b;
+  std::pair<int, int> x1 = {1, 2};
+  std::pair<int, int> x2 = {2, 3};
+  std::pair<int, int> x3 = {3, 4};
+  // cout << "\033[94m" << a.insert(x1).second << endl;
+
+  std::vector<std::pair<s21::map<int, int>::iterator, bool>> v1;
+  v1 = a.insert_many(x1, x2, x3);
+
+  std::vector<std::pair<std::map<int, int>::iterator, bool>> v2;
+  v2.push_back(b.insert(x1));
+  v2.push_back(b.insert(x2));
+  v2.push_back(b.insert(x3));
+
+  for (int i = 0; i < v1.size(); i++) {
+    ASSERT_EQ(v1[i].first->first, v2[i].first->first);
+    ASSERT_EQ(v1[i].first->second, v2[i].first->second);
+    ASSERT_EQ(v1[i].second, v2[i].second);
+  }
 }
 
 TEST(TestMapGroup, Erase_1) {

@@ -1,14 +1,17 @@
 #ifndef CPP2_S21_CONTAINERS_3_SRC_S21_MAP_BINARYTREE_H
 #define CPP2_S21_CONTAINERS_3_SRC_S21_MAP_BINARYTREE_H
+
+#include <vector>
+
 namespace s21 {
 template <typename Key, typename T, typename Value>
 class BinaryTree {
- public:
+ protected:
   class Node;
   class Iterator;
   class Const_Iterator;
 
- public:
+ protected:
   Node* root;
   Node* terminal_node;
 
@@ -44,17 +47,17 @@ class BinaryTree {
   void clear();
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key, const T& obj);
-  std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   iterator erase(iterator it);
   void swap(BinaryTree& other);
   void merge(BinaryTree& other);
-  // vector<std::pair<iterator,bool>> insert_many(Args&&... args) // inserts new
-  // elements into the container
+  template <class... Args>
+  std::vector<std::pair<iterator, bool>> insert_many(Args&&... args);
 
  public:  // Lookup
   bool contains(const Key& key = Key());
 
- public:  // suport
+ protected:  // suport
+  std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
   Node* rotate_Left(Node* x);
   Node* rotate_Right(Node* x);
   Node* Nurlanization(Node* x);
@@ -64,15 +67,18 @@ class BinaryTree {
   virtual Key get_key(value_type val) { return Key(); };
   virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
+  virtual bool is_multiset() { return 0; };
   std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
                                              Iterator* it_result,
-                                             bool permission);
+                                             bool permission,
+                                             bool multisetOn = false);
   void freeTree(Node* x);
   iterator delete_node_with_all_childrens(iterator it);
   iterator delete_node_with_right_childrens(iterator it);
   iterator delete_node_with_left_childrens(iterator it);
   iterator delete_node_with_not_childrens(iterator it);
   bool check_balance();
+  T& search(bool add, const Key& key);
   Node* copy_recursive(Node* x);
   void SimpleprintTree(typename BinaryTree<Key, T, value_type>::Node* root,
                        int level = 0);
@@ -82,7 +88,7 @@ class BinaryTree {
  private:  // constants
   size_type MAX_SIZE = 100;
 
- public:
+ protected:
   class Node {
    public:
     Node* left;
@@ -108,15 +114,14 @@ class BinaryTree {
           node_key(value_type(val)) {}
   };
 
- public:
+ protected:
   class Iterator {
    public:
+    friend class BinaryTree<Key, T, value_type>;
+
     Iterator() : node(nullptr){};
     Iterator(Node* newnode) : node(newnode){};
-    // Iterator(const Iterator& it);
-    // Iterator(const_iterator& it);
-    // ~Iterator(){if(node) delete node;};
-    // Iterator(Iterator&& it); // не использую?
+    ~Iterator() = default;
 
    public:
     iterator& operator=(const iterator& it);
@@ -136,12 +141,14 @@ class BinaryTree {
         throw std::exception();
     };
 
-   public:
+   protected:
     Node* node = nullptr;
   };
 
- public:
-  class Const_Iterator : public Iterator {};
+ protected:
+  class Const_Iterator : public Iterator {
+    const_reference operator*() const { return Iterator::operator*(); };
+  };
 };
 };  // namespace s21
 #include "BinaryTree.inc"
