@@ -195,7 +195,24 @@ BinaryTree<Key, T, Value>::begin() {
 }
 
 template <typename Key, typename T, typename Value>
+typename BinaryTree<Key, T, Value>::const_iterator
+BinaryTree<Key, T, Value>::begin() const {
+  if (!root) return root;
+  iterator begin(root);
+  while (begin.node->left) begin.node = begin.node->left;
+  return begin;
+}
+
+template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::end() {
+  auto x = root;
+  while (x->right) x = x->right;
+  return x;
+}
+
+template <typename Key, typename T, typename Value>
+typename BinaryTree<Key, T, Value>::const_iterator
+BinaryTree<Key, T, Value>::end() const {
   auto x = root;
   while (x->right) x = x->right;
   return x;
@@ -298,7 +315,7 @@ BinaryTree<Key, T, Value>::size() {
   size_type res = 0;
   if (root)
     for (auto it = begin(); it != end(); it++) res++;
-  return size_type(res);
+  return res;
 }
 
 template <typename Key, typename T, typename Value>

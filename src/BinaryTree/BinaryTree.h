@@ -36,7 +36,9 @@ class BinaryTree {
 
  public:             // Iterators
   iterator begin();  // returns an iterator to the beginning
-  iterator end();    // returns an iterator to the end
+  const_iterator begin() const;
+  iterator end();  // returns an iterator to the end
+  const_iterator end() const;
 
  public:  // Capacity
   bool empty();

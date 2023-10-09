@@ -33,8 +33,18 @@ T& map<Key, T>::operator[](const Key& key) {
   return BinaryTree<Key, T, value_type>::search(true, key);
 }
 
+// template <typename Key, typename T>
+// T& map<Key, T>::operator[](const Key&& key) {
+//   return BinaryTree<Key, T, value_type>::swap(*search(true, key), key);
+// }
+
 template <typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
+  return BinaryTree<Key, T, value_type>::search(false, key);
+}
+
+template <typename Key, typename T>
+const T& map<Key, T>::at(const Key& key) const {
   return BinaryTree<Key, T, value_type>::search(false, key);
 }
 

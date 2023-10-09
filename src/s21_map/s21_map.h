@@ -30,7 +30,9 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
 
  public:  // Element access
   T &operator[](const Key &key);
+  // T &operator[](Key &&key);
   T &at(const Key &key);
+  const T &at(const Key &key) const;
   pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
