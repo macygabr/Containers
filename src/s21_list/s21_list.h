@@ -75,6 +75,8 @@ class list {
   template <class... Args>
   void insert_many_front(
       Args &&...args);  // void insert_many_front(Args&&... args)
+        void change_end();
+
 
   //  private:
  public:

@@ -1,14 +1,14 @@
-#include "s21_list.h"
-
 #include <iostream>
 #include <list>
+
+#include "s21_list.h"
 // --------------------------------------------------------------------Functions
 namespace s21 {
 
 template <typename T>
 list<T>::list() : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
   end_ = new Node(size_);
-  //   change_end();
+  change_end();
 }
 
 template <typename T>
@@ -21,7 +21,7 @@ list<T>::list(size_type n)
   for (size_type i = 0; i < n; ++i) {
     push_back(value_type());
   }
-  //   change_end();
+  change_end();
 }
 
 template <typename T>
@@ -30,7 +30,7 @@ list<T>::list(std::initializer_list<value_type> const& items)
   end_ = new Node(size_);
   for (const auto& item : items) {
     push_back(item);
-    // change_end();
+    change_end();
   }
 }
 
@@ -54,15 +54,14 @@ list<T>::list(const list& l)
   //--------------------
 }
 
-
 /*template <typename value_type>
 list<value_type>::list(list&& l)
     : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
   swap(l);
 }*/
 template <typename T>
-list<T>::list(list&& other)  {
-   std::move(this, other);
+list<T>::list(list&& other) {
+  std::move(this, other);
 }
 
 /* template <typename value_type>
@@ -174,7 +173,7 @@ typename list<value_type>::size_type list<value_type>::max_size() {
 }*/
 template <typename T>
 typename list<T>::size_type list<T>::max_size() const {
-  return std::numeric_limits<size_type>::max() / sizeof(Node) ;
+  return std::numeric_limits<size_type>::max() / sizeof(Node);
 }
 
 /*List Modifiers
@@ -235,6 +234,7 @@ typename list<T>::iterator list<T>::insert(iterator pos,
     current->prev_ = add;
     size_++;
   }
+  change_end();
   return iterator(add);
 }
 
@@ -281,6 +281,7 @@ void list<T>::erase(iterator pos) {
   } else {
     throw std::invalid_argument("Invalid argument");
   }
+  change_end();
 }
 
 /*template <typename value_type>
@@ -309,6 +310,7 @@ void list<T>::push_back(const_reference value) {
     tail_ = new_node;
   }
   size_++;
+  change_end();
 }
 
 /*template <typename value_type>
@@ -339,6 +341,7 @@ void list<T>::pop_back() {
   if (last_node == head_) head_ = nullptr;
   delete last_node;
   size_--;
+  change_end();
 }
 
 /*template <typename value_type>
@@ -367,6 +370,7 @@ void list<T>::push_front(const_reference value) {
     head_ = new_node;
   }
   size_++;
+  change_end();
 }
 
 /* template <typename value_type>
@@ -397,6 +401,7 @@ void list<T>::pop_front() {
   if (first_node == tail_) tail_ = nullptr;
   delete first_node;
   size_--;
+  change_end();
 }
 
 /* template <typename value_type>
@@ -448,10 +453,10 @@ void list<T>::merge(list& other) {
     this->push_back(my_node->value_);
     my_node = my_node->next_;
   }
-  if (my_node) {
-    this->push_back(my_node->value_);
-    other.clear();
-  }
+  if (my_node) this->push_back(my_node->value_);
+  if (size_!=other.size_ && other.head_!=nullptr) 
+  sort();
+  if (my_node) other.clear();
 }
 
 /*/ // template <typename value_type>
@@ -470,7 +475,7 @@ void list<T>::reverse() {
   if (size_ > 1) {
     Node* start = head_;
     Node* fin = tail_;
-    for (int step = 0; step < size_ / 2; step++) {
+    for (size_type step = 0; step < size_ / 2; step++) {
       std::swap(start->value_, fin->value_);
       start = start->next_;
       fin = fin->prev_;
@@ -533,7 +538,7 @@ void list<value_type>::sort() {
 template <typename T>
 void list<T>::sort() {
   if (size_ > 1) {
-    for (int j = 0; j < size_; j++) {
+    for (size_type j = 0; j < size_; j++) {
       Node* my_node = head_;
       while (my_node != tail_) {
         if (my_node->value_ > my_node->next_->value_)
@@ -570,4 +575,18 @@ void list<T>::insert_many_front(Args&&... args) {
   }
 }
 
+template <typename T>
+void list<T>::change_end() {
+  if (end_) {
+    end_->next_ = head_;
+    end_->prev_ = tail_;
+    end_->value_ = size();
+    if (head_) {
+      head_->prev_ = end_;
+    }
+    if (tail_) {
+      tail_->next_ = end_;
+    }
+  }
+}
 }  // namespace s21

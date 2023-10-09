@@ -274,12 +274,12 @@ TEST(ListTest, end_1) {
   EXPECT_EQ(*my_list1.begin(), *std_list2.begin());
 }
 
-// TEST(ListTest, end_2) {
-//   s21::list<int> my_list1(4);
+TEST(ListTest, end_2) {
+  s21::list<int> my_list1(4);
 
-//   std::list<int> std_list2(4);
-//   EXPECT_EQ(*my_list1.end(), *std_list2.end());
-// }
+  std::list<int> std_list2(4);
+  EXPECT_EQ(*my_list1.end(), *std_list2.end());
+}
 
 TEST(ListTest, end_3) {
   s21::list<int> my_list1;
@@ -288,27 +288,28 @@ TEST(ListTest, end_3) {
   EXPECT_EQ(*my_list1.end(), *std_list2.end());
 }
 
-// TEST(ListTest, Merge_1) {
-//   s21::list<int> my_list1{1, 9999, 20000};
-//   s21::list<int> my_list2{500, 15000, 30000};
-//   my_list1.merge(my_list2);
+TEST(ListTest, Merge_1) {
+  s21::list<int> my_list1{1, 9999, 20000};
+  s21::list<int> my_list2{500, 15000, 30000};
+  my_list1.merge(my_list2);
 
-//   std::list<int> std_list1{1, 9999, 20000};
-//   std::list<int> std_list2{500, 15000, 30000};
-//   std_list1.merge(std_list2);
-//   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-// }
+  std::list<int> std_list1{1, 9999, 20000};
+  std::list<int> std_list2{500, 15000, 30000};
+  std_list1.merge(std_list2);
 
-// TEST(ListTest, Merge_2) {
-//   s21::list<int> my_list1{1, 9999, 20000};
-//   s21::list<int> my_list2{15000, 30000};
-//   my_list1.merge(my_list2);
+  EXPECT_TRUE(compare_lists(my_list1, std_list1));
+}
 
-//   std::list<int> std_list1{1, 9999, 20000};
-//   std::list<int> std_list2{15000, 30000};
-//   std_list1.merge(std_list2);
-//   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-// }
+TEST(ListTest, Merge_2) {
+  s21::list<int> my_list1{1, 9999, 20000};
+  s21::list<int> my_list2{15000, 30000};
+  my_list1.merge(my_list2);
+
+  std::list<int> std_list1{1, 9999, 20000};
+  std::list<int> std_list2{15000, 30000};
+  std_list1.merge(std_list2);
+  EXPECT_TRUE(compare_lists(my_list1, std_list1));
+}
 
 // TEST(ListTest, Merge_3) {
 //   s21::list<int> my_list1{1, 20000, 666};
@@ -318,6 +319,21 @@ TEST(ListTest, end_3) {
 //   std::list<int> std_list1{1, 20000, 666};
 //   std::list<int> std_list2{15000, 154, 124, 30000};
 //   std_list1.merge(std_list2);
+
+//    std::cout << "std\n";
+//   auto std_it = std_list1.begin();
+//   while (std_it != std_list1.end()) {
+//     std::cout << *std_it << " ";
+//     std_it++;
+//   }
+//   std::cout << "\nmy\n";
+//   auto my_it = my_list1.begin();
+//   while (my_it != my_list1.end()) {
+//     std::cout << *my_it << " ";
+//     my_it++;
+//   }
+//   std::cout << "\n";
+
 //   EXPECT_TRUE(compare_lists(my_list1, std_list1));
 // }
 
@@ -329,6 +345,7 @@ TEST(ListTest, Merge_4) {
   std::list<int> std_list1;
   std::list<int> std_list2{15000, 154, 124, 30000};
   std_list1.merge(std_list2);
+
   EXPECT_TRUE(compare_lists(my_list1, std_list1));
 }
 
@@ -340,6 +357,7 @@ TEST(ListTest, Merge_5) {
   std::list<int> std_list1{1, 20000, 666};
   std::list<int> std_list2;
   std_list1.merge(std_list2);
+
   EXPECT_TRUE(compare_lists(my_list1, std_list1));
 }
 
@@ -354,29 +372,30 @@ TEST(ListTest, Merge_6) {
   EXPECT_TRUE(compare_lists(my_list1, std_list1));
 }
 
-// TEST(ListTest, Reverse_1) {
-//   s21::list<int> my_list{1, 2, 3, 4, 5};
-//   std::list<int> std_list{1, 2, 3, 4, 5};
-//   my_list.reverse();
-//   std_list.reverse();
-//   EXPECT_TRUE(compare_lists(my_list, std_list));
-// }
+TEST(ListTest, Reverse_1) {
+  s21::list<int> my_list{1, 2, 3, 4, 5};
+  std::list<int> std_list{1, 2, 3, 4, 5};
+  my_list.reverse();
+  std_list.reverse();
 
-// TEST(ListTest, Reverse_2) {
-//   s21::list<int> my_list(4);
-//   std::list<int> std_list(4);
-//   my_list.reverse();
-//   std_list.reverse();
-//   EXPECT_TRUE(compare_lists(my_list, std_list));
-// }
+  EXPECT_TRUE(compare_lists(my_list, std_list));
+}
 
-// TEST(ListTest, Reverse_3) {
-//   s21::list<int> my_list;
-//   std::list<int> std_list;
-//   my_list.reverse();
-//   std_list.reverse();
-//   EXPECT_TRUE(compare_lists(my_list, std_list));
-// }
+TEST(ListTest, Reverse_2) {
+  s21::list<int> my_list(4);
+  std::list<int> std_list(4);
+  my_list.reverse();
+  std_list.reverse();
+  EXPECT_TRUE(compare_lists(my_list, std_list));
+}
+
+TEST(ListTest, Reverse_3) {
+  s21::list<int> my_list;
+  std::list<int> std_list;
+  my_list.reverse();
+  std_list.reverse();
+  EXPECT_TRUE(compare_lists(my_list, std_list));
+}
 
 TEST(ListTest, Unique_1) {
   s21::list<int> my_list{90, 10, 3, 40, 30, 20, 10, 10, 90, 90, 90};
@@ -522,15 +541,15 @@ TEST(ListTest, Erase_1) {
 //   EXPECT_THROW(my_list1.erase(my_list1.end()), std::invalid_argument);
 // }
 
-// TEST(ListTest, Erase_3) {
-//   s21::list<int> my_list1{1, 9999, 20000};
-//   my_list1.erase(--my_list1.end());
+TEST(ListTest, Erase_3) {
+  s21::list<int> my_list1{1, 9999, 20000};
+  my_list1.erase(--my_list1.end());
 
-//   std::list<int> std_list1{1, 9999, 20000};
-//   std_list1.erase(std_list1.end().operator--());
+  std::list<int> std_list1{1, 9999, 20000};
+  std_list1.erase(std_list1.end().operator--());
 
-//   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-// }
+  EXPECT_TRUE(compare_lists(my_list1, std_list1));
+}
 
 TEST(ListTest, Erase_4_throw) {
   s21::list<int> my_list1;
@@ -538,15 +557,15 @@ TEST(ListTest, Erase_4_throw) {
   EXPECT_THROW(my_list1.erase(my_list1.end()--), std::invalid_argument);
 }
 
-// TEST(ListTest, Erase_5) {
-//   s21::list<int> my_list1(5);
-//   my_list1.erase(--my_list1.end());
+TEST(ListTest, Erase_5) {
+  s21::list<int> my_list1(5);
+  my_list1.erase(--my_list1.end());
 
-//   std::list<int> std_list1(5);
-//   std_list1.erase(std_list1.end().operator--());
+  std::list<int> std_list1(5);
+  std_list1.erase(std_list1.end().operator--());
 
-//   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-// }
+  EXPECT_TRUE(compare_lists(my_list1, std_list1));
+}
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
