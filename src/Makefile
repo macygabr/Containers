@@ -2,7 +2,7 @@ CC=g++
 CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest  -pthread
-TEST_FUNC= map_tests.cc set_tests.cc multiset_tests.cc
+TEST_FUNC= map_tests.cc set_tests.cc multiset_tests.cc array_tests.cc
 PATH_TO_FILE = s21_map
 cleanMAC = echo check
 
