@@ -32,11 +32,15 @@ class array {
   const_reference front();
   const_reference back();
   iterator data() { return arr_; }
+  const_iterator data() const { return arr_; }
 
   // Array Iterators -------------------------------------------------------
 
   iterator begin() { return arr_; }
+  const_iterator begin() const { return arr_; }
+
   iterator end() { return arr_ + size_; }
+  const_iterator end() const { return arr_ + size_; }
 
   // Array Capacity --------------------------------------------------------
 
