@@ -1,7 +1,8 @@
 CC=g++
 CFLAGS= -c  
 FILES = s21_map
-TEST_FLAGS=-lgtest  -pthread
+TEST_FLAGS=-lgtest -pthread
+GTEST_FLAG = --gtest_fail_fast --gtest_repeat=100
 TEST_FUNC= array_tests.cc map_tests.cc set_tests.cc multiset_tests.cc
 #vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc
 PATH_TO_FILE = s21_map
@@ -36,7 +37,7 @@ clean:
 test: 
 #	make goclang
 	make clean
-	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test
+	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
 
 clang:
 	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc

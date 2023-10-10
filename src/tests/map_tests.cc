@@ -1,8 +1,37 @@
+#include <list>
 #include <map>
 
 #include "../s21_containers.h"
 #include "gtest/gtest.h"
 
+// template <typename T>
+// struct TestMapGroup : public testing::Test {
+//   using MapType = T;
+// };
+
+// template<class T, class Key>
+// struct Case
+// {
+//     using ValType = T;
+//     using KeyType = Key;
+// };
+
+// using MapType =
+//     ::testing::Types<pair<int, int>, pair<int, char>, pair<char, int>,
+//                      pair<char, char>, pair<float, double>, pair<char,
+//                      double>>;
+
+// TYPED_TEST_CASE(TestMapGroup, MapType);
+
+// TYPED_TEST(TestMapGroup, DoesBlah) {
+//   typename TestMapGroup<gtest_TypeParam_>::MapType param = {1, 2};
+//   auto a1 = param.first;
+//   auto a2 = param.second;
+
+//   s21::map<typename a1, typename a2> a;
+//   cout << "\033[31m" << param.first << " " << param.second << "\033[0m" <<
+//   endl;
+// }
 //________________________________________________Member_functions__________________________________________________
 
 TEST(TestMapGroup, Initializer_list) {
@@ -633,11 +662,11 @@ TEST(TestMapGroup, operator_Arrow) {
 }
 
 TEST(TestMapGroup, Dereferencing_operator) {
+  // GTEST_SKIP()<<"\033[33m Dereferencing operator is not supported";
   s21::map<char, char> a;
   std::map<char, char> b;
   s21::map<char, char>::iterator it1;
   std::map<char, char>::iterator it2;
-
   for (int i = 0; i < 26; i++) {
     std::pair<char, char> x = {'a' + i, 'a' + i};
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
@@ -645,9 +674,9 @@ TEST(TestMapGroup, Dereferencing_operator) {
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); ++it1, ++it2)
     ASSERT_EQ((*it1).first, (*it2).first);
+
   // a.printTree(a.root);
 }
-
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

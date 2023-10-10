@@ -3,22 +3,32 @@
 #include "../s21_containers.h"
 #include "gtest/gtest.h"
 
+template <typename T>
+struct TestSetGroup : public testing::Test {
+  using SetType = T;
+};
+
+using SetType = ::testing::Types<int, float, double, char>;
+TYPED_TEST_CASE(TestSetGroup, SetType);
+
 //________________________________________________Member_functions__________________________________________________
 
-TEST(TestSetGroup, Initializer_list) {
-  s21::set<int> a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-  std::set<int> b = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+TYPED_TEST(TestSetGroup, Initializer_list) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a = {1, 2, 3, 4, 5,
+                                                           6, 7, 8, 9, 10};
+  std::set<typename TestSetGroup<TypeParam>::SetType> b = {1, 2, 3, 4, 5,
+                                                           6, 7, 8, 9, 10};
   auto it1 = a.begin();
   auto it2 = b.begin();
   for (; it1 != a.end(); it1++, it2++) EXPECT_EQ(*it1, *it2);
   EXPECT_EQ(a.size(), b.size());
 }
 
-TEST(TestSetGroup, ConstructorCopy) {
-  s21::set<int> a = {1, 3, 4, 5};
-  std::set<int> b = {1, 3, 4, 5};
-  s21::set<int> a_copy = a;
-  std::set<int> b_copy = b;
+TYPED_TEST(TestSetGroup, ConstructorCopy) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a = {1, 3, 4, 5};
+  std::set<typename TestSetGroup<TypeParam>::SetType> b = {1, 3, 4, 5};
+  auto a_copy(a);
+  auto b_copy(b);
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
   auto it2 = b_copy.begin();
@@ -27,11 +37,11 @@ TEST(TestSetGroup, ConstructorCopy) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestSetGroup, ConstructorMoveset) {
-  s21::set<int> a = {1, 2, 3, 4, 5, 6};
-  std::set<int> b = {1, 2, 3, 4, 5, 6};
-  s21::set<int> a_copy = std::move(a);
-  std::set<int> b_copy = std::move(b);
+TYPED_TEST(TestSetGroup, ConstructorMoveset) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a = {1, 2, 3, 4, 5, 6};
+  std::set<typename TestSetGroup<TypeParam>::SetType> b = {1, 2, 3, 4, 5, 6};
+  auto a_copy = std::move(a);
+  auto b_copy = std::move(b);
   EXPECT_EQ(a.size(), b.size());
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
@@ -42,9 +52,11 @@ TEST(TestSetGroup, ConstructorMoveset) {
 
 //________________________________________________Iterators__________________________________________________
 
-TEST(TestSetGroup, Begin) {
-  s21::set<char> a = {'N', 'U', 'R', 'L', 'A', 'N'};
-  std::set<char> b = {'N', 'U', 'R', 'L', 'A', 'N'};
+TYPED_TEST(TestSetGroup, Begin) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a = {'N', 'U', 'R',
+                                                           'L', 'A', 'N'};
+  std::set<typename TestSetGroup<TypeParam>::SetType> b = {'N', 'U', 'R',
+                                                           'L', 'A', 'N'};
   auto it1 = a.begin();
   auto it2 = b.begin();
   ASSERT_EQ(*it1, *it2);
@@ -52,11 +64,11 @@ TEST(TestSetGroup, Begin) {
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(TestSetGroup, End) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TYPED_TEST(TestSetGroup, End) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 1; i < 50; i++) {
     auto x = rand() % 100;
@@ -104,8 +116,8 @@ TEST(TestSetGroup, Capacity) {
   a.insert("Nurlan");
   b.insert("Nurlan");
   ASSERT_EQ(a.empty(), b.empty());
-  s21::set<std::string>::iterator it1 = a.begin();
-  std::set<std::string>::iterator it2 = b.begin();
+  auto it1 = a.begin();
+  auto it2 = b.begin();
   a.erase(it1);
   b.erase(it2);
   ASSERT_EQ(a.empty(), b.empty());
@@ -125,9 +137,9 @@ TEST(TestSetGroup, Size) {
 
 //________________________________________________Modifiers_________________________________________________
 
-TEST(TestSetGroup, Clear) {
-  s21::set<int> a;
-  std::set<int> b;
+TYPED_TEST(TestSetGroup, Clear) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
   a.clear();
   b.clear();
   EXPECT_EQ(a.empty(), b.empty());
@@ -139,20 +151,20 @@ TEST(TestSetGroup, Clear) {
   EXPECT_EQ(a.empty(), b.empty());
 }
 
-TEST(TestSetGroup, Insert_int) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TYPED_TEST(TestSetGroup, Insert_int) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 1; i < 50; i++) {
-    int x = rand() % 100;
+    int x = rand() % 10;
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
   }
-  ASSERT_EQ(a.insert(999).second, true);
-  ASSERT_EQ(a.insert(999).second, false);
-  ASSERT_EQ(b.insert(999).second, true);
-  ASSERT_EQ(b.insert(999).second, false);
+  ASSERT_EQ(a.insert(20).second, true);
+  ASSERT_EQ(a.insert(20).second, false);
+  ASSERT_EQ(b.insert(20).second, true);
+  ASSERT_EQ(b.insert(20).second, false);
 
   for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(*it1, *it2);
@@ -160,11 +172,11 @@ TEST(TestSetGroup, Insert_int) {
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
 }
-TEST(TestSetGroup, Insert_char) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
+TYPED_TEST(TestSetGroup, Insert_typs) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) {
     char x = 'N' + i;
@@ -274,13 +286,13 @@ TEST(TestSetGroup, Insert_many) {
   }
 }
 
-TEST(TestSetGroup, Erase_1) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
-  s21::set<int>::iterator save_it1;
-  std::set<int>::iterator save_it2;
+TYPED_TEST(TestSetGroup, Erase_1) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  auto save_it1 = it1;
+  auto save_it2 = it2;
 
   for (int i = 0; i < 50; i++) {
     int x = rand() % 100;
@@ -303,11 +315,11 @@ TEST(TestSetGroup, Erase_1) {
   // a.printTree(a.root);
 }
 
-TEST(TestSetGroup, Erase_2) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TYPED_TEST(TestSetGroup, Erase_2) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) {
     int x = i;
@@ -332,13 +344,13 @@ TEST(TestSetGroup, Erase_2) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestSetGroup, Swap) {
-  s21::set<double> a1;
-  s21::set<double> a2;
-  std::set<double> b1;
-  std::set<double> b2;
-  s21::set<double>::iterator it1;
-  std::set<double>::iterator it2;
+TYPED_TEST(TestSetGroup, Swap) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a1;
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a2;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b1;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b2;
+  auto it1 = a1.begin();
+  auto it2 = b1.begin();
 
   for (int i = 0, j = 49; i < 50; i++, j--) {
     double x = j / 10.;
@@ -365,16 +377,13 @@ TEST(TestSetGroup, Swap) {
   // a1.printTree(a1.root);
 }
 
-TEST(TestSetGroup, Merge) {
-  s21::set<double> a1;
-  s21::set<double> a2;
-  s21::set<double>::iterator it1;
-  for (int i = 0; i <= 10; i++) {
-    a1.insert(i).second;
-  }
-  for (int i = 5; i <= 15; i++) {
-    a2.insert(i).second;
-  }
+TYPED_TEST(TestSetGroup, Merge) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a1;
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a2;
+  auto it1 = a1.begin();
+  for (int i = 0; i <= 10; i++) a1.insert(i).second;
+
+  for (int i = 5; i <= 15; i++) a2.insert(i).second;
 
   a1.merge(a2);
   int i = 0;
@@ -394,6 +403,7 @@ TEST(TestSetGroup, Contains) {
   s21::set<std::string> a;
   std::set<std::string> b;
   s21::set<std::string>::iterator it1;
+  EXPECT_THROW(*it1, std::exception);
 
   for (int i = 0; i < 50; i++) {
     std::string x = std::to_string(i);
@@ -406,11 +416,11 @@ TEST(TestSetGroup, Contains) {
 }
 
 //________________________________________________Iterators_________________________________________________
-TEST(TestSetGroup, operator_plus) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
+TYPED_TEST(TestSetGroup, operator_plus) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) {
     char x = i;
@@ -424,11 +434,11 @@ TEST(TestSetGroup, operator_plus) {
     ASSERT_EQ(*it1, *it2);
 }
 
-TEST(TestSetGroup, operator_sub) {
-  s21::set<int> a;
-  std::set<int> b;
-  s21::set<int>::iterator it1;
-  std::set<int>::iterator it2;
+TYPED_TEST(TestSetGroup, operator_sub) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 10; i++) {
     int x = i;
@@ -471,12 +481,12 @@ TEST(TestSetGroup, operator_equal) {
   ASSERT_EQ(it11 == it12, it21 == it22);
 }
 
-TEST(TestSetGroup, operator_Arrow) {
-  s21::set<char> a;
-  std::set<char> b;
-  s21::set<char>::iterator it1;
-  std::set<char>::iterator it2;
-  EXPECT_THROW(*it1, std::exception);
+TYPED_TEST(TestSetGroup, operator_Arrow) {
+  s21::set<typename TestSetGroup<TypeParam>::SetType> a;
+  std::set<typename TestSetGroup<TypeParam>::SetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+
   for (int i = 0; i < 26; i++) {
     char x = 'a' + i;
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
