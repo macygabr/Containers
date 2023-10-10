@@ -3,39 +3,54 @@
 #include "../s21_containersplus.h"
 #include "gtest/gtest.h"
 
+template <typename T>
+struct TestMultisetGroup : public testing::Test {
+  using MultisetType = T;
+};
+
+using MultisetType = ::testing::Types<int, float, double, char>;
+TYPED_TEST_CASE(TestMultisetGroup, MultisetType);
 //________________________________________________Member_functions__________________________________________________
 
-TEST(TestMultisetGroup, Initializer_list) {
-  s21::multiset<int> a = {1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
-  std::multiset<int> b = {1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
-  auto it1 = a.begin();
+TYPED_TEST(TestMultisetGroup, Initializer_list) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {
+      1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {
+      1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
+  auto it1 = a.begin() = a.begin();
   auto it2 = b.begin();
   for (; it1 != a.end(); it1++, it2++) EXPECT_EQ(*it1, *it2);
   // a.SimpleprintTree(a.root);
   EXPECT_EQ(a.size(), b.size());
 }
 
-TEST(TestMultisetGroup, ConstructorCopy) {
-  s21::multiset<int> a = {1, 1, 1, 1};
-  std::multiset<int> b = {1, 1, 1, 1};
-  s21::multiset<int> a_copy = a;
-  std::multiset<int> b_copy = b;
+TYPED_TEST(TestMultisetGroup, ConstructorCopy) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {1, 1,
+                                                                          1, 1};
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {1, 1,
+                                                                          1, 1};
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a_copy(a);
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b_copy(b);
   EXPECT_EQ(a_copy.size(), b_copy.size());
-  auto it1 = a_copy.begin();
+  auto it1 = a.begin() = a_copy.begin();
   auto it2 = b_copy.begin();
   for (; it1 != a_copy.end(); ++it1, ++it2) EXPECT_TRUE((*it1) == (*it2));
 
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestMultisetGroup, ConstructorMovemultiset) {
-  s21::multiset<int> a = {1, 2, 1, 4, 1, 6};
-  std::multiset<int> b = {1, 2, 1, 4, 1, 6};
-  s21::multiset<int> a_copy = std::move(a);
-  std::multiset<int> b_copy = std::move(b);
+TYPED_TEST(TestMultisetGroup, ConstructorMovemultiset) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {
+      1, 2, 1, 4, 1, 6};
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {
+      1, 2, 1, 4, 1, 6};
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a_copy =
+      std::move(a);
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b_copy =
+      std::move(b);
   EXPECT_EQ(a.size(), b.size());
   EXPECT_EQ(a_copy.size(), b_copy.size());
-  auto it1 = a_copy.begin();
+  auto it1 = a.begin() = a_copy.begin();
   auto it2 = b_copy.begin();
   for (; it1 != a_copy.end(); ++it1, ++it2) EXPECT_EQ(*it1, *it2);
   EXPECT_EQ(a.size(), b.size());
@@ -44,21 +59,23 @@ TEST(TestMultisetGroup, ConstructorMovemultiset) {
 
 //________________________________________________Iterators__________________________________________________
 
-TEST(TestMultisetGroup, Begin) {
-  s21::multiset<char> a = {'N', 'U', 'N', 'U', 'U', 'N'};
-  std::multiset<char> b = {'N', 'U', 'N', 'U', 'U', 'N'};
-  auto it1 = a.begin();
+TYPED_TEST(TestMultisetGroup, Begin) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {
+      'N', 'U', 'N', 'U', 'U', 'N'};
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {
+      'N', 'U', 'N', 'U', 'U', 'N'};
+  auto it1 = a.begin() = a.begin();
   auto it2 = b.begin();
   ASSERT_EQ(*it1, *it2);
   for (; it1 != a.end(); it1++, it2++) ASSERT_EQ(*it1, *it2);
   ASSERT_EQ(a.size(), b.size());
 }
 
-TEST(TestMultisetGroup, End) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
-  s21::multiset<int>::iterator it1;
-  std::multiset<int>::iterator it2;
+TYPED_TEST(TestMultisetGroup, End) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 1; i < 50; i++) ASSERT_EQ(*a.insert(1), *b.insert(1));
 
@@ -97,7 +114,7 @@ TEST(TestMultisetGroup, End) {
 }
 
 //________________________________________________Capacity__________________________________________________
-TEST(TestMultisetGroup, Capacity) {
+TYPED_TEST(TestMultisetGroup, Empty) {
   s21::multiset<std::string> a;
   std::multiset<std::string> b;
   ASSERT_EQ(a.empty(), b.empty());
@@ -112,7 +129,7 @@ TEST(TestMultisetGroup, Capacity) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, Size) {
+TYPED_TEST(TestMultisetGroup, Size) {
   s21::multiset<std::string> a;
   std::multiset<std::string> b;
   ASSERT_EQ(a.size(), b.size());
@@ -125,9 +142,9 @@ TEST(TestMultisetGroup, Size) {
 
 //________________________________________________Modifiers_________________________________________________
 
-TEST(TestMultisetGroup, Clear) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
+TYPED_TEST(TestMultisetGroup, Clear) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
   a.clear();
   b.clear();
   EXPECT_EQ(a.empty(), b.empty());
@@ -139,11 +156,11 @@ TEST(TestMultisetGroup, Clear) {
   EXPECT_EQ(a.empty(), b.empty());
 }
 
-TEST(TestMultisetGroup, Insert_int) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
-  s21::multiset<int>::iterator it1;
-  std::multiset<int>::iterator it2;
+TYPED_TEST(TestMultisetGroup, Insert_int) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 1; i < 50; i++) {
     int x = rand() % 100;
@@ -158,11 +175,11 @@ TEST(TestMultisetGroup, Insert_int) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, Insert_char) {
-  s21::multiset<char> a;
-  std::multiset<char> b;
-  s21::multiset<char>::iterator it1;
-  std::multiset<char>::iterator it2;
+TYPED_TEST(TestMultisetGroup, Insert_char) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) ASSERT_EQ(*a.insert('N'), *b.insert('N'));
 
@@ -173,7 +190,7 @@ TEST(TestMultisetGroup, Insert_char) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, Insert_string) {
+TYPED_TEST(TestMultisetGroup, Insert_string) {
   s21::multiset<std::string> a;
   std::multiset<std::string> b;
   s21::multiset<std::string>::iterator it1;
@@ -188,7 +205,7 @@ TEST(TestMultisetGroup, Insert_string) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, Insert_pair) {
+TYPED_TEST(TestMultisetGroup, Insert_pair) {
   s21::multiset<std::pair<int, int>> a;
   std::multiset<std::pair<int, int>> b;
   s21::multiset<std::pair<int, int>>::iterator it1;
@@ -227,7 +244,7 @@ class my_class {
 };
 }  // namespace s21
 
-TEST(TestMultisetGroup, Insert_my_class) {
+TYPED_TEST(TestMultisetGroup, Insert_my_class) {
   s21::multiset<s21::my_class> a;
   s21::multiset<s21::my_class>::iterator it1;
 
@@ -249,7 +266,6 @@ TEST(TestMultisetGroup, Insert_many) {
   int x1 = 1;
   int x2 = 2;
   int x3 = 3;
-  // cout << "\033[94m" << a.insert(x1).second << endl;
 
   std::vector<std::pair<s21::multiset<int>::iterator, bool>> v1;
   v1 = a.insert_many(x1, x2, x3);
@@ -265,13 +281,13 @@ TEST(TestMultisetGroup, Insert_many) {
   }
 }
 
-TEST(TestMultisetGroup, Erase_1) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
-  s21::multiset<int>::iterator it1;
-  std::multiset<int>::iterator it2;
-  s21::multiset<int>::iterator save_it1;
-  std::multiset<int>::iterator save_it2;
+TYPED_TEST(TestMultisetGroup, Erase_1) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
+  auto save_it1(it1);
+  auto save_it2(it2);
 
   for (int i = 0; i < 50; i++) {
     int x = rand() % 100;
@@ -294,11 +310,11 @@ TEST(TestMultisetGroup, Erase_1) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, Erase_2) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
-  s21::multiset<int>::iterator it1;
-  std::multiset<int>::iterator it2;
+TYPED_TEST(TestMultisetGroup, Erase_2) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) {
     ASSERT_EQ(*a.insert(11), *b.insert(11));
@@ -322,7 +338,7 @@ TEST(TestMultisetGroup, Erase_2) {
   // a.SimpleprintTree(a.root);
 }
 
-TEST(TestMultisetGroup, Swap) {
+TYPED_TEST(TestMultisetGroup, Swap) {
   s21::multiset<double> a1;
   s21::multiset<double> a2;
   std::multiset<double> b1;
@@ -355,7 +371,7 @@ TEST(TestMultisetGroup, Swap) {
   // a1.printTree(a1.root);
 }
 
-TEST(TestMultisetGroup, Merge) {
+TYPED_TEST(TestMultisetGroup, Merge) {
   s21::multiset<double> a1;
   s21::multiset<double> a2;
   s21::multiset<double>::iterator it1;
@@ -378,11 +394,13 @@ TEST(TestMultisetGroup, Merge) {
   // a1.SimpleprintTree(a1.root);
   // a2.printTree(a2.root);
 }
+
 //________________________________________________Lookup____________________________________________________
-TEST(TestMultisetGroup, Contains) {
+TYPED_TEST(TestMultisetGroup, Contains) {
   s21::multiset<std::string> a;
   std::multiset<std::string> b;
   s21::multiset<std::string>::iterator it1;
+  EXPECT_THROW(*it1, std::exception);
 
   for (int i = 0; i < 50; i++) {
     std::string x = std::to_string(i);
@@ -395,11 +413,11 @@ TEST(TestMultisetGroup, Contains) {
 }
 
 //________________________________________________Iterators_________________________________________________
-TEST(TestMultisetGroup, operator_plus) {
-  s21::multiset<char> a;
-  std::multiset<char> b;
-  s21::multiset<char>::iterator it1;
-  std::multiset<char>::iterator it2;
+TYPED_TEST(TestMultisetGroup, operator_plus) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 50; i++) {
     char x = 'N';
@@ -413,11 +431,11 @@ TEST(TestMultisetGroup, operator_plus) {
     ASSERT_EQ(*it1, *it2);
 }
 
-TEST(TestMultisetGroup, operator_sub) {
-  s21::multiset<int> a;
-  std::multiset<int> b;
-  s21::multiset<int>::iterator it1;
-  std::multiset<int>::iterator it2;
+TYPED_TEST(TestMultisetGroup, operator_sub) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
 
   for (int i = 0; i < 10; i++) {
     int x = 4;
@@ -445,7 +463,7 @@ TEST(TestMultisetGroup, operator_sub) {
   // a.printTree(a.root);
 }
 
-TEST(TestMultisetGroup, operator_equal) {
+TYPED_TEST(TestMultisetGroup, operator_equal) {
   s21::multiset<std::string> a;
   std::multiset<std::string> b;
   a.insert("Nurlan");
@@ -460,12 +478,11 @@ TEST(TestMultisetGroup, operator_equal) {
   ASSERT_EQ(it11 == it12, it21 == it22);
 }
 
-TEST(TestMultisetGroup, operator_Arrow) {
-  s21::multiset<char> a;
-  std::multiset<char> b;
-  s21::multiset<char>::iterator it1;
-  std::multiset<char>::iterator it2;
-  EXPECT_THROW(*it1, std::exception);
+TYPED_TEST(TestMultisetGroup, operator_Arrow) {
+  s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a;
+  std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b;
+  auto it1 = a.begin();
+  auto it2 = b.begin();
   for (int i = 0; i < 26; i++) {
     char x = 'a';
     ASSERT_EQ(*a.insert(x), *b.insert(x));

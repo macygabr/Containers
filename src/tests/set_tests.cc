@@ -8,7 +8,7 @@ struct TestSetGroup : public testing::Test {
   using SetType = T;
 };
 
-using SetType = ::testing::Types<int, float, double, char>;
+using SetType = ::testing::Types<int, float, double, char, unsigned long int>;
 TYPED_TEST_CASE(TestSetGroup, SetType);
 
 //________________________________________________Member_functions__________________________________________________
@@ -271,7 +271,6 @@ TEST(TestSetGroup, Insert_many) {
   int x2 = 2;
   int x3 = 3;
   // cout << "\033[94m" << a.insert(x1).second << endl;
-
   std::vector<std::pair<s21::set<int>::iterator, bool>> v1;
   v1 = a.insert_many(x1, x2, x3);
 

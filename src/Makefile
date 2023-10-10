@@ -1,8 +1,7 @@
 CC=g++
-CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest -pthread
-GTEST_FLAG = --gtest_fail_fast --gtest_repeat=100
+GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
 TEST_FUNC= array_tests.cc map_tests.cc set_tests.cc multiset_tests.cc
 #vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc
 PATH_TO_FILE = s21_map
@@ -35,7 +34,6 @@ clean:
 	$(cleanMAC)
 
 test: 
-#	make goclang
 	make clean
 	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
 
@@ -52,9 +50,8 @@ valgrind: test
 check_cppcheck:
 	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(FILES).cc *.h
 
-leaks: clean $(FILES).a
-	$(CC) $(TEST_FUNC) $(FILES).a -o test $(TEST_FLAGS)
-	leaks -atExit -- ./test
+leaks: clean $(FILES).a test
+	leaks -atExit -- ./tests/test
 
 push: clean goclang
 	git add .

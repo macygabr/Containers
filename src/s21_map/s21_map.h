@@ -12,7 +12,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   using value_type = std::pair<const key_type, mapped_type>;
   using reference = value_type &;
   using const_reference = const value_type &;
-  using size_type = size_t;
+  using size_type = std::size_t;
   using iterator = typename BinaryTree<Key, T, pair<const Key, T>>::Iterator;
   using const_iterator =
       typename BinaryTree<Key, T, pair<const Key, T>>::Const_Iterator;

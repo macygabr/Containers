@@ -22,7 +22,7 @@ BinaryTree<Key, T, Value>::BinaryTree(const BinaryTree& other) {
 }
 
 template <typename Key, typename T, typename Value>
-BinaryTree<Key, T, Value>::BinaryTree(BinaryTree&& other) {
+BinaryTree<Key, T, Value>::BinaryTree(BinaryTree&& other) noexcept {
   root = other.root;
   terminal_node = other.terminal_node;
   other.root = nullptr;
@@ -31,7 +31,7 @@ BinaryTree<Key, T, Value>::BinaryTree(BinaryTree&& other) {
 
 template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>& BinaryTree<Key, T, Value>::operator=(
-    BinaryTree&& other) {
+    BinaryTree&& other) noexcept {
   if (this != &other) {
     root = other.root;
     other.root = nullptr;
@@ -61,7 +61,7 @@ BinaryTree<Key, T, Value>::~BinaryTree() {
 template <typename Key, typename T, typename Value>
 void BinaryTree<Key, T, Value>::clear() {
   if (!root) return;
-  freeTree(root);
+  FreeTree(root);
   root = terminal_node;
   root->parent = nullptr;
 }
@@ -125,13 +125,13 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
   auto lef = it.node->left;
   auto rig = it.node->right;
   if (lef && rig)
-    it = delete_node_with_all_childrens(it);
+    it = DeleteNodeAll(it);
   else if (!lef && rig)
-    it = delete_node_with_right_childrens(it);
+    it = DeleteNodeRight(it);
   else if (lef && !rig)
-    it = delete_node_with_left_childrens(it);
+    it = DeleteNodeLeft(it);
   else if (!lef && !rig)
-    it = delete_node_with_not_childrens(it);
+    it = DeleteNodeNull(it);
 
   get_balance_factor(root);
   while (!check_balance()) {
@@ -142,7 +142,7 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::swap(BinaryTree& other) {
+void BinaryTree<Key, T, Value>::swap(BinaryTree& other) noexcept {
   auto first = other.root;
   other.root = root;
   root = first;
@@ -220,8 +220,9 @@ BinaryTree<Key, T, Value>::end() const {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
-BinaryTree<Key, T, Value>::Iterator::operator++() {
-  if (!node) throw std::out_of_range("Iterator out of range");
+BinaryTree<Key, T, Value>::Iterator::operator++() noexcept {
+  // if (!node) throw std::out_of_range("Iterator out of range");
+  if (!node) return *this;
 
   if (node->right) {
     node = node->right;
@@ -241,6 +242,7 @@ BinaryTree<Key, T, Value>::Iterator::operator++() {
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator
 BinaryTree<Key, T, Value>::Iterator::operator++(int) {
+  if (!node) return *this;
   Iterator temp = *this;
   operator++();
   return temp;
@@ -248,7 +250,7 @@ BinaryTree<Key, T, Value>::Iterator::operator++(int) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
-BinaryTree<Key, T, Value>::Iterator::operator--() {
+BinaryTree<Key, T, Value>::Iterator::operator--() noexcept {
   if (!node) return *this;
 
   if (node->left) {
@@ -267,6 +269,7 @@ BinaryTree<Key, T, Value>::Iterator::operator--() {
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator
 BinaryTree<Key, T, Value>::Iterator::operator--(int) {
+  if (!node) return *this;
   Iterator temp = *this;
   operator--();
   return temp;
@@ -284,7 +287,7 @@ bool BinaryTree<Key, T, Value>::Iterator::operator!=(const iterator& it) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
-BinaryTree<Key, T, Value>::Iterator::operator=(const iterator& it) {
+BinaryTree<Key, T, Value>::Iterator::operator=(const iterator& it) noexcept {
   node = it.node;
   return *this;
 }
@@ -373,19 +376,19 @@ template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
 BinaryTree<Key, T, Value>::Nurlanization(Node* x) {
   if (x->balanceFactor < -1) {
-    if (x->left->balanceFactor > 0) x->left = rotate_Left(x->left);
-    return rotate_Right(x);
+    if (x->left->balanceFactor > 0) x->left = Rotate_Left(x->left);
+    return Rotate_Right(x);
   }
   if (x->balanceFactor > 1) {
-    if (x->right->balanceFactor < 0) x->right = rotate_Right(x->right);
-    return rotate_Left(x);
+    if (x->right->balanceFactor < 0) x->right = Rotate_Right(x->right);
+    return Rotate_Left(x);
   }
   return x;
 }
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
-BinaryTree<Key, T, Value>::rotate_Left(Node* x) {
+BinaryTree<Key, T, Value>::Rotate_Left(Node* x) {
   Node* p = x->right;
   if (x->parent && x->parent->left == x) x->parent->left = p;
   if (x->parent && x->parent->right == x) x->parent->right = p;
@@ -401,7 +404,7 @@ BinaryTree<Key, T, Value>::rotate_Left(Node* x) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
-BinaryTree<Key, T, Value>::rotate_Right(Node* x) {
+BinaryTree<Key, T, Value>::Rotate_Right(Node* x) {
   Node* q = x->left;
   if (x->parent && x->parent->left == x) x->parent->left = q;
   if (x->parent && x->parent->right == x) x->parent->right = q;
@@ -451,16 +454,16 @@ void BinaryTree<Key, T, Value>::add_terminal_node(Node* node, bool add) {
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::freeTree(Node* x) {
+void BinaryTree<Key, T, Value>::FreeTree(Node* x) {
   if (!x || x == terminal_node) return;
-  freeTree(x->left);
-  freeTree(x->right);
+  FreeTree(x->left);
+  FreeTree(x->right);
   delete x;
 }
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
-BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
+BinaryTree<Key, T, Value>::DeleteNodeAll(iterator it) {
   auto nod = it.node;
   auto lef = it.node->left;
   auto rig = it.node->right;
@@ -511,7 +514,7 @@ BinaryTree<Key, T, Value>::delete_node_with_all_childrens(iterator it) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
-BinaryTree<Key, T, Value>::delete_node_with_right_childrens(iterator it) {
+BinaryTree<Key, T, Value>::DeleteNodeRight(iterator it) {
   auto nod = it.node;
   auto par = it.node->parent;
   auto lef = it.node->left;
@@ -536,7 +539,7 @@ BinaryTree<Key, T, Value>::delete_node_with_right_childrens(iterator it) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
-BinaryTree<Key, T, Value>::delete_node_with_left_childrens(iterator it) {
+BinaryTree<Key, T, Value>::DeleteNodeLeft(iterator it) {
   auto nod = it.node;
   auto par = it.node->parent;
   auto lef = it.node->left;
@@ -560,7 +563,7 @@ BinaryTree<Key, T, Value>::delete_node_with_left_childrens(iterator it) {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
-BinaryTree<Key, T, Value>::delete_node_with_not_childrens(iterator it) {
+BinaryTree<Key, T, Value>::DeleteNodeNull(iterator it) {
   auto nod = it.node;
   // if (!it.node) return Iterator(root);
   if (it.node->parent) {

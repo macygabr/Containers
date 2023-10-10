@@ -4,34 +4,6 @@
 #include "../s21_containers.h"
 #include "gtest/gtest.h"
 
-// template <typename T>
-// struct TestMapGroup : public testing::Test {
-//   using MapType = T;
-// };
-
-// template<class T, class Key>
-// struct Case
-// {
-//     using ValType = T;
-//     using KeyType = Key;
-// };
-
-// using MapType =
-//     ::testing::Types<pair<int, int>, pair<int, char>, pair<char, int>,
-//                      pair<char, char>, pair<float, double>, pair<char,
-//                      double>>;
-
-// TYPED_TEST_CASE(TestMapGroup, MapType);
-
-// TYPED_TEST(TestMapGroup, DoesBlah) {
-//   typename TestMapGroup<gtest_TypeParam_>::MapType param = {1, 2};
-//   auto a1 = param.first;
-//   auto a2 = param.second;
-
-//   s21::map<typename a1, typename a2> a;
-//   cout << "\033[31m" << param.first << " " << param.second << "\033[0m" <<
-//   endl;
-// }
 //________________________________________________Member_functions__________________________________________________
 
 TEST(TestMapGroup, Initializer_list) {
@@ -46,8 +18,6 @@ TEST(TestMapGroup, Initializer_list) {
     EXPECT_EQ(it1->second, it2->second);
   }
   EXPECT_EQ(a.size(), b.size());
-  // s21::map<int, char>:
-  // std::map<int, char>:
 }
 
 TEST(TestMapGroup, ConstructorCopy) {
@@ -177,7 +147,7 @@ TEST(TestMapGroup, operator) {
 TEST(TestMapGroup, at1) {
   s21::map<char, std::string> a = {
       {'a', "Alina"}, {'b', "Boris"}, {'c', "Chuck"}};
-  EXPECT_THROW(a.at('g') = "Alisa", std::out_of_range);
+  EXPECT_THROW(a.at('g'), std::out_of_range);
 }
 
 TEST(TestMapGroup, at2) {
@@ -221,13 +191,13 @@ TEST(TestMapGroup, Clear) {
 TEST(TestMapGroup, Insert_int_int) {
   s21::map<int, int> a;
   std::map<int, int> b;
-  std::pair<int, int> a1 = {99, 0};
-  std::pair<int, int> b1 = {99, 0};
+  std::pair<int, int> a1 = {19, 0};
+  std::pair<int, int> b1 = {19, 0};
   s21::map<int, int>::iterator it1;
   std::map<int, int>::iterator it2;
 
   for (int i = 1; i < 50; i++) {
-    std::pair<int, int> x = {rand() % 100, rand() % 100};
+    std::pair<int, int> x = {rand() % 10, rand() % 100};
     ASSERT_EQ(a.insert(x).second, b.insert(x).second);
   }
   ASSERT_EQ(a.insert(a1).second, true);
@@ -236,9 +206,9 @@ TEST(TestMapGroup, Insert_int_int) {
   a[77] = 3;
   b[77] = 3;
 
-  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++) {
+  for (it1 = a.begin(), it2 = b.begin(); it1 != a.end(); it1++, it2++)
     ASSERT_EQ(it1->first, it2->first);
-  }
+
   ASSERT_EQ(a.size(), b.size());
   // a.printTree(a.root);
 }

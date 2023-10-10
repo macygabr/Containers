@@ -23,16 +23,16 @@ class BinaryTree {
   using const_reference = const value_type&;
   using iterator = Iterator;
   using const_iterator = Const_Iterator;
-  using size_type = std::size_t;
+  using size_type = size_t;
   using pointer = value_type*;
 
  public:  // Member functions
   BinaryTree();
   BinaryTree(const BinaryTree& other);
-  BinaryTree(BinaryTree&& other);
+  BinaryTree(BinaryTree&& other) noexcept;
   ~BinaryTree();
   BinaryTree& operator=(const BinaryTree& other);
-  BinaryTree& operator=(BinaryTree&& other);
+  BinaryTree& operator=(BinaryTree&& other) noexcept;
 
  public:             // Iterators
   iterator begin();  // returns an iterator to the beginning
@@ -40,17 +40,17 @@ class BinaryTree {
   iterator end();  // returns an iterator to the end
   const_iterator end() const;
 
- public:  // Capacity
-  bool empty();
-  size_type size();
-  size_type max_size();
+ public:                 // Capacity
+  bool empty();          // const
+  size_type size();      // const
+  size_type max_size();  // const
 
  public:  // Modifiers
   void clear();
   std::pair<iterator, bool> insert(const value_type val);
   std::pair<iterator, bool> insert(const Key& key, const T& obj);
   iterator erase(iterator it);
-  void swap(BinaryTree& other);
+  void swap(BinaryTree& other) noexcept;
   void merge(BinaryTree& other);
   template <class... Args>
   std::vector<std::pair<iterator, bool>> insert_many(Args&&... args);
@@ -60,13 +60,13 @@ class BinaryTree {
 
  protected:  // suport
   std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-  Node* rotate_Left(Node* x);
-  Node* rotate_Right(Node* x);
+  Node* Rotate_Left(Node* x);
+  Node* Rotate_Right(Node* x);
   Node* Nurlanization(Node* x);
   void add_terminal_node(Node* x, bool add);
   int get_height(Node* x);
   int get_balance_factor(Node* x);
-  virtual Key get_key(value_type val) { return Key(); };
+  virtual Key get_key(value_type val) { return Key(); }  // const;
   virtual T get_val(value_type val) { return T(); };
   virtual bool set_val(Node* fir, value_type sec) { return 0; };
   virtual bool is_multiset() { return 0; };
@@ -74,11 +74,11 @@ class BinaryTree {
                                              Iterator* it_result,
                                              bool permission,
                                              bool multisetOn = false);
-  void freeTree(Node* x);
-  iterator delete_node_with_all_childrens(iterator it);
-  iterator delete_node_with_right_childrens(iterator it);
-  iterator delete_node_with_left_childrens(iterator it);
-  iterator delete_node_with_not_childrens(iterator it);
+  void FreeTree(Node* x);
+  iterator DeleteNodeAll(iterator it);
+  iterator DeleteNodeRight(iterator it);
+  iterator DeleteNodeLeft(iterator it);
+  iterator DeleteNodeNull(iterator it);
   bool check_balance();
   T& search(bool add, const Key& key);
   Node* copy_recursive(Node* x);
@@ -120,23 +120,22 @@ class BinaryTree {
   class Iterator {
    public:
     friend class BinaryTree<Key, T, value_type>;
-
     Iterator() : node(nullptr){};
     Iterator(Node* newnode) : node(newnode){};
     ~Iterator() = default;
 
    public:
-    iterator& operator=(const iterator& it);
-    iterator& operator++();
+    iterator& operator=(const iterator& it) noexcept;
+    iterator& operator++() noexcept;
     iterator operator++(int);
-    iterator& operator--();
+    iterator& operator--() noexcept;
     iterator operator--(int);
-    bool operator==(const iterator& it);
+    bool operator==(const iterator& it);  // const
     bool operator!=(const iterator& it);
     pointer operator->() const {
       return node ? &(node->node_key) : throw std::exception();
     };
-    reference operator*() const {
+    reference operator*() {
       if (node)
         return node->node_key;
       else
