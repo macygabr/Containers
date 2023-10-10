@@ -1,11 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
-#include <algorithm>
-#include <cstddef>
-#include <initializer_list>
-#include <limits>
-#include <stdexcept>
-#include <utility>
+// #include <algorithm>
+// #include <cstddef>
+// #include <initializer_list>
+// #include <limits>
+// #include <stdexcept>
+// #include <utility>
 
 namespace s21 {
 
@@ -60,7 +60,7 @@ class list {
   void swap(list &other);                  // swaps the contents
   void merge(list &other);                 // merges two sorted lists
   void splice(
-      const_iterator pos,
+      iterator pos,
       list &other);  // transfers elements from list other starting from pos
   void reverse();    // reverses the order of the elements
   void unique();     //	removes consecutive duplicate elements
@@ -157,84 +157,12 @@ class list<T>::listIterator {
   //  private:
 };
 
-// template <typename T>
-//   class listConstIterator : public listIterator<T>{
-
-//  public:
-//   listConstIterator() { ptr_ = nullptr; }
-
-//   listConstIterator(Node *ptr) : ptr_(ptr) {}
-
-//   listConstIterator(listIterator<T> other) : listIterator<T>(other) {}
-//   const T &operator*() { return listIterator<T>::operator*(); }
-// };
-
 template <typename T>
-class list<T>::listConstIterator {
- public:
- 
+  class listConstIterator : public list<T>::listIterator  {
 
-
-  listConstIterator() { ptr_ = nullptr; }
-
-  listConstIterator(Node *ptr) : ptr_(ptr) {}
-
-  reference operator*() {
-    if (!this->ptr_) {
-      throw std::invalid_argument("Value is nullptr");
-    }
-    return this->ptr_->value_;
-  }
-
-  listConstIterator operator++(int) {
-    listConstIterator it = *this;
-    ptr_ = ptr_->next_;
-    return it;
-  }
-
-  listConstIterator operator--(int) {
-    listConstIterator it = *this;
-    ptr_ = ptr_->prev_;
-    return it;
-  }
-
-  listConstIterator operator++() {
-    ptr_ = ptr_->next_;
-    return *this;
-  }
-
-  listConstIterator operator--() {
-    ptr_ = ptr_->prev_;
-    return *this;
-  }
-
-  listConstIterator operator+(int n) const {
-    Node *tmp = ptr_;
-    for (size_type i = 0; i < n; i++) {
-      tmp = tmp->next_;
-    }
-    listConstIterator res(tmp);
-    return res;
-  }
-
-  listConstIterator operator-(const size_type value) {
-    Node *tmp = ptr_;
-    for (size_type i = 0; i < value; i++) {
-      tmp = tmp->prev_;
-    }
-    listConstIterator res(tmp);
-    return res;
-  }
-  // ptrdiff_t operator-(const listConstIterator &other) const;
-  bool operator==(const listConstIterator &other) const {
-    return this->ptr_ == other.ptr_;
-  }
-  bool operator!=(const listConstIterator &other) const {
-    return this->ptr_ != other.ptr_;
-  }
-  Node *ptr_;
-  //  private:
+  const T &operator*() { return list<T>::listIterator::operator*(); }
 };
+
 
 }  // namespace s21
 #include "s21_list.tpp"

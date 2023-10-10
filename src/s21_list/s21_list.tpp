@@ -54,15 +54,17 @@ list<T>::list(const list& l)
   //--------------------
 }
 
-/*template <typename value_type>
-list<value_type>::list(list&& l)
-    : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
-  swap(l);
-}*/
 template <typename T>
-list<T>::list(list&& other) {
-  std::move(this, other);
+list<T>::list(list&& l) {
+  size_ = std::exchange(l.size_, 0);
+  head_ = std::exchange(l.head_, nullptr);
+  tail_ = std::exchange(l.tail_, nullptr);
+  end_ = std::exchange(l.end_, nullptr);
 }
+// template <typename T>
+// list<T>::list(list&& other) {
+//   std::move(this, other);
+// }
 
 /* template <typename value_type>
 list<value_type>::~list() {
@@ -85,10 +87,7 @@ typename list<value_type>::list& list<value_type>::operator=(list&& l) {
 }*/
 template <typename T>
 list<T>& list<T>::operator=(list<T>&& l) {
-  if (this != &l) {
-    clear();
-    swap(l);
-  }
+  if (this != &l) this(l);
   return *this;
 }
 
@@ -155,7 +154,7 @@ bool list<value_type>::empty() {
 }*/
 template <typename T>
 bool list<T>::empty() const {
-  return (size_ == 0);
+  return (head_ == nullptr);
 }
 
 /*template <typename value_type>
@@ -173,7 +172,7 @@ typename list<value_type>::size_type list<value_type>::max_size() {
 }*/
 template <typename T>
 typename list<T>::size_type list<T>::max_size() const {
-  return std::numeric_limits<size_type>::max() / sizeof(Node);
+  return std::numeric_limits<size_type>::max() / sizeof(Node) / 2;
 }
 
 /*List Modifiers
@@ -190,7 +189,7 @@ void list<T>::clear() {
   }
 }
 
-/*template <typename value_type>
+template <typename value_type>
 typename list<value_type>::iterator list<value_type>::insert(
     iterator pos, const_reference value) {
   Node* current = pos.ptr_;
@@ -201,11 +200,11 @@ typename list<value_type>::iterator list<value_type>::insert(
     head_ = add;
     tail_ = add;
   } else {
-    if (current == head_) {
+    if (current == head_) 
       head_ = add;
-    } else if (current == end_) {
+     else if (current == end_) 
       tail_ = add;
-    }
+    
     add->next_ = current;
     add->prev_ = current->prev_;
     current->prev_->next_ = add;
@@ -214,56 +213,59 @@ typename list<value_type>::iterator list<value_type>::insert(
   size_++;
   change_end();
   return iterator(add);
-}*/
+}
+/*
 template <typename T>
 typename list<T>::iterator list<T>::insert(iterator pos,
                                            const_reference value) {
-  Node* current = pos.ptr_;
   Node* add = new Node(value);
 
-  if (pos == begin()) {
-    push_front(value);
-    add = head_;
-  } else if (pos == this->end()) {
-    push_back(value);
-    add = tail_;
-  } else {
-    add->next_ = current;
-    add->prev_ = current->prev_;
-    current->prev_->next_ = add;
-    current->prev_ = add;
-    size_++;
-  }
-  change_end();
+  // if (pos == begin()) {
+  //   push_front(value);
+  //   add = head_;
+  // } else if (pos == end()) {
+  //   push_back(value);
+  //   add = tail_;
+  // } else {
+  // Node* current = pos.ptr_;
+  //   add->next_ = current;
+  //   add->prev_ = current->prev_;
+  //   current->prev_->next_ = add;
+  //   current->prev_ = add;
+  //   size_++;
+  // }
+  // // delete current;
+  // change_end();
   return iterator(add);
-}
+    // return iterator(current);
 
-/*template <typename value_type>
+}*/
+
+template <typename value_type>
 void list<value_type>::erase(iterator pos) {
   Node* current = pos.ptr_;
   if (!empty() && current != end_) {
     if (current == head_) {
-      if (current->next_ && current->next_ != end_) {
+      if (current->next_ && current->next_ != end_)
         head_ = current->next_;
-      } else {
+      else
         head_ = end_;
-      }
     } else if (current == tail_) {
-      if (current->prev_ && current->prev_ != end_) {
+      if (current->prev_ && current->prev_ != end_)
         tail_ = current->prev_;
-      } else {
+      else
         tail_ = end_;
-      }
     }
     current->prev_->next_ = current->next_;
     current->next_->prev_ = current->prev_;
     delete current;
-    this->size_--;
+    size_--;
   } else {
     throw std::invalid_argument("Invalid argument");
   }
   change_end();
-}*/
+}
+/*
 template <typename T>
 void list<T>::erase(iterator pos) {
   if (!empty()) {
@@ -272,17 +274,19 @@ void list<T>::erase(iterator pos) {
       pop_front();
     else if (current == tail_)
       pop_back();
-    else {
+    else if (current) {
       current->prev_->next_ = current->next_;
       current->next_->prev_ = current->prev_;
-      delete current;
       size_--;
-    }
-  } else {
+      change_end();
+    } else
+      throw std::invalid_argument("Invalid argument");
+    // delete pos.ptr_;
+    // delete current;
+  } else
     throw std::invalid_argument("Invalid argument");
-  }
-  change_end();
 }
+*/
 
 /*template <typename value_type>
 void list<value_type>::push_back(const_reference value) {
@@ -311,6 +315,7 @@ void list<T>::push_back(const_reference value) {
   }
   size_++;
   change_end();
+  // delete new_node;
 }
 
 /*template <typename value_type>
@@ -335,11 +340,16 @@ void list<T>::pop_back() {
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
-  Node* last_node = tail_;
-  tail_ = tail_->prev_;
-  if (tail_) (tail_->next_ = nullptr);
-  if (last_node == head_) head_ = nullptr;
-  delete last_node;
+  // Node* last_node = tail_;
+  if (size_ == 1) {
+    delete head_;
+    head_ = nullptr;
+    tail_ = nullptr;
+  } else {
+    tail_ = tail_->prev_;
+    delete tail_->next_;
+    tail_->next_ = nullptr;
+  }
   size_--;
   change_end();
 }
@@ -395,11 +405,16 @@ void list<T>::pop_front() {
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
-  Node* first_node = head_;
-  head_ = head_->next_;
-  if (head_) (head_->prev_ = nullptr);
-  if (first_node == tail_) tail_ = nullptr;
-  delete first_node;
+  // Node* first_node = head_;
+  if (size_ == 1) {
+    delete head_;
+    head_ = nullptr;
+    tail_ = nullptr;
+  } else {
+    head_ = head_->next_;
+    delete head_->prev_;
+    head_->prev_ = nullptr;
+  }
   size_--;
   change_end();
 }
@@ -454,8 +469,7 @@ void list<T>::merge(list& other) {
     my_node = my_node->next_;
   }
   if (my_node) this->push_back(my_node->value_);
-  if (size_!=other.size_ && other.head_!=nullptr) 
-  sort();
+  if (size_ != other.size_ && other.head_ != nullptr) sort();
   if (my_node) other.clear();
 }
 
@@ -496,22 +510,22 @@ void list<value_type>::unique() {
 }*/
 template <typename T>
 void list<T>::unique() {
-  if (!this->empty()) {
+  if (!empty()) {
     for (iterator it_last = begin(); it_last != end();) {
+      if (!it_last.ptr_) return;
       iterator it_next = it_last;
-      ++it_next;
-      if (it_next.ptr_ == nullptr) {
-        return;
-      } else if (*it_last == *it_next) {
+      it_next++;
+      if (*it_last == *it_next) {
         erase(it_next);
-      } else {
+        // ++it_last;
+      } else
         ++it_last;
-      }
     }
   }
 }
 
-/*// template <typename value_type>
+/*
+// template <typename value_type>
 // void list<value_type>::splice(const_iterator pos, list& other) {
 //   if (!other.empty()) {
 //     for (iterator it = other.begin(); it != other.end(); ++it) {
@@ -519,13 +533,25 @@ void list<T>::unique() {
 //     }
 //     other.clear();
 //   }
-// }*/
+// }
+*/
 template <typename T>
-void list<T>::splice(const_iterator pos, list& other) {
+void list<T>::splice(iterator pos, list& other) {
   if (!other.empty()) {
-    for (iterator it = other.begin(); it != other.end(); ++it)
-      this->insert(pos, *it);
-    other.clear();
+    if (pos == nullptr) 
+    {
+      Node* my_node = other.head_;
+      while (my_node != other.tail_) {
+        push_back(my_node->value_);
+        my_node = my_node->next_;
+      }
+      push_back(my_node->value_);
+      other.clear();
+    } else {
+      for (iterator it = other.begin(); it != other.end(); ++it)
+        insert(pos, *it);
+    }
+      other.clear();
   }
 }
 
@@ -581,9 +607,8 @@ void list<T>::change_end() {
     end_->next_ = head_;
     end_->prev_ = tail_;
     end_->value_ = size();
-    if (head_) {
-      head_->prev_ = end_;
-    }
+    if (head_) head_->prev_ = end_;
+
     if (tail_) {
       tail_->next_ = end_;
     }
