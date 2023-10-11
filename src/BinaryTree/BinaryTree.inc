@@ -1,8 +1,6 @@
 #include <iostream>
 
 #include "BinaryTree.h"
-using std::cout;
-using std::endl;
 using std::pair;
 
 //________________________________________________Member_functions______________________________________________________________
