@@ -271,9 +271,12 @@ TEST(TestMultisetGroup, Insert_many) {
   v1 = a.insert_many(x1, x2, x3);
 
   std::vector<std::pair<std::multiset<int>::iterator, bool>> v2;
-  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x1), true});
-  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x2), true});
-  v2.push_back(pair<std::multiset<int>::iterator, bool>{b.insert(x3), true});
+  v2.push_back(
+      std::pair<std::multiset<int>::iterator, bool>{b.insert(x1), true});
+  v2.push_back(
+      std::pair<std::multiset<int>::iterator, bool>{b.insert(x2), true});
+  v2.push_back(
+      std::pair<std::multiset<int>::iterator, bool>{b.insert(x3), true});
 
   for (int i = 0; i < v1.size(); i++) {
     ASSERT_EQ(*v1[i].first, *v2[i].first);

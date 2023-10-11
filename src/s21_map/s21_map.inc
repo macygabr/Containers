@@ -2,10 +2,6 @@
 
 #include "s21_map.h"
 
-using std::cout;
-using std::endl;
-using std::pair;
-
 namespace s21 {
 template <typename Key, typename T>
 map<Key, T>::map() {}
@@ -34,7 +30,7 @@ T& map<Key, T>::operator[](const Key& key) {
 }
 
 // template <typename Key, typename T>
-// T& map<Key, T>::operator[](const Key&& key) {
+// T& map<Key, T>::operator[](Key&& key) {
 //   return BinaryTree<Key, T, value_type>::swap(*Search(true, key), key);
 // }
 
@@ -49,7 +45,7 @@ const T& map<Key, T>::at(const Key& key) const {
 }
 
 template <typename Key, typename T>
-pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
+std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
     const Key& key, const T& obj) {
   return BinaryTree<Key, T, value_type>::InsertOrAssign(key, obj);
 }

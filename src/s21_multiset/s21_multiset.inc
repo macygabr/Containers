@@ -2,10 +2,6 @@
 
 #include "s21_multiset.h"
 
-using std::cout;
-using std::endl;
-using std::pair;
-
 namespace s21 {
 template <typename Key>
 multiset<Key>::multiset() {}

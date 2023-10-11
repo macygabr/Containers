@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "BinaryTree.h"
-using std::pair;
 
 //________________________________________________Member_functions______________________________________________________________
 
@@ -208,7 +207,6 @@ BinaryTree<Key, T, Value>::end() const {
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator&
 BinaryTree<Key, T, Value>::Iterator::operator++() noexcept {
-  // if (!node) throw std::out_of_range("Iterator out of range");
   if (!node) return *this;
 
   if (node->right) {
@@ -278,20 +276,6 @@ BinaryTree<Key, T, Value>::Iterator::operator=(const iterator& it) noexcept {
   node = it.node;
   return *this;
 }
-
-//________________________________________________Const_Iterators______________________________________________________________
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators() :
-// node(nullptr){}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(Node* newnode) :
-// node(newnode) {}
-
-// template <typename Key, typename T, typename Value>
-// BinaryTree<Key, T, Value>::Const_Iterators::Const_Iterators(const
-// BinaryTree<Key, T, Value>::Iterator::Iterators it) : node(it.node) {}
 
 //________________________________________________Capacity______________________________________________________________
 template <typename Key, typename T, typename Value>
@@ -552,7 +536,6 @@ template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::iterator
 BinaryTree<Key, T, Value>::DeleteNodeNull(iterator it) {
   auto nod = it.node;
-  // if (!it.node) return Iterator(root);
   if (it.node->parent) {
     if (it.node->parent->right == it.node)
       it.node->parent->right = it.node->right;
@@ -576,10 +559,8 @@ BinaryTree<Key, T, Value>::DeleteNodeNull(iterator it) {
 template <typename Key, typename T, typename Value>
 bool BinaryTree<Key, T, Value>::CheckBalance() {
   iterator it = begin();
-  for (iterator it = begin(); it != end(); it++) {
+  for (iterator it = begin(); it != end(); it++)
     if (abs(GetBalanceFactor(it.node)) > 1) return false;
-  }
-
   return true;
 }
 
@@ -598,7 +579,6 @@ BinaryTree<Key, T, Value>::CopyRecursive(Node* x) {
 template <typename Key, typename T, typename Value>
 T& BinaryTree<Key, T, Value>::Search(bool add, const Key& key) {
   auto x = root;
-
   while (x && x != terminal_node) {
     if (key == x->node_key.first) return x->node_key.second;
     if (key > x->node_key.first)

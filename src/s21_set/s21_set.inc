@@ -2,10 +2,6 @@
 
 #include "s21_set.h"
 
-using std::cout;
-using std::endl;
-using std::pair;
-
 namespace s21 {
 template <typename Key>
 set<Key>::set() {}

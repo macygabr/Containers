@@ -5,7 +5,7 @@
 
 namespace s21 {
 template <typename Key, typename T>
-class map : public BinaryTree<Key, T, pair<const Key, T>> {
+class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
  public:
   using key_type = Key;
   using mapped_type = T;
@@ -13,9 +13,10 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   using reference = value_type &;
   using const_reference = const value_type &;
   using size_type = size_t;
-  using iterator = typename BinaryTree<Key, T, pair<const Key, T>>::Iterator;
+  using iterator =
+      typename BinaryTree<Key, T, std::pair<const Key, T>>::Iterator;
   using const_iterator =
-      typename BinaryTree<Key, T, pair<const Key, T>>::Const_Iterator;
+      typename BinaryTree<Key, T, std::pair<const Key, T>>::Const_Iterator;
 
  public:
   map();  // Конструктор по умолчанию
@@ -33,7 +34,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   // T &operator[](Key &&key);
   T &at(const Key &key);
   const T &at(const Key &key) const;
-  pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
+  std::pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
   virtual Key GetKey(value_type val) override { return Key(val.first); }
