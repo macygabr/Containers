@@ -26,17 +26,17 @@ class vector {
   using const_iterator = vector<T>::VectorConstIterator;
   using const_iterator_pointer = const T *;
 
-  vector();//
-  vector(std::size_t n);//
-  vector(std::initializer_list<value_type> const &items);//
-  vector(const vector &v);//
-  vector(vector &&v);//
-  ~vector();//
-  vector &operator=(vector &&v);  //
+  vector();                                                //
+  vector(std::size_t n);                                   //
+  vector(std::initializer_list<value_type> const &items);  //
+  vector(const vector &v);                                 //
+  vector(vector &&v);                                      //
+  ~vector();                                               //
+  vector &operator=(vector &&v);                           //
 
-  reference at(size_type pos);//
-  reference operator[](size_type pos);//
-  const_reference operator[](size_type pos) const;//
+  reference at(size_type pos);                      //
+  reference operator[](size_type pos);              //
+  const_reference operator[](size_type pos) const;  //
   const_reference front() const;
   const_reference back() const;
   T *data() noexcept;
@@ -65,8 +65,8 @@ class vector {
   template <typename... Args>
   void insert_many_back(Args &&...args);
 
-   private:
-//  public:
+ private:
+  //  public:
   iterator_pointer data_;
   size_type size_;
   size_type capacity_;
