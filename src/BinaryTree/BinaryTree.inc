@@ -18,7 +18,7 @@ template <typename Key, typename T, typename Value>
 BinaryTree<Key, T, Value>::BinaryTree(const BinaryTree& other) {
   terminal_node = new Node();
   root = terminal_node;
-  root = copy_recursive(other.root);
+  root = CopyRecursive(other.root);
 }
 
 template <typename Key, typename T, typename Value>
@@ -75,10 +75,10 @@ BinaryTree<Key, T, Value>::insert(const value_type val) {
   std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res;
   if (root == terminal_node) root = nullptr;
 
-  add_terminal_node(root, false);
-  res = insert_recursive(root, val, &it_result, false, is_multiset());
+  AddTerminalNode(root, false);
+  res = InsertRecursive(root, val, &it_result, false, IsMultiset());
   res.first = it_result;
-  add_terminal_node(root, true);
+  AddTerminalNode(root, true);
   return res;
 }
 
@@ -91,17 +91,17 @@ BinaryTree<Key, T, Value>::insert(const Key& key, const T& obj) {
 
 template <typename Key, typename T, typename Value>
 std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>
-BinaryTree<Key, T, Value>::insert_or_assign(const Key& key, const T& obj) {
+BinaryTree<Key, T, Value>::InsertOrAssign(const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
   bool result = true;
   Iterator it_result = Iterator(root);
   std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res;
   if (root == terminal_node) root = nullptr;
 
-  add_terminal_node(root, false);
-  res = insert_recursive(root, val, &it_result, true);
+  AddTerminalNode(root, false);
+  res = InsertRecursive(root, val, &it_result, true);
   res.first = it_result;
-  add_terminal_node(root, true);
+  AddTerminalNode(root, true);
   return res;
 }
 
@@ -133,8 +133,8 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
   else if (!lef && !rig)
     it = DeleteNodeNull(it);
 
-  get_balance_factor(root);
-  while (!check_balance()) {
+  GetBalanceFactor(root);
+  while (!CheckBalance()) {
     for (auto it1 = Iterator(begin()); it1.node != terminal_node; it1++)
       it1.node = Nurlanization(it1.node);
   }
@@ -160,24 +160,13 @@ void BinaryTree<Key, T, Value>::merge(BinaryTree& other) {
   }
 }
 
-// template <typename Key, typename T, typename Value>
-// template <class... Args>
-// std::vector<std::pair<typename map<Key, T>::iterator, bool>>
-// BinaryTree<Key, T, Value>::insert_many(Args &&...args) {
-//   std::vector<std::pair<typename map<Key, T>::iterator, bool>> vec;
-//   for (const auto &arg : {args...})
-//     vec.push_back(insert(arg));
-
-//   return vec;
-// }
-
 //________________________________________________Lookup______________________________________________________________
 template <typename Key, typename T, typename Value>
 bool BinaryTree<Key, T, Value>::contains(const Key& key) {
   auto x = root;
   while (x && x != terminal_node) {
-    if (key == get_key(x->node_key)) return true;
-    if (key > get_key(x->node_key))
+    if (key == GetKey(x->node_key)) return true;
+    if (key > GetKey(x->node_key))
       x = x->right;
     else
       x = x->left;
@@ -330,9 +319,9 @@ BinaryTree<Key, T, Value>::max_size() {
 //________________________________________________Support______________________________________________________________
 template <typename Key, typename T, typename Value>
 std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>
-BinaryTree<Key, T, Value>::insert_recursive(Node* x, value_type val,
-                                            Iterator* it_result,
-                                            bool permission, bool multisetOn) {
+BinaryTree<Key, T, Value>::InsertRecursive(Node* x, value_type val,
+                                           Iterator* it_result, bool permission,
+                                           bool multisetOn) {
   std::pair<iterator, bool> pair;
   if (!x || x == terminal_node) {
     Node* new_node = new Node(val);
@@ -340,11 +329,11 @@ BinaryTree<Key, T, Value>::insert_recursive(Node* x, value_type val,
     it_result->node = new_node;
     return std::pair<iterator, bool>(Iterator(new_node), true);
   }
-  if (get_key(val) == get_key(x->node_key)) {
+  if (GetKey(val) == GetKey(x->node_key)) {
     if (!permission) {
       if (multisetOn) {
         pair =
-            insert_recursive(x->right, val, it_result, permission, multisetOn);
+            InsertRecursive(x->right, val, it_result, permission, multisetOn);
         x->right = pair.first.node;
         x->right->parent = x;
       } else {
@@ -352,22 +341,22 @@ BinaryTree<Key, T, Value>::insert_recursive(Node* x, value_type val,
         return std::pair<iterator, bool>(Iterator(x), false);
       }
     } else
-      set_val(x, val);  // x->node_key.second = val.second;
+      SetVal(x, val);  // x->node_key.second = val.second;
   } else {
-    if (get_key(val) < get_key(x->node_key)) {
-      pair = insert_recursive(x->left, val, it_result, permission, multisetOn);
+    if (GetKey(val) < GetKey(x->node_key)) {
+      pair = InsertRecursive(x->left, val, it_result, permission, multisetOn);
       x->left = pair.first.node;
       x->left->parent = x;
     }
 
-    if (get_key(val) > get_key(x->node_key)) {
-      pair = insert_recursive(x->right, val, it_result, permission, multisetOn);
+    if (GetKey(val) > GetKey(x->node_key)) {
+      pair = InsertRecursive(x->right, val, it_result, permission, multisetOn);
       x->right = pair.first.node;
       x->right->parent = x;
     }
   }
 
-  get_balance_factor(x);
+  GetBalanceFactor(x);
 
   return std::pair<iterator, bool>(Iterator(Nurlanization(x)), pair.second);
 }
@@ -376,19 +365,19 @@ template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
 BinaryTree<Key, T, Value>::Nurlanization(Node* x) {
   if (x->balanceFactor < -1) {
-    if (x->left->balanceFactor > 0) x->left = Rotate_Left(x->left);
-    return Rotate_Right(x);
+    if (x->left->balanceFactor > 0) x->left = RotateLeft(x->left);
+    return RotateRight(x);
   }
   if (x->balanceFactor > 1) {
-    if (x->right->balanceFactor < 0) x->right = Rotate_Right(x->right);
-    return Rotate_Left(x);
+    if (x->right->balanceFactor < 0) x->right = RotateRight(x->right);
+    return RotateLeft(x);
   }
   return x;
 }
 
 template <typename Key, typename T, typename Value>
-typename BinaryTree<Key, T, Value>::Node*
-BinaryTree<Key, T, Value>::Rotate_Left(Node* x) {
+typename BinaryTree<Key, T, Value>::Node* BinaryTree<Key, T, Value>::RotateLeft(
+    Node* x) {
   Node* p = x->right;
   if (x->parent && x->parent->left == x) x->parent->left = p;
   if (x->parent && x->parent->right == x) x->parent->right = p;
@@ -397,14 +386,14 @@ BinaryTree<Key, T, Value>::Rotate_Left(Node* x) {
   p->left = x;
   x->parent = p;
   if (p->parent == nullptr) root = p;
-  get_balance_factor(p);
-  get_balance_factor(x);
+  GetBalanceFactor(p);
+  GetBalanceFactor(x);
   return p;
 }
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
-BinaryTree<Key, T, Value>::Rotate_Right(Node* x) {
+BinaryTree<Key, T, Value>::RotateRight(Node* x) {
   Node* q = x->left;
   if (x->parent && x->parent->left == x) x->parent->left = q;
   if (x->parent && x->parent->right == x) x->parent->right = q;
@@ -413,35 +402,35 @@ BinaryTree<Key, T, Value>::Rotate_Right(Node* x) {
   q->right = x;
   x->parent = q;
   if (!q->parent) root = q;
-  get_balance_factor(q);
-  get_balance_factor(x);
+  GetBalanceFactor(q);
+  GetBalanceFactor(x);
   return q;
 }
 
 template <typename Key, typename T, typename Value>
-int BinaryTree<Key, T, Value>::get_balance_factor(Node* node) {
+int BinaryTree<Key, T, Value>::GetBalanceFactor(Node* node) {
   if (!node || node == terminal_node) return 0;
   if (node->left) node->left->parent = node;
   if (node->right) node->right->parent = node;
 
-  int left_height = get_height(node->left);
-  int right_height = get_height(node->right);
+  int left_height = GetHeight(node->left);
+  int right_height = GetHeight(node->right);
   node->balanceFactor = -left_height + right_height;
-  get_balance_factor(node->left);
-  get_balance_factor(node->right);
+  GetBalanceFactor(node->left);
+  GetBalanceFactor(node->right);
   return node->balanceFactor;
 }
 
 template <typename Key, typename T, typename Value>
-int BinaryTree<Key, T, Value>::get_height(Node* node) {
+int BinaryTree<Key, T, Value>::GetHeight(Node* node) {
   if (!node || node == terminal_node) return 0;
-  int left_height = get_height(node->left);
-  int right_height = get_height(node->right);
+  int left_height = GetHeight(node->left);
+  int right_height = GetHeight(node->right);
   return 1 + std::max(left_height, right_height);
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::add_terminal_node(Node* node, bool add) {
+void BinaryTree<Key, T, Value>::AddTerminalNode(Node* node, bool add) {
   if (!node || node == terminal_node) return;
 
   while (node->right) node = node->right;
@@ -573,7 +562,7 @@ BinaryTree<Key, T, Value>::DeleteNodeNull(iterator it) {
       it.node->parent->left = it.node->left;
 
     while (nod->parent &&
-           (get_key(nod->parent->node_key) < get_key(it.node->node_key)))
+           (GetKey(nod->parent->node_key) < GetKey(it.node->node_key)))
       nod = nod->parent;
     nod = nod->parent;
 
@@ -587,10 +576,10 @@ BinaryTree<Key, T, Value>::DeleteNodeNull(iterator it) {
 }
 
 template <typename Key, typename T, typename Value>
-bool BinaryTree<Key, T, Value>::check_balance() {
+bool BinaryTree<Key, T, Value>::CheckBalance() {
   iterator it = begin();
   for (iterator it = begin(); it != end(); it++) {
-    if (abs(get_balance_factor(it.node)) > 1) return false;
+    if (abs(GetBalanceFactor(it.node)) > 1) return false;
   }
 
   return true;
@@ -598,18 +587,18 @@ bool BinaryTree<Key, T, Value>::check_balance() {
 
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Node*
-BinaryTree<Key, T, Value>::copy_recursive(Node* x) {
+BinaryTree<Key, T, Value>::CopyRecursive(Node* x) {
   if (!x || x == terminal_node) return nullptr;
   Node* next = new Node(x->node_key);
-  next->left = copy_recursive(x->left);
+  next->left = CopyRecursive(x->left);
   if (next->left) next->left->parent = next;
-  next->right = copy_recursive(x->right);
+  next->right = CopyRecursive(x->right);
   if (next->right) next->right->parent = next;
   return next;
 }
 
 template <typename Key, typename T, typename Value>
-T& BinaryTree<Key, T, Value>::search(bool add, const Key& key) {
+T& BinaryTree<Key, T, Value>::Search(bool add, const Key& key) {
   auto x = root;
 
   while (x && x != terminal_node) {
@@ -628,54 +617,54 @@ T& BinaryTree<Key, T, Value>::search(bool add, const Key& key) {
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::SimpleprintTree(
+void BinaryTree<Key, T, Value>::SimplePrintTree(
     typename BinaryTree<Key, T, Value>::Node* x, int level) {
   if (x == nullptr) return;
-  SimpleprintTree(x->right, level + 3);
+  SimplePrintTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
-  std::cout << "\033[92m" << get_key(x->node_key) << "\033[0m["
-            << get_val(x->node_key) << "]" << std::endl;
-  SimpleprintTree(x->left, level + 3);
+  std::cout << "\033[92m" << GetKey(x->node_key) << "\033[0m["
+            << GetVal(x->node_key) << "]" << std::endl;
+  SimplePrintTree(x->left, level + 3);
 }
 
 template <typename Key, typename T, typename Value>
-void BinaryTree<Key, T, Value>::printTree(
+void BinaryTree<Key, T, Value>::PrintTree(
     typename BinaryTree<Key, T, value_type>::Node* x, int level) {
   if (x == nullptr) return;
-  printTree(x->right, level + 3);
+  PrintTree(x->right, level + 3);
   for (int i = 0; i < level; i++) std::cout << " ";
   if (!x->parent && (!x->left && !x->right)) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]"
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m[NULL]"
               << "[NULL]"
               << "[NULL]" << std::endl;
   } else if (x->parent && !x->left && !x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
-              << get_val(x->parent->node_key) << "][NULL]"
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m["
+              << GetVal(x->parent->node_key) << "][NULL]"
               << "[NULL]" << std::endl;
   } else if (x->parent && x->left && !x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
-              << get_val(x->parent->node_key) << "]["
-              << get_val(x->left->node_key) << "][NULL]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m["
+              << GetVal(x->parent->node_key) << "]["
+              << GetVal(x->left->node_key) << "][NULL]" << std::endl;
   } else if (x->parent && !x->left && x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
-              << get_val(x->parent->node_key) << "][NULL]["
-              << get_val(x->right->node_key) << "]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m["
+              << GetVal(x->parent->node_key) << "][NULL]["
+              << GetVal(x->right->node_key) << "]" << std::endl;
   } else if (x->parent && x->left && x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m["
-              << get_val(x->parent->node_key) << "]["
-              << get_val(x->left->node_key) << "]["
-              << get_val(x->right->node_key) << "]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m["
+              << GetVal(x->parent->node_key) << "]["
+              << GetVal(x->left->node_key) << "][" << GetVal(x->right->node_key)
+              << "]" << std::endl;
   } else if (!x->parent && x->left && x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]["
-              << get_val(x->left->node_key) << "]["
-              << get_val(x->right->node_key) << "]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m[NULL]["
+              << GetVal(x->left->node_key) << "][" << GetVal(x->right->node_key)
+              << "]" << std::endl;
   } else if (!x->parent && !x->left && x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL][NULL]["
-              << get_val(x->right->node_key) << "]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m[NULL][NULL]["
+              << GetVal(x->right->node_key) << "]" << std::endl;
   } else if (!x->parent && x->left && !x->right) {
-    std::cout << "\033[92m" << get_val(x->node_key) << "\033[0m[NULL]["
-              << get_val(x->left->node_key) << "][NULL]" << std::endl;
+    std::cout << "\033[92m" << GetVal(x->node_key) << "\033[0m[NULL]["
+              << GetVal(x->left->node_key) << "][NULL]" << std::endl;
   }
-  printTree(x->left, level + 3);
+  PrintTree(x->left, level + 3);
 }
 }  // namespace s21

@@ -12,7 +12,7 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   using value_type = std::pair<const key_type, mapped_type>;
   using reference = value_type &;
   using const_reference = const value_type &;
-  using size_type = std::size_t;
+  using size_type = size_t;
   using iterator = typename BinaryTree<Key, T, pair<const Key, T>>::Iterator;
   using const_iterator =
       typename BinaryTree<Key, T, pair<const Key, T>>::Const_Iterator;
@@ -36,20 +36,11 @@ class map : public BinaryTree<Key, T, pair<const Key, T>> {
   pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
-  virtual Key get_key(value_type val) override {
-    BinaryTree<Key, T, value_type>::get_key(val);
-    return Key(val.first);
-  }
-  virtual T get_val(value_type val) override {
-    BinaryTree<Key, T, value_type>::get_val(val);
-    return T(val.second);
-  }
-
-  virtual bool set_val(typename BinaryTree<Key, T, value_type>::Node *fir,
-                       value_type sec) override {
-    BinaryTree<Key, T, value_type>::set_val(fir, sec);
+  virtual Key GetKey(value_type val) override { return Key(val.first); }
+  virtual T GetVal(value_type val) override { return T(val.second); }
+  virtual void SetVal(typename BinaryTree<Key, T, value_type>::Node *fir,
+                      value_type sec) override {
     fir->node_key.second = sec.second;
-    return true;
   }
 };
 

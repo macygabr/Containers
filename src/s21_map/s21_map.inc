@@ -30,28 +30,28 @@ map<Key, T>& map<Key, T>::operator=(const map& other) {
 //________________________________________________Element_access______________________________________________________________
 template <typename Key, typename T>
 T& map<Key, T>::operator[](const Key& key) {
-  return BinaryTree<Key, T, value_type>::search(true, key);
+  return BinaryTree<Key, T, value_type>::Search(true, key);
 }
 
 // template <typename Key, typename T>
 // T& map<Key, T>::operator[](const Key&& key) {
-//   return BinaryTree<Key, T, value_type>::swap(*search(true, key), key);
+//   return BinaryTree<Key, T, value_type>::swap(*Search(true, key), key);
 // }
 
 template <typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {
-  return BinaryTree<Key, T, value_type>::search(false, key);
+  return BinaryTree<Key, T, value_type>::Search(false, key);
 }
 
 template <typename Key, typename T>
 const T& map<Key, T>::at(const Key& key) const {
-  return BinaryTree<Key, T, value_type>::search(false, key);
+  return BinaryTree<Key, T, value_type>::Search(false, key);
 }
 
 template <typename Key, typename T>
 pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
     const Key& key, const T& obj) {
-  return BinaryTree<Key, T, value_type>::insert_or_assign(key, obj);
+  return BinaryTree<Key, T, value_type>::InsertOrAssign(key, obj);
 }
 
 //________________________________________________Support______________________________________________________________

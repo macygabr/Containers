@@ -59,32 +59,32 @@ class BinaryTree {
   bool contains(const Key& key = Key());
 
  protected:  // suport
-  std::pair<iterator, bool> insert_or_assign(const Key& key, const T& obj);
-  Node* Rotate_Left(Node* x);
-  Node* Rotate_Right(Node* x);
+  std::pair<iterator, bool> InsertOrAssign(const Key& key, const T& obj);
+  Node* RotateLeft(Node* x);
+  Node* RotateRight(Node* x);
   Node* Nurlanization(Node* x);
-  void add_terminal_node(Node* x, bool add);
-  int get_height(Node* x);
-  int get_balance_factor(Node* x);
-  virtual Key get_key(value_type val) { return Key(); }  // const;
-  virtual T get_val(value_type val) { return T(); };
-  virtual bool set_val(Node* fir, value_type sec) { return 0; };
-  virtual bool is_multiset() { return 0; };
-  std::pair<iterator, bool> insert_recursive(Node* x, value_type val,
-                                             Iterator* it_result,
-                                             bool permission,
-                                             bool multisetOn = false);
+  void AddTerminalNode(Node* x, bool add);
+  int GetHeight(Node* x);
+  int GetBalanceFactor(Node* x);
+  virtual Key GetKey(value_type val) { return Key(); }  // const;
+  virtual T GetVal(value_type val) { return T(); };
+  virtual void SetVal(Node* fir, value_type sec) { return; };
+  virtual bool IsMultiset() { return 0; };
+  std::pair<iterator, bool> InsertRecursive(Node* x, value_type val,
+                                            Iterator* it_result,
+                                            bool permission,
+                                            bool multisetOn = false);
   void FreeTree(Node* x);
   iterator DeleteNodeAll(iterator it);
   iterator DeleteNodeRight(iterator it);
   iterator DeleteNodeLeft(iterator it);
   iterator DeleteNodeNull(iterator it);
-  bool check_balance();
-  T& search(bool add, const Key& key);
-  Node* copy_recursive(Node* x);
-  void SimpleprintTree(typename BinaryTree<Key, T, value_type>::Node* root,
+  bool CheckBalance();
+  T& Search(bool add, const Key& key);
+  Node* CopyRecursive(Node* x);
+  void SimplePrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
                        int level = 0);
-  void printTree(typename BinaryTree<Key, T, value_type>::Node* root,
+  void PrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
                  int level = 0);
 
  private:  // constants
