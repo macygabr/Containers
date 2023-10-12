@@ -31,13 +31,13 @@ class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
 
  public:  // Element access
   T &operator[](const Key &key);
-  // T &operator[](Key &&key);
+  T &operator[](Key &&key);
   T &at(const Key &key);
   const T &at(const Key &key) const;
   std::pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
-  virtual Key GetKey(value_type val) override { return Key(val.first); }
+  virtual Key GetKey(value_type val) const override { return Key(val.first); }
   //   virtual T GetVal(value_type val) override { return T(val.second); }
   virtual void SetVal(typename BinaryTree<Key, T, value_type>::Node *fir,
                       value_type sec) override {

@@ -41,10 +41,10 @@ class BinaryTree {
   iterator end();  // returns an iterator to the end
   const_iterator end() const;
 
- public:                 // Capacity
-  bool empty();          // const
-  size_type size();      // const
-  size_type max_size();  // const
+ public:  // Capacity
+  bool empty() const;
+  size_type size() const;  // const
+  size_type max_size() const;
 
  public:  // Modifiers
   void clear();
@@ -57,7 +57,7 @@ class BinaryTree {
   std::vector<std::pair<iterator, bool>> insert_many(Args&&... args);
 
  public:  // Lookup
-  bool contains(const Key& key = Key());
+  bool contains(const Key& key = Key()) const;
 
  protected:  // suport
   std::pair<iterator, bool> InsertOrAssign(const Key& key, const T& obj);
@@ -67,7 +67,7 @@ class BinaryTree {
   void AddTerminalNode(Node* x, bool add);
   int GetHeight(Node* x);
   int GetBalanceFactor(Node* x);
-  virtual Key GetKey(value_type val) { return Key(); }  // const;
+  virtual Key GetKey(value_type val) const { return Key(); }
   // virtual T GetVal(value_type val) { return T(); };
   virtual void SetVal(Node* fir, value_type sec) { return; };
   virtual bool IsMultiset() { return 0; };
@@ -83,10 +83,10 @@ class BinaryTree {
   bool CheckBalance();
   T& Search(bool add, const Key& key);
   Node* CopyRecursive(Node* x);
-  void SimplePrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
-                       int level = 0);
-  void PrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
-                 int level = 0);
+  // void SimplePrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
+  //                      int level = 0);
+  // void PrintTree(typename BinaryTree<Key, T, value_type>::Node* root,
+  //                int level = 0);
 
  private:  // constants
   size_type MAX_SIZE = 100;
@@ -149,6 +149,13 @@ class BinaryTree {
 
  protected:
   class Const_Iterator : public Iterator {
+   public:
+    friend class BinaryTree<Key, T, value_type>;
+    friend class Iterator;
+
+    Const_Iterator() : Iterator(){};
+    Const_Iterator(Node* newnode) : Iterator(newnode){};
+    ~Const_Iterator() = default;
     const_reference operator*() const { return Iterator::operator*(); };
   };
 };

@@ -29,10 +29,10 @@ T& map<Key, T>::operator[](const Key& key) {
   return BinaryTree<Key, T, value_type>::Search(true, key);
 }
 
-// template <typename Key, typename T>
-// T& map<Key, T>::operator[](Key&& key) {
-//   return BinaryTree<Key, T, value_type>::swap(*Search(true, key), key);
-// }
+template <typename Key, typename T>
+T& map<Key, T>::operator[](Key&& key) {
+  return BinaryTree<Key, T, value_type>::Search(true, std::move(key));
+}
 
 template <typename Key, typename T>
 T& map<Key, T>::at(const Key& key) {

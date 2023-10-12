@@ -414,6 +414,21 @@ TEST(TestSetGroup, Contains) {
     ASSERT_EQ(a.contains(std::to_string(i)), false);
 }
 
+TYPED_TEST(TestSetGroup, Find) {
+  s21::set<std::string> a;
+  std::set<std::string> b;
+  s21::set<std::string>::iterator it1;
+  EXPECT_THROW(*it1, std::exception);
+
+  for (int i = 0; i < 50; i++) {
+    std::string x = std::to_string(i);
+    ASSERT_EQ(a.insert(x).second, b.insert(x).second);
+  }
+
+  for (int i = 0; i < 50; i++)
+    ASSERT_EQ(*a.find(std::to_string(i)), *b.find(std::to_string(i)));
+}
+
 //________________________________________________Iterators_________________________________________________
 TYPED_TEST(TestSetGroup, operator_plus) {
   s21::set<typename TestSetGroup<TypeParam>::SetType> a;
