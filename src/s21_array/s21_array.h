@@ -27,6 +27,8 @@ class array {
 
   reference at(size_type pos);
   reference operator[](size_type pos) { return arr_[pos]; };
+  const_reference at(size_type pos) const;
+  const_reference operator[](size_type pos) const { return arr_[pos]; };
   const_reference front();
   const_reference back();
   iterator data() { return arr_; }

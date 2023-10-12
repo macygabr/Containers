@@ -63,6 +63,13 @@ typename s21::array<value_type, N>::reference s21::array<value_type, N>::at(
 }
 
 template <typename value_type, std::size_t N>
+typename s21::array<value_type, N>::const_reference s21::array<value_type, N>::at(
+    size_type position) const {
+  if (position >= size_) throw std::invalid_argument("Invalid index");
+  return arr_[position];
+}
+
+template <typename value_type, std::size_t N>
 typename s21::array<value_type, N>::const_reference
 s21::array<value_type, N>::front() {
   if (size_ == 0) throw std::out_of_range("The array contains no elements");
