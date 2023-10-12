@@ -26,7 +26,8 @@ class vector {
   vector(const vector &v);                                 //
   vector(vector &&v);                                      //
   ~vector();                                               //
-  vector &operator=(vector &&v);                           //
+  vector &operator=(vector &&v);
+  vector &operator=(const vector &v);  //
 
   reference at(size_type pos);                      //
   reference operator[](size_type pos);              //

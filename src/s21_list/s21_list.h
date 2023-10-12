@@ -27,9 +27,13 @@ class list {
   ~list();              //	destructor
   list &operator=(
       list &&l);  //	assignment operator overload for moving object
+  list &operator=(const list &l);
 
   const_reference front() const;  // access the first element
   const_reference back() const;   // access the last element
+                                  // const
+  reference front();              // access the first element
+  reference back();               // access the last element
 
   iterator begin();              // returns an iterator to the beginning
   iterator end();                // returns an iterator to the end
@@ -69,10 +73,9 @@ class list {
   template <class... Args>
   void insert_many_front(
       Args &&...args);  // void insert_many_front(Args&&... args)
-  void change_end();
 
-  //  private:
- public:
+ private:
+  //  public:
   struct Node {
     value_type value_;
     Node *prev_;
@@ -84,6 +87,7 @@ class list {
   Node *tail_;
   Node *end_;
   size_type size_;
+  void change_end();
 };
 
 template <typename T>
@@ -139,7 +143,6 @@ class list<T>::listIterator {
     listIterator res(tmp);
     return res;
   }
-  // ptrdiff_t operator-(const listIterator &other) const;
   bool operator==(const listIterator &other) const {
     return this->ptr_ == other.ptr_;
   }

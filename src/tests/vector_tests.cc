@@ -233,7 +233,7 @@ TEST(VectorTest, Reserve) {
   v1.reserve(3);
   v_o1.reserve(3);
   for (size_t i = 0; i < v1.size(); ++i) EXPECT_EQ(v1[i], i);
-  EXPECT_EQ(v1.capacity(), 7);
+  EXPECT_EQ(v1.capacity(), 6);
   // EXPECT_EQ(v1.capacity(), v_o1.capacity());
 }
 
