@@ -75,8 +75,7 @@ class list {
   template <class... Args>
   void insert_many_front(
       Args &&...args);  // void insert_many_front(Args&&... args)
-        void change_end();
-
+  void change_end();
 
   //  private:
  public:
@@ -158,13 +157,11 @@ class list<T>::listIterator {
 };
 
 template <typename T>
-  class listConstIterator : public list<T>::listIterator  {
-
+class listConstIterator : public list<T>::listIterator {
   const T &operator*() { return list<T>::listIterator::operator*(); }
 };
 
-
 }  // namespace s21
-#include "s21_list.tpp"
+#include "s21_list.inc"
 
 #endif  // LIST_H

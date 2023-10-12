@@ -115,5 +115,5 @@ class vector<T>::VectorConstIterator : public VectorIterator {
 };
 
 }  // namespace s21
-#include "s21_vector.tpp"
+#include "s21_vector.inc"
 #endif  // VECTOR_H
