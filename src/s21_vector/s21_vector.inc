@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+// #include <vector>
 
 #include "s21_vector.h"
 // --------------------------------------------------------------------Functions
@@ -10,15 +10,16 @@ vector<T>::vector() : data_(nullptr), size_(0), capacity_(0) {}
 
 template <typename T>
 vector<T>::vector(size_type n)
-    : data_(new value_type[n]), size_(n), capacity_(n) {
+    : data_(new value_type[n + 1]), size_(n), capacity_(n + 1) {
   std::fill_n(data_, n, value_type());  // заполнение
 }
 
 template <typename T>
 vector<T>::vector(std::initializer_list<value_type> const& items) {
-  capacity_ = size_ = items.size();
+  size_ = items.size();
+  capacity_ = size_ + 1;
   if (items.size() != 0) {
-    data_ = new value_type[size_];
+    data_ = new value_type[capacity_];
     std::copy(items.begin(), items.end(), data_);
   } else
     data_ = nullptr;
@@ -64,16 +65,14 @@ typename vector<T>::size_type vector<T>::max_size() const {
 template <class value_type>
 typename vector<value_type>::reference vector<value_type>::operator[](
     size_type pos) {
-  if (pos >= capacity_)
-    throw std::out_of_range("indexError: Index out of range");
+  if (pos >= size_) throw std::out_of_range("indexError: Index out of range");
   return data_[pos];
 }
 
 template <class value_type>
 typename vector<value_type>::const_reference vector<value_type>::operator[](
     size_type pos) const {
-  if (pos >= capacity_)
-    throw std::out_of_range("indexError: Index out of range");
+  if (pos >= size_) throw std::out_of_range("indexError: Index out of range");
   return data_[pos];
 }
 
@@ -188,7 +187,7 @@ template <typename T>
 typename vector<T>::iterator vector<T>::insert(iterator pos,
                                                const_reference value) {
   size_type idx = pos - begin();
-  if (size_ == capacity_) reserve(size_ + 1);
+  if (size_ == capacity_) reserve(capacity_ + 1);
   iterator new_pos = begin() + idx;
   for (iterator it = end(); it != new_pos; --it) *it = *(it - 1);
   *new_pos = value;
@@ -198,10 +197,14 @@ typename vector<T>::iterator vector<T>::insert(iterator pos,
 
 template <typename T>
 void vector<T>::erase(iterator pos) {
-  size_type position = pos - begin();
-  if (position >= size_) throw std::out_of_range("erase: Index out of range");
-  for (iterator i = pos; i != end(); ++i) *i = *(i + 1);
-  size_--;
+  if (pos == end() - 1)
+    pop_back();
+  else {
+    size_type position = pos - begin();
+    if (position >= size_) throw std::out_of_range("erase: Index out of range");
+    for (size_type i = position; i < size_; ++i) data_[i] = data_[i + 1];
+    size_--;
+  }
 }
 //--------------------------------------------------------
 //-----------------------------------------iterators-----------------------------------------
@@ -217,7 +220,7 @@ typename vector<T>::reference vector<T>::VectorIterator::operator*() {
 template <typename T>
 typename vector<T>::VectorIterator& vector<T>::VectorIterator::operator++(int) {
   VectorIterator tmp(*this);
-  ++ptr_;
+  if (ptr_) ++ptr_;
   return tmp;
 }
 
@@ -230,7 +233,7 @@ typename vector<T>::VectorIterator& vector<T>::VectorIterator::operator--(int) {
 
 template <typename T>
 typename vector<T>::VectorIterator& vector<T>::VectorIterator::operator++() {
-  ++ptr_;
+  if (ptr_) ++ptr_;
   return *this;
 }
 
