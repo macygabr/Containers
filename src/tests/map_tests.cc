@@ -647,6 +647,7 @@ TEST(TestMapGroup, Dereferencing_operator) {
 
   // a.printTree(a.root);
 }
+
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
