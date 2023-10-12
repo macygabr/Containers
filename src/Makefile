@@ -4,7 +4,6 @@ TEST_FLAGS=-lgtest -pthread -lgtest_main -lstdc++ -lm
 GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
 TEST_FUNC=  map_tests.cc vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc array_tests.cc  set_tests.cc multiset_tests.cc   
 PATH_TO_FILE = s21_map
-cleanMAC = echo check
 
 OS := $(shell uname -s)
 ifeq ($(OS), Linux)
@@ -30,7 +29,6 @@ dvi: clean
 
 clean:
 	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
-	$(cleanMAC)
 
 test: 
 	make clean

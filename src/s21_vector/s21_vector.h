@@ -20,18 +20,19 @@ class vector {
   using const_iterator = vector<T>::VectorConstIterator;
   using const_iterator_pointer = const T *;
 
-  vector();                                                //
-  vector(std::size_t n);                                   //
-  vector(std::initializer_list<value_type> const &items);  //
-  vector(const vector &v);                                 //
-  vector(vector &&v);                                      //
-  ~vector();                                               //
+  vector();                                                
+  vector(std::size_t n);                                   
+  vector(std::initializer_list<value_type> const &items);  
+  vector(const vector &v);                                 
+  vector(vector &&v);                                      
+  ~vector();                                               
   vector &operator=(vector &&v);
-  vector &operator=(const vector &v);  //
+  vector &operator=(const vector &v);  
 
-  reference at(size_type pos);                      //
-  reference operator[](size_type pos);              //
-  const_reference operator[](size_type pos) const;  //
+  reference at(size_type pos);
+  const_reference at(size_type pos) const;          
+  reference operator[](size_type pos);              
+  const_reference operator[](size_type pos) const;  
   const_reference front() const;
   const_reference back() const;
   T *data() noexcept;

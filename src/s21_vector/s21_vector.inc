@@ -96,6 +96,13 @@ typename vector<value_type>::reference vector<value_type>::at(size_type pos) {
   return data_[pos];
 }
 
+template <class value_type>
+typename vector<value_type>::const_reference vector<value_type>::at(
+    size_type pos) const {
+  if (pos >= size_) throw std::out_of_range("AtError: Index out of range");
+  return data_[pos];
+}
+
 template <typename T>
 vector<T>& vector<T>::operator=(const vector<T>& v) {
   if (this != &v) {
@@ -205,7 +212,6 @@ void vector<T>::erase(iterator pos) {
   for (size_type i = position; i < size_ - 1; ++i) data_[i] = data_[i + 1];
   --size_;
 }
-//--------------------------------------------------------
 //-----------------------------------------iterators-----------------------------------------
 
 template <typename T>

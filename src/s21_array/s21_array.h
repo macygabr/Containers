@@ -42,9 +42,9 @@ class array {
 
   // Array Capacity --------------------------------------------------------
 
-  bool empty() { return size_ == 0; }
-  size_type size() { return size_; }
-  size_type max_size() { return size_; }
+  bool empty()  const { return size_ == 0; }
+  size_type size() const { return size_; }
+  size_type max_size()  const { return size_; }
 
   // Array Modifiers -------------------------------------------------------
 
