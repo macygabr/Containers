@@ -1,6 +1,5 @@
-
-#ifndef S21_LIS21_STACK_HST_H
-#define S21_STACK_H
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_STACK_S21_STACK_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_STACK_S21_STACK_H
 
 #include "../s21_list/s21_list.h"
 
@@ -27,7 +26,7 @@ class stack : public list<T> {
     list<T>::push_front(value);
   };                                     // inserts element at the end
   void pop() { list<T>::pop_front(); };  // removes the first element
-  const_reference top() { list<T>::front(); };
+  const_reference top() { return list<T>::front(); };
 };
 
 }  //  namespace s21

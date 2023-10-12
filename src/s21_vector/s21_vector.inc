@@ -10,19 +10,16 @@ vector<T>::vector() : data_(nullptr), size_(0), capacity_(0) {}
 
 template <typename T>
 vector<T>::vector(size_type n)
-    : data_(new value_type[n + 1]), size_(n), capacity_(n + 1) {
+    : data_(new value_type[n ]), size_(n), capacity_(n) {
   std::fill_n(data_, n, value_type());  // заполнение
 }
 
 template <typename T>
 vector<T>::vector(std::initializer_list<value_type> const& items) {
   size_ = items.size();
-  capacity_ = size_ + 1;
-  if (items.size() != 0) {
-    data_ = new value_type[capacity_];
-    std::copy(items.begin(), items.end(), data_);
-  } else
-    data_ = nullptr;
+  capacity_ = size_;
+  data_ = new value_type[capacity_];
+  std::copy(items.begin(), items.end(), data_);
 }
 
 template <typename T>
@@ -100,14 +97,20 @@ typename vector<value_type>::reference vector<value_type>::at(size_type pos) {
 }
 
 template <typename T>
-vector<T>& vector<T>::operator=(vector<T>&& v) {
+vector<T>& vector<T>::operator=(const vector<T>& v) {
   if (this != &v) {
     this->swap(v);
+  }
+  return *this;
+}
+
+template <typename T>
+vector<T>& vector<T>::operator=( vector<T>&& v) {
+swap(v);
     delete[] v.data_;
     v.size_ = 0;
     v.capacity_ = 0;
     v.data_ = nullptr;
-  }
   return *this;
 }
 
@@ -139,7 +142,7 @@ typename vector<T>::size_type vector<T>::capacity() const {
 template <typename T>
 void vector<T>::reserve(size_type size) {
   if (size > max_size()) throw std::out_of_range("reserve: Index out of range");
-  if (size > size_) {
+  if (size > capacity_) {
     capacity_ = size;
     value_type* tmp = data_;
     data_ = new value_type[size];
@@ -161,7 +164,7 @@ void vector<T>::shrink_to_fit() {
 
 template <typename T>
 void vector<T>::push_back(const_reference value) {
-  if (size_ == capacity_) reserve(size_ + 1);
+  if (!(size_  < capacity_)) reserve(size_ + 1);
   data_[size_] = value;
   size_++;
 }
@@ -191,26 +194,23 @@ typename vector<T>::iterator vector<T>::insert(iterator pos,
   iterator new_pos = begin() + idx;
   for (iterator it = end(); it != new_pos; --it) *it = *(it - 1);
   *new_pos = value;
-  size_++;
+  ++size_;
   return new_pos;
 }
 
 template <typename T>
 void vector<T>::erase(iterator pos) {
-  if (pos == end() - 1)
-    pop_back();
-  else {
     size_type position = pos - begin();
     if (position >= size_) throw std::out_of_range("erase: Index out of range");
-    for (size_type i = position; i < size_; ++i) data_[i] = data_[i + 1];
-    size_--;
-  }
+    for (size_type i = position; i < size_-1; ++i) data_[i] = data_[i + 1];
+    --size_;
 }
 //--------------------------------------------------------
 //-----------------------------------------iterators-----------------------------------------
 
 template <typename T>
 vector<T>::VectorIterator::VectorIterator(iterator_pointer ptr) : ptr_(ptr) {}
+
 
 template <typename T>
 typename vector<T>::reference vector<T>::VectorIterator::operator*() {

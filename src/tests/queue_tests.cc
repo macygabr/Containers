@@ -3,7 +3,7 @@
 #include <iostream>
 #include <queue>
 
-#include "s21_queue.h"
+#include "../s21_queue/s21_queue.h"
 using namespace std;
 
 template <typename value_type>
@@ -387,9 +387,4 @@ TEST(QueueTest2, Swap_2) {
 
   EXPECT_TRUE(compare_queues(my_queue1, std_queue1));
   EXPECT_TRUE(compare_queues(my_queue2, std_queue2));
-}
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

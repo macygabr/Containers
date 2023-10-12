@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stack>
 
-#include "s21_stack.h"
+#include "../s21_stack/s21_stack.h"
 using namespace std;
 
 template <typename value_type>
@@ -350,9 +350,4 @@ TEST(stackTest2, Swap_2) {
 
   EXPECT_TRUE(compare_stacks(my_stack1, std_stack1));
   EXPECT_TRUE(compare_stacks(my_stack2, std_stack2));
-}
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

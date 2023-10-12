@@ -1,29 +1,8 @@
-
-# TARGET = s21_stack.a
-# CC = gcc
-# CFLAGS = -Wall -Werror -Wextra -std=c++17 -lstdc++
-# TEST_FLAGS = -lgtest -pthread
-# TEST_TARGET = testing_exe
-
-# all: test
-
-# clean:
-
-# 	rm -rf *.o *.a *.out *.log $(TEST_TARGET)
-
-# test: clean
-# 	$(CC) $(CFLAGS) s21_stack/*.cpp $(TEST_FLAGS) -o $(TEST_TARGET)
-# 	./$(TEST_TARGET)
-
-
-
 CC=g++
-CFLAGS= -c  
 FILES = s21_map
 TEST_FLAGS=-lgtest -pthread
-GTEST_FLAG = --gtest_repeat=1
-TEST_FUNC= s21_stack/*.cpp
-#stack_tests.cc stack_tests.cc stack_tests.cc stack_tests.cc
+GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
+TEST_FUNC=  map_tests.cc vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc array_tests.cc  set_tests.cc multiset_tests.cc   
 PATH_TO_FILE = s21_map
 cleanMAC = echo check
 
@@ -50,13 +29,12 @@ dvi: clean
 	open html/index.html
 
 clean:
-	# rm -rf *.a */*.a *.o */*.o */*.out test report gcov *.gcno *.gcda html
-	# $(cleanMAC)
+	rm -rf *.a */*.a *.o */*.o */*.out */test report gcov *.gcno *.gcda html
+	$(cleanMAC)
 
 test: 
-#	make goclang
-	make clean
-	 $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
+	# make clean
+	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
 
 clang:
 	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc
@@ -66,13 +44,13 @@ goclang:
 
 
 valgrind: test
-	CK_FORK=no valgrind --tool=memcheck --leak-check=yes --track-origins=yes  -s ./test
+	CK_FORK=no valgrind --tool=memcheck --leak-check=yes --track-origins=yes  -s ./tests/test
 
 check_cppcheck:
 	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(FILES).cc *.h
 
 leaks: clean $(FILES).a test
-	leaks -atExit -- ./test
+	leaks -atExit -- ./tests/test
 
 push: clean goclang
 	git add .

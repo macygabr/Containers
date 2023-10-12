@@ -12,12 +12,11 @@ list<T>::list() : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
 }
 
 template <typename T>
-list<T>::list(size_type n)
-    : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
+list<T>::list(size_type n) : list() {
   if (n >= max_size()) {
     throw std::out_of_range("Limit of the container is exceeded");
   }
-  end_ = new Node(size_);
+  // end_ = new Node(size_);
   for (size_type i = 0; i < n; ++i) {
     push_back(value_type());
   }
@@ -25,9 +24,8 @@ list<T>::list(size_type n)
 }
 
 template <typename T>
-list<T>::list(std::initializer_list<value_type> const& items)
-    : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
-  end_ = new Node(size_);
+list<T>::list(std::initializer_list<value_type> const& items) : list() {
+  // end_ = new Node(size_);
   for (const auto& item : items) {
     push_back(item);
     change_end();
@@ -35,9 +33,8 @@ list<T>::list(std::initializer_list<value_type> const& items)
 }
 
 template <typename T>
-list<T>::list(const list& l)
-    : head_(nullptr), tail_(nullptr), end_(nullptr), size_(0) {
-  end_ = new Node(size_);
+list<T>::list(const list& l) : list() {
+  // end_ = new Node(size_);
   Node* current = l.head_;
   for (size_type i = 0; i != l.size_; i++) {
     push_back(current->value_);
@@ -58,10 +55,19 @@ list<T>::~list() {
   clear();
   delete end_;
 }
-
+//===========================
 template <typename T>
 list<T>& list<T>::operator=(list<T>&& l) {
-  if (this != &l) this(l);
+  size_ = std::exchange(l.size_, 0);
+  head_ = std::exchange(l.head_, nullptr);
+  tail_ = std::exchange(l.tail_, nullptr);
+  end_ = std::exchange(l.end_, nullptr);
+  return *this;
+}
+
+template <typename T>
+list<T>& list<T>::operator=(const list<T>& l) {
+this.swap(l);
   return *this;
 }
 
@@ -72,6 +78,16 @@ typename list<value_type>::const_reference list<value_type>::front() const {
 
 template <class value_type>
 typename list<value_type>::const_reference list<value_type>::back() const {
+  return tail_->value_;
+}
+
+template <class value_type>
+typename list<value_type>::reference list<value_type>::front() {
+  return head_->value_;
+}
+
+template <class value_type>
+typename list<value_type>::reference list<value_type>::back() {
   return tail_->value_;
 }
 

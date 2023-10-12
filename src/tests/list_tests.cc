@@ -3,7 +3,7 @@
 #include <iostream>
 #include <list>
 
-#include "s21_list.h"
+#include "../s21_list/s21_list.h"
 using namespace std;
 
 template <typename value_type>
@@ -127,6 +127,14 @@ TEST(ListTest, MoveAssignmentOperator) {
   s21::list<int> my_list_move = my_list;
   std::list<int> std_list{1, 2, 3};
   std::list<int> std_list_move = std_list;
+  EXPECT_TRUE(compare_lists(my_list_move, std_list_move));
+  EXPECT_TRUE(compare_lists(my_list, std_list));
+}
+TEST(ListTest, MoveAssignmentOperatorC) {
+  s21:: list<int> my_list{1, 2, 3};
+  s21:: list<int> my_list_move = my_list;
+  std:: list<int> std_list{1, 2, 3};
+  std:: list<int> std_list_move = std_list;
   EXPECT_TRUE(compare_lists(my_list_move, std_list_move));
   EXPECT_TRUE(compare_lists(my_list, std_list));
 }
@@ -546,9 +554,4 @@ TEST(ListTest, Erase_5) {
   std_list1.erase(std_list1.end().operator--());
 
   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-}
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }
