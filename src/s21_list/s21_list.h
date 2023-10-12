@@ -1,11 +1,5 @@
-#ifndef LIST_H
-#define LIST_H
-// #include <algorithm>
-// #include <cstddef>
-// #include <initializer_list>
-// #include <limits>
-// #include <stdexcept>
-// #include <utility>
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_LIST_S21_LIST_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_LIST_S21_LIST_H
 
 namespace s21 {
 

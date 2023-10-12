@@ -1,11 +1,5 @@
-#ifndef VECTOR_H
-#define VECTOR_H
-#include <algorithm>
-#include <cstddef>
-#include <initializer_list>
-#include <limits>
-#include <stdexcept>
-#include <utility>
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_VECTOR_S21_VECTOR_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_VECTOR_S21_VECTOR_H
 
 namespace s21 {
 

@@ -1,6 +1,5 @@
-
-#ifndef S21_LIS21_QUEUE_HST_H
-#define S21_QUEUE_H
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_QUEUE_S21_QUEUE_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_QUEUE_S21_QUEUE_H
 
 #include "../s21_list/s21_list.h"
 

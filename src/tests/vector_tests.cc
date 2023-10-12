@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "s21_vector.h"
+#include "../s21_vector/s21_vector.h"
 using namespace std;
 
 TEST(VectorTest, DefaultConstructor_EmptyVector) {
@@ -403,9 +403,4 @@ TEST(VectorTest, InsertManyBack) {
   EXPECT_EQ(vec[3], 4);
   EXPECT_EQ(vec[4], 5);
   EXPECT_EQ(vec[5], 6);
-}
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

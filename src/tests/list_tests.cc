@@ -3,7 +3,7 @@
 #include <iostream>
 #include <list>
 
-#include "s21_list.h"
+#include "../s21_list/s21_list.h"
 using namespace std;
 
 template <typename value_type>
@@ -546,9 +546,4 @@ TEST(ListTest, Erase_5) {
   std_list1.erase(std_list1.end().operator--());
 
   EXPECT_TRUE(compare_lists(my_list1, std_list1));
-}
-
-int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

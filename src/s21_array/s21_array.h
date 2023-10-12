@@ -1,8 +1,6 @@
 #ifndef CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
 #define CPP2_S21_CONTAINERS_SRC_S21_ARRAY_H_
 
-#include <iostream>
-
 namespace s21 {
 
 template <typename T, std::size_t N>
