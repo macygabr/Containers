@@ -1,11 +1,5 @@
-#ifndef VECTOR_H
-#define VECTOR_H
-#include <algorithm>
-#include <cstddef>
-#include <initializer_list>
-#include <limits>
-#include <stdexcept>
-#include <utility>
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_VECTOR_S21_VECTOR_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_VECTOR_S21_VECTOR_H
 
 namespace s21 {
 
@@ -32,7 +26,8 @@ class vector {
   vector(const vector &v);                                 //
   vector(vector &&v);                                      //
   ~vector();                                               //
-  vector &operator=(vector &&v);                           //
+  vector &operator=(vector &&v);
+  vector &operator=(const vector &v);  //
 
   reference at(size_type pos);                      //
   reference operator[](size_type pos);              //

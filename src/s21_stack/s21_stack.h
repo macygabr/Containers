@@ -1,52 +1,33 @@
-// #ifndef STACK_H
-// #define STACK_H
+#ifndef CPP2_S21_CONTAINERS_3_SRC_S21_STACK_S21_STACK_H
+#define CPP2_S21_CONTAINERS_3_SRC_S21_STACK_S21_STACK_H
 
-// namespace s21 {
+#include "../s21_list/s21_list.h"
 
-// template <typename T>
-// class stack:list {
-//  public:
-//   class stackIterator;
-//   class stackConstIterator;
+namespace s21 {
 
-//   using value_type = T;
-//   using reference = T &;
-//   using const_reference = const T &;
-//   //   using iterator = stack<T>::stackIterator;
-//   //   using const_iterator = stack<T>::stackConstIterator;
-//   using size_type = std::size_t;
-//   //   using iterator_pointer = T *;
-//   //   using const_iterator_pointer = const T *;
+template <typename T>
+class stack : public list<T> {
+ public:
+  using value_type = typename list<T>::value_type;
+  using reference = typename list<T>::reference;
+  using const_reference = typename list<T>::const_reference;
+  using size_type = std::size_t;
 
-//   stack();  // default constructor, creates empty stack
-//   stack(std::initializer_stack<value_type> const
-//             &items);  // initializer stack constructor, creates stack
-//                       // initizialized using std::initializer_stack
-//   stack(const stack &s);  //	copy constructor
-//   stack(stack &&s);       //	move constructor
-//   ~stack();               //	destructor
-//   stack &operator=(
-//       stack &&s);  //	assignment operator overload for moving object
+  stack() : list<T>::list(){};
+  stack(std::initializer_list<value_type> const &items) : list<T>::list(items) {
+    list<T>::reverse();
+  };
 
-//   const_reference top();  //	accesses the top element
+  stack(const stack &s) : list<T>::list(s){};  //	copy constructor
+  stack(stack &&s) : list<T>::list(s){};       //	move constructor
+  ~stack() = default;                          //	destructor
 
-//   // bool empty() const;      // checks whether the container is empty
-//   // size_type size() const;  // returns the number of elements
+  void push(const_reference value) {
+    list<T>::push_front(value);
+  };                                     // inserts element at the end
+  void pop() { list<T>::pop_front(); };  // removes the first element
+  const_reference top() { return list<T>::front(); };
+};
 
-//   void push(const_reference value);  // inserts element at the top
-//   void pop();                        // removes the top element
-//   // void swap(queue &other);           //	swaps the contents
-
-//   // void insert_many_front(
-//       Args &&...args);  // void insert_many_front(Args&&... args)
-
-//   //  private:
-//  public:
-//   iterator_pointer data_;
-//   size_type size_;
-//   size_type capacity_;
-// };
-
-// }  // namespace s21
-
-// #endif  // STACK_H
+}  //  namespace s21
+#endif

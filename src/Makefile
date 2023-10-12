@@ -2,8 +2,7 @@ CC=g++
 FILES = s21_map
 TEST_FLAGS=-lgtest -pthread
 GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
-TEST_FUNC= array_tests.cc map_tests.cc set_tests.cc multiset_tests.cc
-#vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc
+TEST_FUNC=  map_tests.cc vector_tests.cc list_tests.cc queue_tests.cc stack_tests.cc array_tests.cc  set_tests.cc multiset_tests.cc   
 PATH_TO_FILE = s21_map
 cleanMAC = echo check
 
@@ -57,5 +56,15 @@ push: clean goclang
 	git add .
 	git commit -m "$(c)"
 	git push
+
+gcov_report: clean
+#	mkdir -p gcov
+#	$(CC) --coverage tests/*.cc -o gcov/greport $(TEST_FLAGS)
+#	./gcov/greport
+#	lcov -t "greport" -o greport.info -c -d .
+	g++ --coverage tests/map_tests.cc -o fizzbuzz -lgtest_main $(TEST_FLAGS)
+	./fizzbuzz $(GTEST_FLAG)
+	lcov -t "fizzbuzz" -o fizzbuzz.info -c -d . --no-external
+	
 
 .PHONY: installDox dvi clean $(FILES).a clang goclang test valgrind check_cppcheck push
