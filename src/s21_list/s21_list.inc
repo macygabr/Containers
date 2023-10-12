@@ -16,7 +16,6 @@ list<T>::list(size_type n) : list() {
   if (n >= max_size()) {
     throw std::out_of_range("Limit of the container is exceeded");
   }
-  // end_ = new Node(size_);
   for (size_type i = 0; i < n; ++i) {
     push_back(value_type());
   }
@@ -25,7 +24,6 @@ list<T>::list(size_type n) : list() {
 
 template <typename T>
 list<T>::list(std::initializer_list<value_type> const& items) : list() {
-  // end_ = new Node(size_);
   for (const auto& item : items) {
     push_back(item);
     change_end();
@@ -34,7 +32,6 @@ list<T>::list(std::initializer_list<value_type> const& items) : list() {
 
 template <typename T>
 list<T>::list(const list& l) : list() {
-  // end_ = new Node(size_);
   Node* current = l.head_;
   for (size_type i = 0; i != l.size_; i++) {
     push_back(current->value_);
@@ -55,7 +52,7 @@ list<T>::~list() {
   clear();
   delete end_;
 }
-//===========================
+
 template <typename T>
 list<T>& list<T>::operator=(list<T>&& l) {
   size_ = std::exchange(l.size_, 0);
@@ -291,7 +288,6 @@ void list<T>::unique() {
       it_next++;
       if (*it_last == *it_next) {
         erase(it_next);
-        // ++it_last;
       } else
         ++it_last;
     }

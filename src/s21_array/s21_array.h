@@ -27,6 +27,8 @@ class array {
 
   reference at(size_type pos);
   reference operator[](size_type pos) { return arr_[pos]; };
+  const_reference at(size_type pos) const;
+  const_reference operator[](size_type pos) const { return arr_[pos]; };
   const_reference front();
   const_reference back();
   iterator data() { return arr_; }
@@ -42,9 +44,9 @@ class array {
 
   // Array Capacity --------------------------------------------------------
 
-  bool empty() { return size_ == 0; }
-  size_type size() { return size_; }
-  size_type max_size() { return size_; }
+  bool empty() const { return size_ == 0; }
+  size_type size() const { return size_; }
+  size_type max_size() const { return size_; }
 
   // Array Modifiers -------------------------------------------------------
 

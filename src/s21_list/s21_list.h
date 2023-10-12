@@ -75,7 +75,6 @@ class list {
       Args &&...args);  // void insert_many_front(Args&&... args)
 
  private:
-  //  public:
   struct Node {
     value_type value_;
     Node *prev_;
@@ -150,7 +149,6 @@ class list<T>::listIterator {
     return this->ptr_ != other.ptr_;
   }
   Node *ptr_;
-  //  private:
 };
 
 template <typename T>
