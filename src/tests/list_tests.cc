@@ -131,10 +131,10 @@ TEST(ListTest, MoveAssignmentOperator) {
   EXPECT_TRUE(compare_lists(my_list, std_list));
 }
 TEST(ListTest, MoveAssignmentOperatorC) {
-  s21:: list<int> my_list{1, 2, 3};
-  s21:: list<int> my_list_move = my_list;
-  std:: list<int> std_list{1, 2, 3};
-  std:: list<int> std_list_move = std_list;
+  s21::list<int> my_list{1, 2, 3};
+  s21::list<int> my_list_move = my_list;
+  std::list<int> std_list{1, 2, 3};
+  std::list<int> std_list_move = std_list;
   EXPECT_TRUE(compare_lists(my_list_move, std_list_move));
   EXPECT_TRUE(compare_lists(my_list, std_list));
 }

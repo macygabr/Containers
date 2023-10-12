@@ -10,7 +10,7 @@ vector<T>::vector() : data_(nullptr), size_(0), capacity_(0) {}
 
 template <typename T>
 vector<T>::vector(size_type n)
-    : data_(new value_type[n ]), size_(n), capacity_(n) {
+    : data_(new value_type[n]), size_(n), capacity_(n) {
   std::fill_n(data_, n, value_type());  // заполнение
 }
 
@@ -105,12 +105,12 @@ vector<T>& vector<T>::operator=(const vector<T>& v) {
 }
 
 template <typename T>
-vector<T>& vector<T>::operator=( vector<T>&& v) {
-swap(v);
-    delete[] v.data_;
-    v.size_ = 0;
-    v.capacity_ = 0;
-    v.data_ = nullptr;
+vector<T>& vector<T>::operator=(vector<T>&& v) {
+  swap(v);
+  delete[] v.data_;
+  v.size_ = 0;
+  v.capacity_ = 0;
+  v.data_ = nullptr;
   return *this;
 }
 
@@ -164,7 +164,7 @@ void vector<T>::shrink_to_fit() {
 
 template <typename T>
 void vector<T>::push_back(const_reference value) {
-  if (!(size_  < capacity_)) reserve(size_ + 1);
+  if (!(size_ < capacity_)) reserve(size_ + 1);
   data_[size_] = value;
   size_++;
 }
@@ -200,17 +200,16 @@ typename vector<T>::iterator vector<T>::insert(iterator pos,
 
 template <typename T>
 void vector<T>::erase(iterator pos) {
-    size_type position = pos - begin();
-    if (position >= size_) throw std::out_of_range("erase: Index out of range");
-    for (size_type i = position; i < size_-1; ++i) data_[i] = data_[i + 1];
-    --size_;
+  size_type position = pos - begin();
+  if (position >= size_) throw std::out_of_range("erase: Index out of range");
+  for (size_type i = position; i < size_ - 1; ++i) data_[i] = data_[i + 1];
+  --size_;
 }
 //--------------------------------------------------------
 //-----------------------------------------iterators-----------------------------------------
 
 template <typename T>
 vector<T>::VectorIterator::VectorIterator(iterator_pointer ptr) : ptr_(ptr) {}
-
 
 template <typename T>
 typename vector<T>::reference vector<T>::VectorIterator::operator*() {

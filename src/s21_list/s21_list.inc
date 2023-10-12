@@ -67,7 +67,7 @@ list<T>& list<T>::operator=(list<T>&& l) {
 
 template <typename T>
 list<T>& list<T>::operator=(const list<T>& l) {
-this.swap(l);
+  this.swap(l);
   return *this;
 }
 
