@@ -31,11 +31,7 @@ class set : public BinaryTree<Key, Key, Key> {
 
  protected:  // support
   virtual Key GetKey(value_type val) override { return Key(val); }
-  virtual Key GetVal(value_type val) override { return Key(val); }
-  virtual void SetVal(typename BinaryTree<Key, Key, Key>::Node *fir,
-                      value_type sec) override {
-    fir->node_key = sec;
-  }
+  // virtual Key GetVal(value_type val) override { return Key(val); }
 
   iterator search(const Key &key);
 };

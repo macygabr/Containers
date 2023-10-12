@@ -14,9 +14,9 @@ TYPED_TEST_CASE(TestMultisetGroup, MultisetType);
 
 TYPED_TEST(TestMultisetGroup, Initializer_list) {
   s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {
-      1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
+      1, 2, 3, 4, 5, 6, 6, 6, 6, 5};
   std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {
-      1, 2, 3, 4, 5, 6, 6, 6, 6, 6};
+      1, 2, 3, 4, 5, 6, 6, 6, 6, 5};
   auto it1 = a.begin() = a.begin();
   auto it2 = b.begin();
   for (; it1 != a.end(); it1++, it2++) EXPECT_EQ(*it1, *it2);
@@ -26,9 +26,9 @@ TYPED_TEST(TestMultisetGroup, Initializer_list) {
 
 TYPED_TEST(TestMultisetGroup, ConstructorCopy) {
   s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a = {1, 1,
-                                                                          1, 1};
+                                                                          1, 2};
   std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {1, 1,
-                                                                          1, 1};
+                                                                          1, 2};
   s21::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> a_copy(a);
   std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b_copy(b);
   EXPECT_EQ(a_copy.size(), b_copy.size());
@@ -413,6 +413,21 @@ TYPED_TEST(TestMultisetGroup, Contains) {
   for (int i = 0; i < 50; i++) ASSERT_EQ(a.contains(std::to_string(i)), true);
   for (int i = 50; i < 100; i++)
     ASSERT_EQ(a.contains(std::to_string(i)), false);
+}
+
+TYPED_TEST(TestMultisetGroup, Find) {
+  s21::multiset<std::string> a;
+  std::multiset<std::string> b;
+  s21::multiset<std::string>::iterator it1;
+  EXPECT_THROW(*it1, std::exception);
+
+  for (int i = 0; i < 50; i++) {
+    std::string x = std::to_string(i);
+    ASSERT_EQ(*a.insert(x), *b.insert(x));
+  }
+
+  for (int i = 0; i < 50; i++)
+    ASSERT_EQ(*a.find(std::to_string(i)), *b.find(std::to_string(i)));
 }
 
 //________________________________________________Iterators_________________________________________________

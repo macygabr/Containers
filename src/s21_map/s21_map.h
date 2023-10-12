@@ -38,7 +38,7 @@ class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
 
  protected:  // support
   virtual Key GetKey(value_type val) override { return Key(val.first); }
-  virtual T GetVal(value_type val) override { return T(val.second); }
+  //   virtual T GetVal(value_type val) override { return T(val.second); }
   virtual void SetVal(typename BinaryTree<Key, T, value_type>::Node *fir,
                       value_type sec) override {
     fir->node_key.second = sec.second;

@@ -68,7 +68,7 @@ class BinaryTree {
   int GetHeight(Node* x);
   int GetBalanceFactor(Node* x);
   virtual Key GetKey(value_type val) { return Key(); }  // const;
-  virtual T GetVal(value_type val) { return T(); };
+  // virtual T GetVal(value_type val) { return T(); };
   virtual void SetVal(Node* fir, value_type sec) { return; };
   virtual bool IsMultiset() { return 0; };
   std::pair<iterator, bool> InsertRecursive(Node* x, value_type val,
