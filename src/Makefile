@@ -38,7 +38,7 @@ test:
 	cd tests; $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
 
 clang:
-	clang-format -style="{BasedOnStyle: Google}" -n */*.h */*.inc */*.cc
+	clang-format -style="{BasedOnStyle: Google}" -n $(PATH_TO_FILE)/*.h $(PATH_TO_FILE)/*.inc
 
 goclang:
 	clang-format -style="{BasedOnStyle: Google}" -i */*.h */*.inc */*.cc
