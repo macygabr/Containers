@@ -1,8 +1,9 @@
+#include <gtest/gtest.h>
+
 #include <list>
 #include <map>
 
 #include "../s21_containers.h"
-#include "gtest/gtest.h"
 
 //________________________________________________Member_functions__________________________________________________
 

@@ -1,7 +1,8 @@
+#include <gtest/gtest.h>
+
 #include <set>
 
 #include "../s21_containers.h"
-#include "gtest/gtest.h"
 
 template <typename T>
 struct TestSetGroup : public testing::Test {
