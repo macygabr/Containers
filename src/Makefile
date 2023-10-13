@@ -10,7 +10,7 @@ ifeq ($(OS), Linux)
 	TEST_FLAGS += -lsubunit -lrt -lm
 	GOALS = make test valgrind
 else
-	GOALS = make test clang gcov_report
+	GOALS = make test clang
 endif
 
 all: 
@@ -37,9 +37,6 @@ goclang:
 
 valgrind: test
 	CK_FORK=no valgrind --tool=memcheck --leak-check=yes --track-origins=yes  -s ./$(PATH_TO_TEST)/test
-
-leaks: clean test
-	leaks -atExit -- ./$(PATH_TO_TEST)/test
 
 push: clean goclang
 	git add .
