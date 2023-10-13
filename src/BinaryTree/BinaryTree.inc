@@ -513,7 +513,6 @@ typename BinaryTree<Key, T, Value>::iterator
 BinaryTree<Key, T, Value>::DeleteNodeLeft(iterator it) {
   auto nod = it.node;
   auto par = it.node->parent;
-  auto lef = it.node->left;
   auto rig = it.node->right;
   if (it.node->parent) {
     if (it.node->parent->right == it.node)

@@ -34,9 +34,9 @@ class multiset : public BinaryTree<Key, Key, Key> {
   iterator insert(const Key &key);
 
  protected:  // support
-  virtual Key GetKey(value_type val) const override { return Key(val); }
+    Key GetKey(value_type val) const override { return Key(val); }
   //   virtual Key GetVal(value_type val) override { return Key(val); }
-  virtual bool IsMultiset() override { return true; }
+    bool IsMultiset() override { return true; }
   iterator search(const Key &key);
 };
 

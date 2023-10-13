@@ -67,7 +67,7 @@ class BinaryTree {
   void AddTerminalNode(Node* x, bool add);
   int GetHeight(Node* x);
   int GetBalanceFactor(Node* x);
-  virtual Key GetKey(value_type val) const { return Key(); }
+  virtual Key GetKey(value_type val) const { return Key(); };
   // virtual T GetVal(value_type val) { return T(); };
   virtual void SetVal(Node* fir, value_type sec) { return; };
   virtual bool IsMultiset() { return 0; };

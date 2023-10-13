@@ -37,9 +37,9 @@ class map : public BinaryTree<Key, T, std::pair<const Key, T>> {
   std::pair<iterator, bool> insert_or_assign(const Key &key, const T &obj);
 
  protected:  // support
-  virtual Key GetKey(value_type val) const override { return Key(val.first); }
-  //   virtual T GetVal(value_type val) override { return T(val.second); }
-  virtual void SetVal(typename BinaryTree<Key, T, value_type>::Node *fir,
+   Key GetKey(value_type val) const override { return Key(val.first); }
+  //    T GetVal(value_type val) override { return T(val.second); }
+   void SetVal(typename BinaryTree<Key, T, value_type>::Node *fir,
                       value_type sec) override {
     fir->node_key.second = sec.second;
   }
