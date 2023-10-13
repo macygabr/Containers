@@ -102,12 +102,12 @@ typename vector<value_type>::const_reference vector<value_type>::at(
   if (pos >= size_) throw std::out_of_range("AtError: Index out of range");
   return data_[pos];
 }
-
+//------------------------
 template <typename T>
 vector<T>& vector<T>::operator=(const vector<T>& v) {
-  if (this != &v) {
-    this->swap(v);
-  }
+clear();
+for (size_type i =0; i<v.size_; i++)
+push_back(v.data_[i]);
   return *this;
 }
 

@@ -27,7 +27,7 @@ clean:
 	rm -rf *.a */*.a *.o *.info */*.o */*.out */test report gcov *.gcno *.gcda $(PATH_TO_TEST)/*.gcno $(PATH_TO_TEST)/*.gcda html gcov_report $(PATH_TO_TEST)/*.info gcov_report.dSYM .DS_Store
 
 test: clean
-	cd $(PATH_TO_TEST); $(CC) $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
+	cd $(PATH_TO_TEST); $(CC) -std=c++17 $(TEST_FUNC) -o test $(TEST_FLAGS); ./test $(GTEST_FLAG)
 
 clang:
 	clang-format -style="{BasedOnStyle: Google}" -n */*.h */*.inc */*.cc
