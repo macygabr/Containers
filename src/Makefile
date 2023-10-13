@@ -50,8 +50,8 @@ gcov_report:
 	cd $(PATH_TO_TEST); $(CC)  -g --coverage $(TEST_FUNC) -o ../gcov_report  $(TEST_FLAGS)
 	cd ..
 	./gcov_report 
-	lcov -t "stest" -o s21_test.info -c -d ./ --no-external --ignore-errors mismatch
-	genhtml -o report s21_test.info
+	lcov -t "stest" -o s21_test.info -c -d ./ --no-external  --ignore-errors mismatch
+	genhtml  --no-function-coverage -o report s21_test.info 
 	open ./report/index.html
 	
 .PHONY: installVal clean clang goclang test valgrind check_cppcheck push gcov_report leaks
