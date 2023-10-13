@@ -64,7 +64,7 @@ class list {
   void unique();     //	removes consecutive duplicate elements
   void sort();       //	sorts the elements
   template <class... Args>
-  iterator insert_many(const_iterator pos,
+  iterator insert_many(iterator pos,
                        Args &&...args);  // inserts new elements into the
                                          // container directly before pos
   template <class... Args>
