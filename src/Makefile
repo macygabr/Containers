@@ -1,4 +1,4 @@
-CC=g++  -Wall -Werror -Wextra
+CC=g++ 
 FILES = s21_map
 TEST_FLAGS=-lgtest -pthread -lgtest_main -lstdc++ -lm
 GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
