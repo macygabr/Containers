@@ -70,10 +70,9 @@ TYPED_TEST(TestSetGroup, End) {
   auto it1 = a.begin();
   auto it2 = b.begin();
 
-  for (int i = 1; i < 50; i++) {
-    auto x = rand() % 100;
+  for (int i = 1; i < 50; i++)
     ASSERT_EQ(a.insert(i).second, b.insert(i).second);
-  }
+
   for (it1 = a.begin(), it2 = b.begin(); it2 != b.end(); it1++, it2++)
     ASSERT_EQ(*a.find(*it1), *b.find(*it2));
 
@@ -279,7 +278,7 @@ TEST(TestSetGroup, Insert_many) {
   v2.push_back(b.insert(x2));
   v2.push_back(b.insert(x3));
 
-  for (int i = 0; i < v1.size(); i++) {
+  for (int i = 0; i < int(v1.size()); i++) {
     ASSERT_EQ(*v1[i].first, *v2[i].first);
     ASSERT_EQ(v1[i].second, v2[i].second);
   }

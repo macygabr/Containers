@@ -20,9 +20,8 @@ s21::array<value_type, N>::array(
 
 template <typename value_type, std::size_t N>
 s21::array<value_type, N>::array(const array &other) : array() {
-  if (this != &other) {
-    for (size_type i = 0; i < N; i++) arr_[i] = other.arr_[i];
-  }
+  if (this != &other)
+    for (int i = 0; i < int(N); i++) arr_[i] = other.arr_[i];
 }
 
 template <typename value_type, std::size_t N>
@@ -32,9 +31,9 @@ s21::array<value_type, N>::array(array &&other) {
 
 template <typename value_type, std::size_t N>
 s21::array<value_type, N> &s21::array<value_type, N>::operator=(array &&other) {
-  if (this != &other) {
-    for (size_type i = 0; i < N; i++) arr_[i] = other.arr_[i];
-  }
+  if (this != &other)
+    for (int i = 0; i < int(N); i++) arr_[i] = other.arr_[i];
+
   return *this;
 }
 

@@ -67,10 +67,10 @@ class BinaryTree {
   void AddTerminalNode(Node* x, bool add);
   int GetHeight(Node* x);
   int GetBalanceFactor(Node* x);
-  virtual Key GetKey(value_type val) const { return Key(); };
   // virtual T GetVal(value_type val) { return T(); };
-  virtual void SetVal(Node* fir, value_type sec) { return; };
-  virtual bool IsMultiset() { return 0; };
+  virtual Key GetKey(value_type val) const = 0 /*{ return Key(); }*/;
+  virtual void SetVal(Node* fir, value_type sec) = 0 /*{ return; }*/;
+  virtual bool IsMultiset() = 0 /*{ return 0; }*/;
   std::pair<iterator, bool> InsertRecursive(Node* x, value_type val,
                                             Iterator* it_result,
                                             bool permission,
@@ -122,6 +122,7 @@ class BinaryTree {
    public:
     friend class BinaryTree<Key, T, value_type>;
     Iterator() : node(nullptr){};
+    Iterator(const Iterator& other) : node(other.node){};
     Iterator(Node* newnode) : node(newnode){};
     ~Iterator() = default;
 

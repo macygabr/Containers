@@ -105,9 +105,8 @@ typename vector<value_type>::const_reference vector<value_type>::at(
 //------------------------
 template <typename T>
 vector<T>& vector<T>::operator=(const vector<T>& v) {
-clear();
-for (size_type i =0; i<v.size_; i++)
-push_back(v.data_[i]);
+  clear();
+  for (size_type i = 0; i < v.size_; i++) push_back(v.data_[i]);
   return *this;
 }
 

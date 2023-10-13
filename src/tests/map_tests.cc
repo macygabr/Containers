@@ -413,7 +413,7 @@ TEST(TestMapGroup, Insert_many) {
   v2.push_back(b.insert(x2));
   v2.push_back(b.insert(x3));
 
-  for (int i = 0; i < v1.size(); i++) {
+  for (int i = 0; i < int(v1.size()); i++) {
     ASSERT_EQ(v1[i].first->first, v2[i].first->first);
     ASSERT_EQ(v1[i].first->second, v2[i].first->second);
     ASSERT_EQ(v1[i].second, v2[i].second);

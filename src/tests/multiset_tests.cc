@@ -64,7 +64,7 @@ TYPED_TEST(TestMultisetGroup, Begin) {
       'N', 'U', 'N', 'U', 'U', 'N'};
   std::multiset<typename TestMultisetGroup<TypeParam>::MultisetType> b = {
       'N', 'U', 'N', 'U', 'U', 'N'};
-  auto it1 = a.begin() = a.begin();
+  auto it1 = a.begin();
   auto it2 = b.begin();
   ASSERT_EQ(*it1, *it2);
   for (; it1 != a.end(); it1++, it2++) ASSERT_EQ(*it1, *it2);
@@ -278,7 +278,7 @@ TEST(TestMultisetGroup, Insert_many) {
   v2.push_back(
       std::pair<std::multiset<int>::iterator, bool>{b.insert(x3), true});
 
-  for (int i = 0; i < v1.size(); i++) {
+  for (int i = 0; i < int(v1.size()); i++) {
     ASSERT_EQ(*v1[i].first, *v2[i].first);
     ASSERT_EQ(v1[i].second, v2[i].second);
   }

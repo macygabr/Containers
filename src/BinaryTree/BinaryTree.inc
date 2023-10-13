@@ -67,7 +67,7 @@ template <typename Key, typename T, typename Value>
 std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>
 BinaryTree<Key, T, Value>::insert(const value_type val) {
   if (size() == MAX_SIZE) throw std::length_error("Tree is full");
-  bool result = true;
+
   Iterator it_result = Iterator(root);
   std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res;
   if (root == terminal_node) root = nullptr;
@@ -90,7 +90,7 @@ template <typename Key, typename T, typename Value>
 std::pair<typename BinaryTree<Key, T, Value>::iterator, bool>
 BinaryTree<Key, T, Value>::InsertOrAssign(const Key& key, const T& obj) {
   std::pair<Key, T> val = {key, obj};
-  bool result = true;
+
   Iterator it_result = Iterator(root);
   std::pair<typename BinaryTree<Key, T, Value>::iterator, bool> res;
   if (root == terminal_node) root = nullptr;
@@ -118,7 +118,7 @@ typename BinaryTree<Key, T, Value>::iterator BinaryTree<Key, T, Value>::erase(
     iterator it) {
   if (!it.node) throw std::out_of_range("Iterator not found");
   if (it.node == terminal_node) return Iterator(terminal_node);
-  auto nod = it.node;
+
   auto lef = it.node->left;
   auto rig = it.node->right;
   if (lef && rig)
@@ -228,7 +228,7 @@ template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator
 BinaryTree<Key, T, Value>::Iterator::operator++(int) {
   if (!node) return *this;
-  Iterator temp = *this;
+  Iterator temp(*this);
   operator++();
   return temp;
 }
@@ -254,7 +254,7 @@ BinaryTree<Key, T, Value>::Iterator::operator--() noexcept {
 template <typename Key, typename T, typename Value>
 typename BinaryTree<Key, T, Value>::Iterator
 BinaryTree<Key, T, Value>::Iterator::operator--(int) {
-  if (!node) return *this;
+  if (!node) return Iterator(*this);
   Iterator temp = *this;
   operator--();
   return temp;

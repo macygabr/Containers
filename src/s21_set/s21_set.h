@@ -32,6 +32,13 @@ class set : public BinaryTree<Key, Key, Key> {
  protected:  // support
   Key GetKey(value_type val) const override { return Key(val); }
   // virtual Key GetVal(value_type val) override { return Key(val); }
+  bool IsMultiset() { return 0; };
+  void SetVal(typename BinaryTree<Key, Key, Key>::Node *fir,
+              value_type sec) override {
+    fir = fir;
+    sec = sec;
+    return;
+  }
 
   iterator search(const Key &key);
 };
