@@ -26,6 +26,7 @@ TEST(TestMapGroup, ConstructorCopy) {
   std::map<int, int> b = {{1, 2}, {3, 4}, {5, 6}};
   s21::map<int, int> a_copy = a;
   std::map<int, int> b_copy = b;
+
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
   auto it2 = b_copy.begin();
@@ -149,6 +150,7 @@ TEST(TestMapGroup, at1) {
   s21::map<char, std::string> a = {
       {'a', "Alina"}, {'b', "Boris"}, {'c', "Chuck"}};
   EXPECT_THROW(a.at('g'), std::out_of_range);
+  ASSERT_EQ(a.at('a'), "Alina");
 }
 
 TEST(TestMapGroup, at2) {
