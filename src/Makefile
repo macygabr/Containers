@@ -46,6 +46,9 @@ push: clean goclang
 	git commit -m "$(c)"
 	git push
 
+check_cppcheck:
+	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(FILES).cc *.h
+
 gcov_report:
 	cd $(PATH_TO_TEST); $(CC)  -g --coverage $(TEST_FUNC) -o ../gcov_report  $(TEST_FLAGS)
 	cd ..
