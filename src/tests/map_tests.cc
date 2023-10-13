@@ -23,9 +23,10 @@ TEST(TestMapGroup, Initializer_list) {
 
 TEST(TestMapGroup, ConstructorCopy) {
   s21::map<int, int> a = {{1, 2}, {3, 4}, {5, 6}};
-  std::map<int, int> b = a;
+  std::map<int, int> b = {{1, 2}, {3, 4}, {5, 6}};
   s21::map<int, int> a_copy = a;
   std::map<int, int> b_copy = b;
+  EXPECT_TRUE(a == a_copy);
   EXPECT_EQ(a_copy.size(), b_copy.size());
   auto it1 = a_copy.begin();
   auto it2 = b_copy.begin();
