@@ -1,4 +1,4 @@
-CC=g++ -Wall -Werror -Wextra
+CC=g++ -std=c++17 -Wall -Werror -Wextra
 FILES = s21_map
 TEST_FLAGS=-lgtest -pthread -lgtest_main -lstdc++ -lm
 GTEST_FLAG = --gtest_repeat=1 --gtest_shuffle
@@ -47,7 +47,7 @@ push: clean goclang
 	git push
 
 gcov_report:
-	cd $(PATH_TO_TEST); $(CC) -std=c++17 -g --coverage $(TEST_FUNC) -o ../gcov_report  $(TEST_FLAGS)
+	cd $(PATH_TO_TEST); $(CC)  -g --coverage $(TEST_FUNC) -o ../gcov_report  $(TEST_FLAGS)
 	cd ..
 	./gcov_report 
 	lcov -t "stest" -o s21_test.info -c -d ./ --no-external --ignore-errors mismatch

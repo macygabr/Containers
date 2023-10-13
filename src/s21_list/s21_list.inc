@@ -338,8 +338,7 @@ void list<T>::sort() {
 
 template <typename T>
 template <typename... Args>
-typename list<T>::iterator list<T>::insert_many(const_iterator pos,
-                                                Args&&... args) {
+typename list<T>::iterator list<T>::insert_many(iterator pos, Args&&... args) {
   for (const auto& arg : {args...}) {
     insert(pos, arg);
   }
