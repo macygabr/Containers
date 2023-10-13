@@ -47,7 +47,7 @@ push: clean goclang
 	git push
 
 check_cppcheck:
-	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(FILES).cc *.h
+	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config */*.h tests/*.cc
 
 gcov_report:
 	cd $(PATH_TO_TEST); $(CC)  -g --coverage $(TEST_FUNC) -o ../gcov_report  $(TEST_FLAGS)
