@@ -64,7 +64,16 @@ list<T>& list<T>::operator=(list<T>&& l) {
 
 template <typename T>
 list<T>& list<T>::operator=(const list<T>& l) {
-  this.swap(l);
+  if (this != &l) {
+    while (!empty()) {
+      pop_front();
+    }
+    Node* current = l.list_.head;
+    while (current) {
+      push_back(current->value);
+      current = current->next;
+    }
+  }
   return *this;
 }
 
