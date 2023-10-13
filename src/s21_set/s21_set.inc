@@ -39,10 +39,13 @@ typename set<Key>::iterator set<Key>::search(const Key& key) {
 
   while (x && x != terminal_node) {
     if (key == x->node_key) return iterator(x);
-    if (key > x->node_key)
+    if (key > x->node_key) {
+      SetVal(root, key);
       x = x->right;
-    else
+    } else {
+      SetVal(root, key);
       x = x->left;
+    }
   }
   return iterator(terminal_node);
 }

@@ -43,10 +43,13 @@ typename multiset<Key>::iterator multiset<Key>::search(const Key& key) {
 
   while (x && x != terminal_node) {
     if (key == x->node_key) return iterator(x);
-    if (key > x->node_key)
+    if (key > x->node_key) {
+      SetVal(root, key);
       x = x->right;
-    else
+    } else {
       x = x->left;
+      SetVal(root, key);
+    }
   }
   return iterator(terminal_node);
 }
